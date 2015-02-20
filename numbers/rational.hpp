@@ -1,5 +1,5 @@
 #include <iostream>
-#include "gcd.hpp"
+#include "../gcd.hpp"
 
 template <typename T>
 class Rational {
@@ -42,11 +42,11 @@ public:
 		return numerator == rhs.numerator && denominator == rhs.denominator;
 	}
 
-	const T& getNumerator() {
+	const T& getNumerator() const {
 		return numerator;
 	}
 
-	const T& getDenominator() {
+	const T& getDenominator() const {
 		return denominator;
 	}
 private:
@@ -68,7 +68,7 @@ private:
 //TODO: avoid overflow by dividing early
 template <typename T>
 Rational<T> operator + (const Rational<T>& lhs, const Rational<T>& rhs) {
-	return Rational(
+	return Rational<T>(
 			lhs.numerator * rhs.denominator + rhs.numerator * lhs.denominator,
 			lhs.denominator * rhs.denominator
 	);
@@ -93,12 +93,12 @@ Rational<T> operator / (const Rational<T>& lhs, const Rational<T>& rhs) {
 
 template <typename T>
 std::ostream& operator <<(std::ostream& stream, const Rational<T>& rational) {
-	return stream << rational.numerator << '/' << rational.denominator;
+	return stream << rational.getNumerator() << '/' << rational.getDenominator();
 }
 template <typename T>
 struct impl__IdentityHelper<Rational<T>> {
 	static Rational<T> identity(const Rational<T>& sample) {
-		return Rational(1);
+		return Rational<T>(1);
 	}
 };
 
