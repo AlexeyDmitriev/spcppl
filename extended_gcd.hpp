@@ -1,3 +1,5 @@
+#pragma once
+
 /**
 * ax + by = result
 */

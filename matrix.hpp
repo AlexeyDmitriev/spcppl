@@ -116,11 +116,13 @@ Matrix<T> operator - (Matrix<T> lhs, const Matrix<T>& rhs) {
 }
 
 template<typename T>
-static Matrix<T> impl__IdentityHelper<Matrix<T>>::identity(const Matrix<T>& sample) {
-	SPCPPL_ASSERT(sample.rows() == sample.columns());
-	Matrix<T> res(sample.rows(), sample.rows());
-	for (std::size_t i = 0; i < sample.rows(); ++i) {
-		res[i][i] = ::identity(sample[0][0]);
+struct impl__SampleIdentityHelper<Matrix<T>> {
+	static Matrix<T> identity(const Matrix<T>& sample) {
+		SPCPPL_ASSERT(sample.rows() == sample.columns());
+		Matrix<T> res(sample.rows(), sample.rows());
+		for (std::size_t i = 0; i < sample.rows(); ++i) {
+			res[i][i] = ::identity(sample[0][0]);
+		}
+		return res;
 	}
-	return res;
-}
+};
