@@ -1,3 +1,5 @@
+#pragma once
+
 #include <iostream>
 #include "extended_gcd.hpp"
 #include "assert.hpp"
