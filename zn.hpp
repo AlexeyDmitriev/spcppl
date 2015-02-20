@@ -4,7 +4,6 @@
 #include "extended_gcd.hpp"
 #include "assert.hpp"
 
-
 //FIXME: remove {} when CPP-1825 fixed.
 template <bool normalize>
 struct impl__Normalizator {
@@ -50,36 +49,39 @@ struct impl__Normalizator<false> {
 	}
 };
 
-template <long long mod, bool autoNormalize = true>
+template <bool autoNormalize = true>
 class Zn {
 public:
-	static_assert(mod > 0, "modulo should be positive");
-	Zn(): value(0) {
+
+	explicit Zn(long long mod): mod(mod), value(0) {
 
 	}
 
 	/**
 	* Instead of ctor, to allow not to notmalize in ctor
 	*/
-	static Zn valueOf(long long value) {
+	static Zn valueOf(long long mod, long long value) {
 		impl__Normalizator<true>::hard(value, mod);
-		return Zn(value);
+		return Zn(mod, value);
 	}
 
 
 	Zn& operator += (const Zn& rhs) {
+		SPCPPL_ASSERT(mod == rhs.mod);
 		value += rhs.value;
 		impl__Normalizator<autoNormalize>::softDown(value, mod);
 		return *this;
 	}
 
 	Zn& operator -= (const Zn& rhs) {
+		SPCPPL_ASSERT(mod == rhs.mod);
 		value -= rhs.value;
 		impl__Normalizator<autoNormalize>::softUp(value, mod);
 		return *this;
 	}
 
 	Zn& operator *= (const Zn& rhs) {
+		SPCPPL_ASSERT(mod == rhs.mod);
 		value *= rhs.value;
 		impl__Normalizator<autoNormalize>::hardDown(value, mod);
 		return *this;
@@ -94,7 +96,8 @@ public:
 	}
 
 	Zn operator - () const {
-		Zn result(mod - value);
+		SPCPPL_ASSERT(mod == rhs.mod);
+		Zn result(mod, mod - value);
 		impl__Normalizator<autoNormalize>::softDown(result.value, mod);
 		return result;
 	}
@@ -104,6 +107,7 @@ public:
 	}
 
 	bool operator == (const Zn& rhs) const {
+		SPCPPL_ASSERT(mod == rhs.mod);
 		normalize();
 		rhs.normalize();
 		return value == rhs.value;
@@ -118,64 +122,66 @@ public:
 		SPCPPL_ASSERT(gcd == 1);
 
 		impl__Normalizator<autoNormalize>::softUp(x, mod);
-		return Zn(x);
+		return Zn(mod, x);
 	}
-	template <long long modF, bool aF>
-	friend std::ostream& operator << (std::ostream&, const Zn<modF, aF>& zn);
-	template <long long modF, bool aF>
-	friend std::istream& operator >> (std::istream&, Zn<modF, aF>& zn);
+	template <bool aF>
+	friend std::ostream& operator << (std::ostream&, const Zn<aF>& zn);
+	template <bool aF>
+	friend std::istream& operator >> (std::istream&, Zn<aF>& zn);
+
+	const long long mod;
 private:
 
 	/**
 	* No normalization performed
 	*/
-	explicit Zn(long long value): value(value) {
+	Zn(long long mod, long long value): mod(mod), value(value) {
 	}
 
 	long long value;
 };
 
-template <long long mod, bool a>
-Zn<mod, a> operator + (const Zn<mod, a>& lhs, const Zn<mod, a>& rhs) {
-	Zn<mod, a> copy = lhs;
+template <bool a>
+Zn<a> operator + (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
 	return copy += rhs;
 }
 
-template <long long mod, bool a>
-Zn<mod, a> operator - (const Zn<mod, a>& lhs, const Zn<mod, a>& rhs) {
-	Zn<mod, a> copy = lhs;
+template <bool a>
+Zn<a> operator - (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
 	return copy -= rhs;
 }
 
-template <long long mod, bool a>
-Zn<mod, a> operator * (const Zn<mod, a>& lhs, const Zn<mod, a>& rhs) {
-	Zn<mod, a> copy = lhs;
+template <bool a>
+Zn<a> operator * (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
 	return copy *= rhs;
 }
 
-template <long long mod, bool a>
-Zn<mod, a> operator / (const Zn<mod, a>& lhs, const Zn<mod, a>& rhs) {
-	Zn<mod, a> copy = lhs;
+template <bool a>
+Zn<a> operator / (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
 	return copy /= rhs;
 }
 
-template <long long mod, bool a>
-std::ostream& operator <<(std::ostream& stream, const Zn<mod, a>& zn) {
+template <bool a>
+std::ostream& operator <<(std::ostream& stream, const Zn<a>& zn) {
 	zn.normalize();
 	return stream << zn.value;
 }
 
-template <long long mod, bool a>
-std::istream& operator >>(std::istream& stream, Zn<mod, a>& zn) {
+template <bool a>
+std::istream& operator >>(std::istream& stream, Zn<a>& zn) {
 	stream >> zn.value;
-	impl__Normalizator<a>::hard(zn.value, mod);
+	impl__Normalizator<a>::hard(zn.value, zn.mod);
 	return stream;
 }
 
-template <long long mod, bool a>
-struct impl__IdentityHelper<Zn<mod, a>> {
-	static Zn<mod, a> identity() {
-		return Zn<mod, a>::valueOf(1);
+template <bool a>
+struct impl__SampleIdentityHelper<Zn<a>> {
+	static Zn<a> identity(Zn<a>& sample) {
+		return Zn<a>::valueOf(sample.mod, 1);
 	}
 };
 
