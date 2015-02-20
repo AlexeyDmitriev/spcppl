@@ -65,12 +65,15 @@ public:
 		return Zn(mod, value);
 	}
 
-
 	Zn& operator += (const Zn& rhs) {
 		SPCPPL_ASSERT(mod == rhs.mod);
 		value += rhs.value;
 		impl__Normalizator<autoNormalize>::softDown(value, mod);
 		return *this;
+	}
+
+	Zn& operator += (long long rhs) {
+		return *this += Zn::valueOf(mod, rhs);
 	}
 
 	Zn& operator -= (const Zn& rhs) {
@@ -80,11 +83,19 @@ public:
 		return *this;
 	}
 
+	Zn& operator -= (long long rhs) {
+		return *this -= Zn::valueOf(mod, rhs);
+	}
+
 	Zn& operator *= (const Zn& rhs) {
 		SPCPPL_ASSERT(mod == rhs.mod);
 		value *= rhs.value;
 		impl__Normalizator<autoNormalize>::hardDown(value, mod);
 		return *this;
+	}
+
+	Zn& operator *= (long long rhs) {
+		return *this *= Zn::valueOf(mod, rhs);
 	}
 
 	/**
@@ -104,6 +115,10 @@ public:
 
 	Zn& operator /= (const Zn& rhs) {
 		return *this *= rhs.inversed();
+	}
+
+	Zn& operator /= (long long rhs) {
+		return *this /= Zn::valueOf(mod, rhs);
 	}
 
 	bool operator == (const Zn& rhs) const {
@@ -148,7 +163,19 @@ Zn<a> operator + (const Zn<a>& lhs, const Zn<a>& rhs) {
 }
 
 template <bool a>
+Zn<a> operator + (const Zn<a>& lhs, long long rhs) {
+	Zn<a> copy = lhs;
+	return copy += rhs;
+}
+
+template <bool a>
 Zn<a> operator - (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
+	return copy -= rhs;
+}
+
+template <bool a>
+Zn<a> operator - (const Zn<a>& lhs, long long rhs) {
 	Zn<a> copy = lhs;
 	return copy -= rhs;
 }
@@ -160,7 +187,19 @@ Zn<a> operator * (const Zn<a>& lhs, const Zn<a>& rhs) {
 }
 
 template <bool a>
+Zn<a> operator * (const Zn<a>& lhs, long long rhs) {
+	Zn<a> copy = lhs;
+	return copy *= rhs;
+}
+
+template <bool a>
 Zn<a> operator / (const Zn<a>& lhs, const Zn<a>& rhs) {
+	Zn<a> copy = lhs;
+	return copy /= rhs;
+}
+
+template <bool a>
+Zn<a> operator / (const Zn<a>& lhs, long long rhs) {
 	Zn<a> copy = lhs;
 	return copy /= rhs;
 }
