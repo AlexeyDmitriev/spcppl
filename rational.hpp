@@ -57,8 +57,8 @@ private:
 		denominator /= g;
 
 		if(denominator < 0) {
-			numerator -= numerator;
-			denominator -= denominator;
+			numerator = -numerator;
+			denominator = -denominator;
 		}
 	}
 	T numerator, denominator;
