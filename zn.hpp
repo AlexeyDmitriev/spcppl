@@ -53,6 +53,12 @@ template <bool autoNormalize = true>
 class Zn {
 public:
 
+	/**
+	* Not to be used
+	*/
+	Zn(): mod(0), value(0) {
+	}
+
 	explicit Zn(long long mod): mod(mod), value(0) {
 
 	}
@@ -144,7 +150,7 @@ public:
 	template <bool aF>
 	friend std::istream& operator >> (std::istream&, Zn<aF>& zn);
 
-	const long long mod;
+	long long mod;
 private:
 
 	/**
@@ -219,7 +225,7 @@ std::istream& operator >>(std::istream& stream, Zn<a>& zn) {
 
 template <bool a>
 struct impl__SampleIdentityHelper<Zn<a>> {
-	static Zn<a> identity(Zn<a>& sample) {
+	static Zn<a> identity(const Zn<a>& sample) {
 		return Zn<a>::valueOf(sample.mod, 1);
 	}
 };
