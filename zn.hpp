@@ -91,7 +91,7 @@ public:
 		impl__Normalizator<!autoNormalize>::hard(value, mod);
 	}
 
-	Zn& operator - () const {
+	Zn operator - () const {
 		Zn result(mod - value);
 		impl__Normalizator<autoNormalize>::softDown(result.value, mod);
 		return result;
