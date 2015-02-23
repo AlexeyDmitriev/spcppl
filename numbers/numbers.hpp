@@ -22,5 +22,29 @@ std::vector<T> factorials(size_t maxN) {
 template <typename T>
 std::vector<T> factorials(size_t maxN, const T& sample) {
 	return impl__factorials(maxN, identity<T>(sample));
+}
 
+
+template <typename T>
+std::vector<std::vector<T>> impl__binomials(size_t maxN, const T& one) {
+	std::vector<std::vector<T>> res(maxN + 1, std::vector<T>(maxN + 1));
+	for (size_t n = 0; n <= maxN; ++n) {
+		res[n][0] = one;
+		res[n][n] = one;
+		for (size_t k = 1; k < n; ++k) {
+			res[n][k] = res[n - 1][k - 1] + res[n - 1][k];
+		}
+	}
+
+	return res;
+}
+
+template <typename T>
+std::vector<std::vector<T>> binomials(size_t maxN) {
+	return impl__binomials(maxN, identity<T>());
+}
+
+template <typename T>
+std::vector<std::vector<T>> binomials(size_t maxN, const T& sample) {
+	return impl__binomials(maxN, identity<T>(sample));
 }
