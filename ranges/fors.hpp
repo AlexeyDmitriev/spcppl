@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../assert.hpp"
+
 template <typename T>
 class IntegerIterator {
 public:
@@ -49,10 +51,12 @@ private:
 
 template <typename T>
 IntegerRange<T> range(T to) {
+	SPCPPL_ASSERT(to >= 0);
 	return IntegerRange<T>(0, to);
 }
 
 template <typename T>
 IntegerRange<T> range(T from, T to) {
+	SPCPPL_ASSERT(from <= to);
 	return IntegerRange<T>(from, to);
 }
