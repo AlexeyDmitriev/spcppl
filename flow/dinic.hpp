@@ -64,9 +64,10 @@ private:
 				}
 				used[edge.to] = true;
 				d[edge.to] = d[v] + 1;
+				queue[qt++] = edge.to;
 			}
 		}
-		return d[to] != -1;
+		return used[to];
 	}
 
 	FlowSize dfs(std::size_t v, std::size_t to, FlowSize mx) {
