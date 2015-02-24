@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iostream>
-#include "../gcd.hpp"
+#include "gcd.hpp"
 
 template <typename T>
 class Rational {
