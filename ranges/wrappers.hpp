@@ -1,6 +1,7 @@
 #pragma once
 
 #include <algorithm>
+#include "fors.hpp"
 
 template<typename R>
 void sort(R &range) {
@@ -55,4 +56,22 @@ auto max_element(const R& range) -> decltype(range.begin()) {
 template <typename R>
 bool next_permutation(R& range) {
 	return std::next_permutation(range.begin(), range.end());
+}
+
+template <typename R>
+R sorted(R range) {
+	sort(range);
+	return range;
+}
+
+template <typename R, typename Comp>
+R sorted(R range, Comp comp) {
+	sort(range, comp);
+	return range;
+}
+
+template <typename R>
+R reversed(R range) {
+	reverse(range);
+	return range;
 }
