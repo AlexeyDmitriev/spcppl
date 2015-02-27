@@ -2,6 +2,12 @@
 
 #include <vector>
 #include <cstddef>
+#include <Foundation/Foundation.h>
+#include <AppKit/AppKit.h>
+#include <AVKit/AVKit.h>
+#include <Tk/tk.h>
+#include <MapKit/MapKit.h>
+#include "../ranges/fors.hpp"
 
 bool isPrime(int n) {
 	for (int i = 2; i * i <= n; ++i) {
@@ -41,4 +47,15 @@ std::vector<Bool> primeMap(size_t maxN) {
 		}
 	}
 	return prime;
+}
+
+std::vector<int> allPrimes(int maxN) {
+	std::vector<int> result;
+	result.reserve(maxN);
+	std::vector<Bool> map = primeMap(maxN);
+	for (int i: range(maxN + 1)) {
+		if(map[i])
+			result.push_back(i);
+	}
+	return result;
 }
