@@ -2,7 +2,7 @@
 
 #include <iostream>
 #include "extended_gcd.hpp"
-#include "assert.hpp"
+#include "../assert.hpp"
 
 //FIXME: remove {} when CPP-1825 fixed.
 template <bool normalize>

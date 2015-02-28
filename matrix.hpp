@@ -12,12 +12,12 @@ public:
 
 	}
 
-	T& operator [] (size_t index) {
+	T& operator [] (std::size_t index) {
 		SPCPPL_ASSERT(index < value.size());
 		return value[index];
 	}
 
-	const T& operator [] (size_t index) const {
+	const T& operator [] (std::size_t index) const {
 		SPCPPL_ASSERT(index < value.size());
 		return value[index];
 	}
@@ -33,11 +33,11 @@ public:
 
 	}
 
-	size_t rows() const {
+	std::size_t rows() const {
 		return value.size();
 	}
 
-	size_t columns() const {
+	std::size_t columns() const {
 		return value[0].size();
 	}
 
@@ -58,8 +58,8 @@ public:
 
 	Matrix& operator += (const Matrix& rhs) {
 		SPCPPL_ASSERT(rows() == rhs.rows() && columns() == rhs.columns());
-		for(size_t i = 0; i < rows(); ++i) {
-			for(size_t j = 0; j < columns(); ++j) {
+		for(std::size_t i = 0; i < rows(); ++i) {
+			for(std::size_t j = 0; j < columns(); ++j) {
 				value[i][j] += rhs.value[i][j];
 			}
 		}
