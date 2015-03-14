@@ -150,6 +150,10 @@ public:
 	template <bool aF>
 	friend std::istream& operator >> (std::istream&, Zn<aF>& zn);
 
+	long long longValue() const {
+		return value;
+	}
+
 	long long mod;
 private:
 
