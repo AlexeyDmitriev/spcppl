@@ -39,8 +39,8 @@ auto upper_bound(const R &range, const T &value, Comp comp) -> decltype(range.be
 }
 
 template <typename R>
-void unique(R& range) {
-	std::unique(range.begin(), range.end());
+auto unique(R& range) -> decltype(range.begin()) {
+	return std::unique(range.begin(), range.end());
 }
 
 template <typename R>
