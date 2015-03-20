@@ -45,6 +45,10 @@ public:
 		return flow;
 	}
 
+	std::size_t edgesCount() const {
+		return edges.size();
+	}
+
 private:
 
 	bool bfs(std::size_t from, std::size_t to) {
