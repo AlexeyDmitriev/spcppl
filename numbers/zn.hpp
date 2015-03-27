@@ -3,6 +3,7 @@
 #include <iostream>
 #include "extended_gcd.hpp"
 #include "../assert.hpp"
+#include "../identity.hpp"
 
 //FIXME: remove {} when CPP-1825 fixed.
 template <bool normalize>
