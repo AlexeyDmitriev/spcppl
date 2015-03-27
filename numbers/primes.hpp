@@ -54,3 +54,10 @@ std::vector<int> allPrimes(int maxN) {
 	}
 	return result;
 }
+
+int nextPrime(int n) {
+	while (!isPrime(n)) {
+		++n;
+	}
+	return n;
+}
