@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include "../identity.hpp"
 #include "gcd.hpp"
 
 template <typename T>
@@ -64,15 +65,18 @@ private:
 		}
 	}
 	T numerator, denominator;
+
+	template <typename U>
+	friend Rational<U> operator + (const Rational<U>& lhs, const Rational<U>& rhs);
 };
 
 
-//TODO: avoid overflow by dividing early
 template <typename T>
 Rational<T> operator + (const Rational<T>& lhs, const Rational<T>& rhs) {
+	T g = gcd(lhs.denominator, rhs.denominator);
 	return Rational<T>(
-			lhs.numerator * rhs.denominator + rhs.numerator * lhs.denominator,
-			lhs.denominator * rhs.denominator
+			lhs.numerator * (rhs.denominator / g) + rhs.numerator * (lhs.denominator / g),
+			lhs.denominator / g * rhs.denominator
 	);
 }
 
