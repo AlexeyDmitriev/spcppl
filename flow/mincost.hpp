@@ -15,7 +15,7 @@ struct CostFlow {
 };
 
 template <typename FlowSize, typename CostSize>
-class MinCostMaxFlow {
+class MinCostFlow {
 	struct Edge {
 		std::size_t from, to;
 		FlowSize cap;
@@ -23,11 +23,12 @@ class MinCostMaxFlow {
 		CostSize cost;
 	};
 public:
-	MinCostMaxFlow(std::size_t n): g(n) {
+	MinCostFlow(std::size_t n): g(n) {
 
 	}
 
 	void addEdge(std::size_t from, std::size_t to, FlowSize capacity, CostSize cost) {
+		SPCPPL_ASSERT(from < g.size() && to < g.size());
 		Edge edge = {from, to, capacity, 0, cost};
 		g[from].push_back(edges.size());
 		edges.push_back(edge);
@@ -38,6 +39,7 @@ public:
 	}
 
 	Edge getEdge(std::size_t id) {
+		SPCPPL_ASSERT(id < edges.size());
 		return edges[id];
 	}
 
@@ -45,13 +47,14 @@ public:
 		return edges.size();
 	}
 
-	CostFlow<FlowSize, CostSize> findFlow(std::size_t s, std::size_t t) {
+	template <typename Strategy>
+	CostFlow<FlowSize, CostSize> findFlow(std::size_t s, std::size_t t, Strategy strategy) {
+		SPCPPL_ASSERT(s < g.size() && t < g.size());
 		CostSize cost = 0;
 		FlowSize flow = 0;
 		std::size_t n = g.size();
 		std::vector<CostSize> potential(n);
 		const std::size_t NO_PARENT = std::numeric_limits<size_t>::max();
-		const FlowSize NEED_FLOW = std::numeric_limits<FlowSize>::max();
 		{
 			std::vector<size_t> p(n, NO_PARENT);
 			std::vector<CostSize> d(n);
@@ -73,12 +76,7 @@ public:
 			}
 			potential = std::move(d);
 		}
-		while(flow < NEED_FLOW) {
-
-			//if(d[t] >= 0) { // only for mincost, not mincostmaxflow
-			//	break;
-			//}
-
+		while(true) {
 			std::vector<CostSize> d(n);
 			std::vector<size_t> p(n, NO_PARENT);
 
@@ -100,7 +98,7 @@ public:
 					if(e.cap > e.flow) {
 						SPCPPL_ASSERT(e.cost + potential[e.from] - potential[e.to] >= 0);
 						CostSize newd = d[v] + e.cost + potential[e.from] - potential[e.to];
-						if(p[e.to] == -1 || d[e.to] > newd) {
+						if(p[e.to] == NO_PARENT || d[e.to] > newd) {
 							d[e.to] = newd;
 							p[e.to] = id;
 							q.push(std::make_pair(d[e.to], e.to));
@@ -109,15 +107,17 @@ public:
 				}
 			}
 
-			//if(d[t] >= 0) { // only for mincost, not mincostmaxflow
-			//	break;
-			//}
-
-			if(p[t] == -1)
+			if(p[t] == NO_PARENT) {
 				break;
+			}
 
 			std::size_t cur = t;
-			FlowSize maxAdd = NEED_FLOW - flow;
+			FlowSize maxAdd = strategy.maximalAdditionFlow(flow, cost, potential[t] + d[t]);
+
+			if(maxAdd == 0) {
+				break;
+			}
+
 			while(cur != s) {
 				Edge& e = edges[p[cur]];
 				cur = e.from;
@@ -135,7 +135,7 @@ public:
 			}
 
 			for (size_t i: range(n)) {
-				if (p[i] != -1) {
+				if (p[i] != NO_PARENT) {
 					potential[i] = potential[i] + d[i];
 				}
 			}
