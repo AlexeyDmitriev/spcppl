@@ -49,7 +49,9 @@ public:
 
 	template <typename Strategy>
 	CostFlow<FlowSize, CostSize> findFlow(std::size_t s, std::size_t t, Strategy strategy) {
-		SPCPPL_ASSERT(s < g.size() && t < g.size());
+		SPCPPL_ASSERT(s < g.size());
+		SPCPPL_ASSERT(t < g.size());
+		SPCPPL_ASSERT(s != t);
 		CostSize cost = 0;
 		FlowSize flow = 0;
 		std::size_t n = g.size();

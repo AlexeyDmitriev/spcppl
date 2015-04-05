@@ -12,6 +12,7 @@ public:
 	}
 
 	std::size_t getSet(std::size_t v) {
+		SPCPPL_ASSERT(v < dsu.size());
 		if (v == dsu[v]) {
 			return v;
 		}
@@ -19,6 +20,8 @@ public:
 	}
 
 	void unite(std::size_t u, std::size_t v) {
+		SPCPPL_ASSERT(u < dsu.size());
+		SPCPPL_ASSERT(v < dsu.size());
 		u = getSet(u);
 		v = getSet(v);
 		dsu[v] = u;

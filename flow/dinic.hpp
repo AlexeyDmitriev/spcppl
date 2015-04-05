@@ -20,6 +20,8 @@ public:
 	}
 
 	void addTwoSidedEdge(std::size_t from, std::size_t to, FlowSize capacity, FlowSize backwardCapacity) {
+		SPCPPL_ASSERT(from < g.size());
+		SPCPPL_ASSERT(to < g.size());
 		Edge edge = {from, to, capacity, 0};
 		g[from].push_back(edges.size());
 		edges.push_back(edge);
@@ -30,10 +32,13 @@ public:
 	}
 
 	Edge getEdge(std::size_t id) {
+		SPCPPL_ASSERT(id < edges.size());
 		return edges[id];
 	}
 
 	FlowSize findFlow(std::size_t from, std::size_t to, FlowSize infinity = std::numeric_limits<FlowSize>::max()) {
+		SPCPPL_ASSERT(from < g.size());
+		SPCPPL_ASSERT(to < g.size());
 		SPCPPL_ASSERT(from != to);
 		FlowSize flow = 0;
 		while (bfs(from, to)) {

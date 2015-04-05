@@ -3,6 +3,7 @@
 #include <iostream>
 #include "../identity.hpp"
 #include "gcd.hpp"
+#include "../assert.hpp"
 
 template <typename T>
 class Rational {
@@ -12,6 +13,7 @@ public:
 	Rational(T numerator): numerator(numerator), denominator(1) {
 	}
 	Rational(T numerator, T denominator): numerator(numerator), denominator(denominator) {
+		SPCPPL_ASSERT(denominator != 0);
 		normalize();
 	}
 
@@ -35,6 +37,7 @@ public:
 	}
 
 	Rational& operator /= (const Rational& rhs) {
+		SPCPPL_ASSERT(rhs.numerator != 0);
 		numerator *= rhs.denominator;
 		denominator *= rhs.numerator;
 		normalize();

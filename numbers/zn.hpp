@@ -114,7 +114,6 @@ public:
 	}
 
 	Zn operator - () const {
-		SPCPPL_ASSERT(mod == rhs.mod);
 		Zn result(mod, mod - value);
 		impl__Normalizator<autoNormalize>::softDown(result.value, mod);
 		return result;
@@ -162,6 +161,7 @@ private:
 	* No normalization performed
 	*/
 	Zn(long long mod, long long value): mod(mod), value(value) {
+		SPCPPL_ASSERT(mod > 0);
 	}
 
 	long long value;

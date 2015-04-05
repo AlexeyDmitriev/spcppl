@@ -32,7 +32,7 @@ public:
 	}
 
 	std::size_t find(const T& t) {
-		SPCPPL_ASSERT(addingFinised);
+		SPCPPL_ASSERT(addingFinished);
 		auto iterator = lower_bound(values, t);
 		SPCPPL_ASSERT(iterator != values.end() && *iterator == t);
 		return iterator - values.begin();
@@ -41,6 +41,6 @@ public:
 private:
 	std::vector<T> values;
 	#ifdef SPCPPL_DEBUG
-		boolean addingFinished;
+		bool addingFinished;
 	#endif
 };
