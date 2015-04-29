@@ -111,3 +111,33 @@ struct impl__IdentityHelper<Rational<T>> {
 	}
 };
 
+template <typename T>
+bool operator == (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return lhs.getNumerator() * rhs.getDenominator() == lhs.getDenominator() * rhs.getNumerator();
+}
+
+template <typename T>
+bool operator != (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <typename T>
+bool operator < (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return lhs.getNumerator() * rhs.getDenominator() < lhs.getDenominator() * rhs.getNumerator();
+}
+
+template <typename T>
+bool operator > (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return rhs < lhs;
+}
+
+template <typename T>
+bool operator <= (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return !(lhs > rhs);
+}
+
+template <typename T>
+bool operator >= (const Rational<T>& lhs, const Rational<T>& rhs) {
+	return !(lhs < rhs);
+}
+
