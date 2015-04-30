@@ -5,8 +5,10 @@
 template <typename T>
 class CoordinateMinimizer {
 public:
-	CoordinateMinimizer() {
-
+	CoordinateMinimizer(){
+		#ifdef SPCPPL_DEBUG
+			addingFinished = false;
+		#endif
 	}
 
 	template <typename R>
@@ -16,6 +18,8 @@ public:
 
 	void finalize() {
 		sort(values);
+		values.erase(std::unique(values.begin(), values.end()), values.end());
+
 		#ifdef SPCPPL_DEBUG
 			addingFinished = true;
 		#endif
@@ -37,6 +41,11 @@ public:
 		SPCPPL_ASSERT(iterator != values.end() && *iterator == t);
 		return iterator - values.begin();
 	}
+
+	std::size_t size() {
+		SPCPPL_ASSERT(addingFinished);
+		return values.size();
+	};
 
 private:
 	std::vector<T> values;
