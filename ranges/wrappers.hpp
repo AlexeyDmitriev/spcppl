@@ -58,6 +58,11 @@ bool next_permutation(R& range) {
 	return std::next_permutation(range.begin(), range.end());
 }
 
+template <typename T>
+void unique(std::vector<T>& range) {
+	range.erase(std::unique(range.begin(), range.end()), range.end());
+}
+
 template <typename R>
 R sorted(R range) {
 	sort(range);
