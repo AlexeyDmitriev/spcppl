@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <assert.h>
 #include "extended_gcd.hpp"
 #include "../assert.hpp"
 #include "../identity.hpp"
@@ -37,16 +38,16 @@ struct impl__Normalizator<true> {
 
 template <>
 struct impl__Normalizator<false> {
-	static void softUp(long long& value, long long mod) {
+	static void softUp(long long&, long long) {
 	}
 
-	static void softDown(long long& value, long long mod) {
+	static void softDown(long long&, long long) {
 	}
 
-	static void hardDown(long long& value, long long mod) {
+	static void hardDown(long long&, long long) {
 	}
 
-	static void hard(long long& value, long long mod) {
+	static void hard(long long&, long long) {
 	}
 };
 
