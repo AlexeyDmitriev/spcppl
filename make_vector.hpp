@@ -1,40 +1,41 @@
 #include <vector>
-/*
- * Uses unneeded first arg so that it's possible to determine return value
- *
- * it could be done in other ways
- * http://stackoverflow.com/q/29995642/768110
- *
- * But this one better works in CLion (don't shows not existing errors)
- *
- * TODO: Consider changing it back once https://youtrack.jetbrains.com/issue/CPP-3340 is fixed
- */
-namespace impl {
-    struct adl_helper {
-    };
+#include <type_traits>
 
-    template <class T, class Adl>
-    std::vector<T> make_vector(Adl, size_t size, const T& value) {
-	    return std::vector<T>(size, value);
-    }
+template <typename T, size_t N>
+struct MakeVector
+{
+	template <
+			typename... Args,
+			typename R = std::vector<decltype(MakeVector<T, N-1>::make_vector(std::declval<Args>()...))>
+	>
+	static R make_vector(std::size_t first, Args... sizes)
+	{
+		auto inner = MakeVector<T, N-1>::make_vector(sizes...);
+		return R(first, inner);
+	}
+};
 
-    template <
-		    class T, class Adl, class... Args,
-		    class R_T=decltype(
-		    make_vector<T>(Adl{}, std::declval<Args>()...)
-		    ),
-		    class R=std::vector<R_T>
-    >
-    R make_vector(Adl, size_t first, Args... sizes) {
-	    auto inner = make_vector<T>(Adl{}, std::forward<Args>(sizes)...);
-	    return R(first, inner);
-    }
-}
+template <typename T>
+struct MakeVector<T, 1>
+{
+	/*
+	 * This template is to fool CLion.
+	 * Without it CLion thinks that make_vector always returns std::vector<T> and marks code like
+	 *
+	 * auto dp = make_vector<int>(n, m, 0);
+	 * dp[0][0] = 1 as error because it suppose that dp[0] is int
+	 *
+	 * TODO: Consider removing it once https://youtrack.jetbrains.com/issue/CPP-3340 is fixed
+	 */
+	template <typename R = std::vector<T>>
+	static R make_vector(std::size_t size, const T& value) {
+		return R(size, value);
+	}
+};
 
-template <
-		class T, class... Args,
-		class R=decltype(impl::make_vector<T>(impl::adl_helper{}, std::declval<Args>()...))
->
-R make_vector(Args... args) {
-	return impl::make_vector<T>(impl::adl_helper{}, std::forward<Args>(args)...);
+template <typename T, typename... Args>
+auto make_vector(Args... args)
+-> decltype(MakeVector<T, sizeof...(Args) - 1>::make_vector(args...))
+{
+	return MakeVector<T, sizeof...(Args) - 1>::make_vector(args...);
 }
