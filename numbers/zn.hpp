@@ -141,6 +141,7 @@ public:
 
 		long long x, y;
 		long long gcd = extended_gcd(value, mod, x, y);
+		(void)gcd;
 		SPCPPL_ASSERT(gcd == 1);
 
 		impl__Normalizator<autoNormalize>::softUp(x, mod);
