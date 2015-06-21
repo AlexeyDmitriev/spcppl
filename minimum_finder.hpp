@@ -4,13 +4,14 @@
 
 template <typename K, typename V, typename Compare = std::less<V>>
 class MinimumFinder {
+public:
 	MinimumFinder(K startKey, V startValue, Compare compare = Compare()):
 			bestKey(startKey), bestValue(startValue), compare(compare) {
 
 	}
 
 	void addValue(const K& key, const V& value) {
-		if (compare(key, bestKey)) {
+		if (compare(value, bestValue)) {
 			bestKey = key;
 			bestValue = value;
 		}
