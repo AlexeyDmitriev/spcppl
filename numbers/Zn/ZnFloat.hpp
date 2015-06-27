@@ -7,21 +7,6 @@
 #include "../../identity.hpp"
 #include "Normalizator.hpp"
 
-template <>
-struct impl__Normalizator<false> {
-	static void softUp(long long&, long long) {
-	}
-
-	static void softDown(long long&, long long) {
-	}
-
-	static void hardDown(long long&, long long) {
-	}
-
-	static void hard(long long&, long long) {
-	}
-};
-
 template <bool autoNormalize = true>
 class ZnFloat {
 public:
@@ -204,7 +189,7 @@ std::istream& operator >>(std::istream& stream, ZnFloat<a>& zn) {
 template <bool a>
 struct impl__SampleIdentityHelper<ZnFloat<a>> {
 	static ZnFloat<a> identity(const ZnFloat<a>& sample) {
-		return ZnFloat<a>::ZnFloat(sample.mod, 1);
+		return ZnFloat<a>::valueOf(sample.mod, 1);
 	}
 };
 
