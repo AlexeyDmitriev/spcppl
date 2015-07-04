@@ -126,6 +126,31 @@ private:
 };
 
 template <bool a>
+bool operator == (const ZnFloat<a>& lhs, long long rhs) {
+	return lhs == ZnFloat<a>::valueOf(lhs.mod, rhs);
+}
+
+template <bool a>
+bool operator == (long long lhs, const ZnFloat<a>& rhs) {
+	return rhs == lhs;
+}
+
+template <bool a>
+bool operator != (const ZnFloat<a>& lhs, const ZnFloat<a>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <bool a>
+bool operator != (const ZnFloat<a>& lhs, long long rhs) {
+	return !(lhs == rhs);
+}
+
+template <bool a>
+bool operator != (long long lhs, const ZnFloat<a>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <bool a>
 ZnFloat<a> operator + (const ZnFloat<a>& lhs, const ZnFloat<a>& rhs) {
 	ZnFloat<a> copy = lhs;
 	return copy += rhs;
@@ -135,6 +160,11 @@ template <bool a>
 ZnFloat<a> operator + (const ZnFloat<a>& lhs, long long rhs) {
 	ZnFloat<a> copy = lhs;
 	return copy += rhs;
+}
+
+template <bool a>
+ZnFloat<a> operator + (long long lhs, const ZnFloat<a>& rhs) {
+	return rhs + lhs;
 }
 
 template <bool a>
@@ -150,6 +180,11 @@ ZnFloat<a> operator - (const ZnFloat<a>& lhs, long long rhs) {
 }
 
 template <bool a>
+ZnFloat<a> operator - (long long lhs, const ZnFloat<a>& rhs) {
+	return ZnFloat<a>::valueOf(rhs.mod, lhs) - rhs;
+}
+
+template <bool a>
 ZnFloat<a> operator * (const ZnFloat<a>& lhs, const ZnFloat<a>& rhs) {
 	ZnFloat<a> copy = lhs;
 	return copy *= rhs;
@@ -162,6 +197,11 @@ ZnFloat<a> operator * (const ZnFloat<a>& lhs, long long rhs) {
 }
 
 template <bool a>
+ZnFloat<a> operator * (long long lhs, const ZnFloat<a>& rhs) {
+	return rhs * lhs;
+}
+
+template <bool a>
 ZnFloat<a> operator / (const ZnFloat<a>& lhs, const ZnFloat<a>& rhs) {
 	ZnFloat<a> copy = lhs;
 	return copy /= rhs;
@@ -171,6 +211,11 @@ template <bool a>
 ZnFloat<a> operator / (const ZnFloat<a>& lhs, long long rhs) {
 	ZnFloat<a> copy = lhs;
 	return copy /= rhs;
+}
+
+template <long long m, bool a>
+ZnFloat<a> operator / (long long lhs, const ZnFloat<a>& rhs) {
+	return ZnFloat<a>::valueOf(rhs.mod, lhs) / rhs;
 }
 
 template <bool a>

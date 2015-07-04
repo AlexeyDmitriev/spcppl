@@ -116,6 +116,31 @@ private:
 };
 
 template <long long m, bool a>
+bool operator == (const Zn<m, a>& lhs, long long rhs) {
+	return lhs == Zn<m, a>::valueOf(rhs);
+}
+
+template <long long m, bool a>
+bool operator == (long long lhs, const Zn<m, a>& rhs) {
+	return rhs == lhs;
+}
+
+template <long long m, bool a>
+bool operator != (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <long long m, bool a>
+bool operator != (const Zn<m, a>& lhs, long long rhs) {
+	return !(lhs == rhs);
+}
+
+template <long long m, bool a>
+bool operator != (long long lhs, const Zn<m, a>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <long long m, bool a>
 Zn<m, a> operator + (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy += rhs;
@@ -125,6 +150,11 @@ template <long long m, bool a>
 Zn<m, a> operator + (const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy += rhs;
+}
+
+template <long long m, bool a>
+Zn<m, a> operator + (long long lhs, const Zn<m, a>& rhs) {
+	return rhs + lhs;
 }
 
 template <long long m, bool a>
@@ -140,6 +170,11 @@ Zn<m, a> operator - (const Zn<m, a>& lhs, long long rhs) {
 }
 
 template <long long m, bool a>
+Zn<m, a> operator - (long long lhs, const Zn<m, a>& rhs) {
+	return Zn<m, a>::valueOf(lhs) - rhs;
+}
+
+template <long long m, bool a>
 Zn<m, a> operator * (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy *= rhs;
@@ -152,6 +187,11 @@ Zn<m, a> operator * (const Zn<m, a>& lhs, long long rhs) {
 }
 
 template <long long m, bool a>
+Zn<m, a> operator * (long long lhs, const Zn<m, a>& rhs) {
+	return rhs * lhs;
+}
+
+template <long long m, bool a>
 Zn<m, a> operator / (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy /= rhs;
@@ -161,6 +201,11 @@ template <long long m, bool a>
 Zn<m, a> operator / (const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy /= rhs;
+}
+
+template <long long m, bool a>
+Zn<m, a> operator / (long long lhs, const Zn<m, a>& rhs) {
+	return Zn<m, a>::valueOf(lhs) / rhs;
 }
 
 template <long long m, bool a>
