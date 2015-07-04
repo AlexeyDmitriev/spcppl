@@ -14,5 +14,5 @@ constexpr bool hasBegin(...) {
 }
 
 template <typename T>
-struct isContainer : std::integral_constant<bool, hasBegin<T>(0)> {
+struct IsContainer : std::integral_constant<bool, hasBegin<T>(0)> {
 };

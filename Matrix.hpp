@@ -2,7 +2,7 @@
 
 #include <vector>
 #include "assert.hpp"
-#include "matrix_multiplication.hpp"
+#include "matrixMultiplication.hpp"
 #include "identity.hpp"
 
 template <typename T, typename Container>
@@ -99,7 +99,7 @@ template <typename T>
 Matrix<T> operator * (const Matrix<T>& lhs, const Matrix<T>& rhs) {
 	SPCPPL_ASSERT(lhs.columns() == rhs.rows());
 	Matrix<T> res{lhs.rows(), rhs.columns()};
-	impl__matrix_multiplication(lhs, rhs, res);
+	impl__matrixMultiplication(lhs, rhs, res);
 	return res;
 }
 

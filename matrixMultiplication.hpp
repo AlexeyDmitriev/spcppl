@@ -3,7 +3,7 @@
 #include <cstddef>
 
 template <typename T, typename U, typename V>
-void impl__matrix_multiplication(const T& lhs, const U& rhs, V& res) {
+void impl__matrixMultiplication(const T& lhs, const U& rhs, V& res) {
 	const auto& a = lhs;
 	auto b = rhs.transposed();
 	for(std::size_t i = 0; i < lhs.rows(); ++i) {

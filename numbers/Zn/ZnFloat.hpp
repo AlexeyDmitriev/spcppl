@@ -2,10 +2,10 @@
 
 #include <iostream>
 #include <assert.h>
-#include "../extended_gcd.hpp"
 #include "../../assert.hpp"
 #include "../../identity.hpp"
 #include "Normalizator.hpp"
+#include "../extendedGcd.hpp"
 
 template <bool autoNormalize = true>
 class ZnFloat {
@@ -96,7 +96,7 @@ public:
 		normalize();
 
 		long long x, y;
-		long long gcd = extended_gcd(value, mod, x, y);
+		long long gcd = extendedGcd(value, mod, x, y);
 		(void)gcd;
 		SPCPPL_ASSERT(gcd == 1);
 

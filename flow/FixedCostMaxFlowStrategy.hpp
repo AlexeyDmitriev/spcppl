@@ -1,7 +1,7 @@
 #pragma once
 
 #include <limits>
-#include "mincost.hpp"
+#include "MinCostFlow.hpp"
 
 template <typename CostSize>
 struct FixedCostMaxFlowStrategy {
