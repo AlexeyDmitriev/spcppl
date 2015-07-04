@@ -177,9 +177,10 @@ std::istream& operator >>(std::istream& stream, Zn<m, a>& zn) {
 }
 
 template <long long m, bool a>
-struct impl__SampleIdentityHelper<Zn<m, a>> {
-	static Zn<m, a> identity(const Zn<m, a>& sample) {
+struct impl__IdentityHelper<Zn<m, a>> {
+	static Zn<m, a> identity() {
 		return Zn<m, a>::valueOf(1);
 	}
 };
+
 
