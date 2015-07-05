@@ -5,27 +5,6 @@
 #include "matrixMultiplication.hpp"
 #include "identity.hpp"
 
-template <typename T, typename Container>
-class Row {
-public:
-	explicit Row(Container& value): value(value) {
-
-	}
-
-	T& operator [] (std::size_t index) {
-		SPCPPL_ASSERT(index < value.size());
-		return value[index];
-	}
-
-	const T& operator [] (std::size_t index) const {
-		SPCPPL_ASSERT(index < value.size());
-		return value[index];
-	}
-
-private:
-	Container& value;
-};
-
 template <typename T>
 class Matrix {
 public:
@@ -38,17 +17,20 @@ public:
 	}
 
 	std::size_t columns() const {
+		if(rows() == 0) {
+			return 0;
+		}
 		return value[0].size();
 	}
 
-	Row<T, std::vector<T>> operator [] (std::size_t index) {
+	std::vector<T>& operator [] (std::size_t index) {
 		SPCPPL_ASSERT(index < value.size());
-		return Row<T, std::vector<T>>(value[index]);
+		return value[index];
 	}
 
-	Row<const T, const std::vector<T>> operator[] (std::size_t index) const {
+	const std::vector<T>& operator[] (std::size_t index) const {
 		SPCPPL_ASSERT(index < value.size());
-		return Row<const T, const std::vector<T>>(value[index]);
+		return value[index];
 	}
 
 	Matrix& operator *= (const Matrix& rhs) {
