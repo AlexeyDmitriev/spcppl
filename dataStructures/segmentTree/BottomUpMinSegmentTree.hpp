@@ -36,12 +36,6 @@ template <typename T>
 class BottomUpMinSegmentTree :
 		public BottomUpSegmentTree<T, Min<T>> {
 public:
-	BottomUpMinSegmentTree(
-			std::size_t n,
-			const T& infinity = PositiveInfinity<T>()
-	) : BottomUpSegmentTree<T, Min<T>>(n, infinity) {
-	}
-
 	template <typename R>
 	BottomUpMinSegmentTree(
 			const R& range,
@@ -50,8 +44,8 @@ public:
 	}
 
 	void updateMinimum(std::size_t index, const T& value) {
-		return update(index, [&value](T& element) {
-		    element = merge(element, value);
+		return this->update(index, [&value, this](T& element) {
+			element = this->merge(element, value);
 		});
 	}
 

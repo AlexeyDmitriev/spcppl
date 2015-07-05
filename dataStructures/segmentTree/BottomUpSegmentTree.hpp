@@ -1,44 +1,35 @@
 #pragma once
 
-#include <vector>
-#include <iterator>
 #include "../../assert.hpp"
-#include "../../ranges/fors.hpp"
-#include "../../typeTraits/IsContainer.hpp"
+#include "SegementTreeBase.hpp"
 
 template <typename T, typename Merge>
-class BottomUpSegmentTree {
+class BottomUpSegmentTree: protected SegmentTreeBase<T, Merge> {
 public:
-	BottomUpSegmentTree(std::size_t n, const T& defaultValue = T(), const Merge& merge = Merge()) :
-			n(n),
-			defaultValue(defaultValue),
-			shift(calculateShift(n)),
-			tree(shift << 1, defaultValue),
-			merge(merge) {
 
-	}
-
-	template <typename R, typename Enable = typename std::enable_if<IsContainer<R>::value>::type>
+	template <typename R>
 	BottomUpSegmentTree(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()) :
-			BottomUpSegmentTree(std::distance(std::begin(range), std::end(range)), defaultValue, merge) {
-		std::copy(std::begin(range), std::end(range), tree.begin() + shift);
-		for (std::size_t index: downrange(shift, static_cast<std::size_t>(1))) {
-			recalculate(index);
-		}
+			SegmentTreeBase<T, Merge>(range, defaultValue, merge) {
+
 	}
 
+	const T& getElement(std::size_t index) {
+		SPCPPL_ASSERT(index < n);
+		return values[index + shift];
+	}
 
 	T getResult(std::size_t l, std::size_t r) const {
-		SPCPPL_ASSERT(0 <= l && l <= r && r <= n);
+		SPCPPL_ASSERT(l <= r && r <= n);
 		return internalGetResult(l + shift, r + shift);
 	}
 
 	template <typename Updater>
 	void update(std::size_t index, const Updater& updater) {
+		SPCPPL_ASSERT(index < n);
 		index += shift;
-		updater(tree[index]);
+		updater(values[index]);
 		for (std::size_t parent = index / 2; parent > 0; parent /= 2) {
-			recalculate(parent);
+			this->recalculate(parent);
 		}
 	}
 
@@ -48,36 +39,25 @@ public:
 		});
 	}
 
+protected:
+	typedef SegmentTreeBase<T, Merge> Base;
+	using Base::n;
+	using Base::defaultValue;
+	using Base::shift;
+	using Base::values;
+	using Base::merge;
+
 private:
 	T internalGetResult(std::size_t l, std::size_t r) const {
 		if (l == r) {
 			return defaultValue;
 		}
 		if (l & 1) {
-			return merge(tree[l], internalGetResult(l + 1, r));
+			return merge(values[l], internalGetResult(l + 1, r));
 		}
 		if (r & 1) {
-			return merge(internalGetResult(l, r - 1), tree[r - 1]);
+			return merge(internalGetResult(l, r - 1), values[r - 1]);
 		}
 		return internalGetResult(l / 2, r / 2);
 	}
-
-	static std::size_t calculateShift(std::size_t n) {
-		std::size_t result = 1;
-		while (result < n) {
-			result <<= 1;
-		}
-		return result;
-	}
-
-	void recalculate(std::size_t index) {
-		tree[index] = merge(tree[2 * index], tree[2 * index + 1]);
-	}
-
-	std::size_t n;
-	T defaultValue;
-	std::size_t shift;
-	std::vector <T> tree;
-protected:
-	Merge merge;
 };

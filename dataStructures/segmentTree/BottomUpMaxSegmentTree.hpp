@@ -36,12 +36,6 @@ template <typename T>
 class BottomUpMaxSegmentTree :
 		public BottomUpSegmentTree<T, Max<T>> {
 public:
-	BottomUpMaxSegmentTree(
-			std::size_t n,
-			const T& infinity = NegativeInfinity<T>()
-	) : BottomUpSegmentTree<T, Max<T>>(n, infinity) {
-	}
-
 	template <typename R>
 	BottomUpMaxSegmentTree(
 			const R& range,
@@ -50,8 +44,8 @@ public:
 	}
 
 	void updateMaximum(std::size_t index, const T& value) {
-		return update(index, [&value](T& element) {
-		    element = merge(element, value);
+		return this->update(index, [&value, this](T& element) {
+		    element = this->merge(element, value);
 		});
 	}
 
