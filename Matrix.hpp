@@ -72,7 +72,14 @@ public:
 		return res;
 	}
 
+	static Matrix row(const std::vector<T>& row) {
+		return Matrix(row);
+	}
+
 private:
+	Matrix(const std::vector<T>& row): value(1, row) {
+
+	}
 	std::vector<std::vector<T>> value;
 };
 
