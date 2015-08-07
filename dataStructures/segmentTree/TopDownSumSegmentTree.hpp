@@ -18,7 +18,7 @@ public:
 	TopDownSumSegmentTree(
 			const R& range,
 			const T& zero = T()
-	) : TopDownSegmentTree<T, std::plus<T>>(range, zero) {
+	) : TopDownSegmentTree<T, std::plus<T>, T, SumUpdateApplier<T>, std::plus<T>>(range, zero) {
 	}
 
 };
