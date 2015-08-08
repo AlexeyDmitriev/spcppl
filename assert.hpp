@@ -1,6 +1,7 @@
 #pragma once
 #include <string>
 #include <stdexcept>
+#ifndef SPCPPL_ASSERT
 #ifdef SPCPPL_DEBUG
 	#define SPCPPL_ASSERT(condition) \
 	if(!(condition)) { \
@@ -9,4 +10,4 @@
 #else
 	#define SPCPPL_ASSERT(condition)
 #endif
-
+#endif

@@ -1,5 +1,5 @@
 #pragma once
-
+#include <iostream>
 #include <cstdlib>
 
 #ifndef SPCPPL_IGNORE_ASSERTS
