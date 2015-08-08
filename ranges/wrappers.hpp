@@ -39,11 +39,6 @@ auto upper_bound(const R &range, const T &value, Comp comp) -> decltype(range.be
 }
 
 template <typename R>
-auto unique(R& range) -> decltype(range.begin()) {
-	return std::unique(range.begin(), range.end());
-}
-
-template <typename R>
 auto min_element(const R& range) -> decltype(range.begin()) {
 	return std::min_element(range.begin(), range.end());
 }
