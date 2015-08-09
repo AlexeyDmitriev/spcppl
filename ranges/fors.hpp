@@ -116,6 +116,18 @@ IntegerRange<T> range(T from, T to) {
 }
 
 template <typename T>
+IntegerRange<T> inclusiveRange(T to) {
+	SPCPPL_ASSERT(to >= 0);
+	return IntegerRange<T>(0, to + 1);
+}
+
+template <typename T>
+IntegerRange<T> inclusiveRange(T from, T to) {
+	SPCPPL_ASSERT(from <= to);
+	return IntegerRange<T>(from, to + 1);
+}
+
+template <typename T>
 ReversedIntegerRange<T> downrange(T from) {
 	SPCPPL_ASSERT(from >= 0);
 	return ReversedIntegerRange<T>(from, 0);
@@ -125,4 +137,16 @@ template <typename T>
 ReversedIntegerRange<T> downrange(T from, T to) {
 	SPCPPL_ASSERT(from >= to);
 	return ReversedIntegerRange<T>(from, to);
+}
+
+template <typename T>
+ReversedIntegerRange<T> inclusiveDownrange(T from) {
+	SPCPPL_ASSERT(from >= 0);
+	return ReversedIntegerRange<T>(from + 1, 0);
+}
+
+template <typename T>
+ReversedIntegerRange<T> inclusiveDownrange(T from, T to) {
+	SPCPPL_ASSERT(from >= to);
+	return ReversedIntegerRange<T>(from + 1, to);
 }
