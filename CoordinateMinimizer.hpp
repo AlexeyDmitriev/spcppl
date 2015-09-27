@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include "assert.hpp"
 #include "ranges/wrappers.hpp"
@@ -5,7 +7,7 @@
 template <typename T>
 class CoordinateMinimizer {
 public:
-	CoordinateMinimizer(){
+	CoordinateMinimizer() {
 		#ifdef SPCPPL_DEBUG
 			addingFinished = false;
 		#endif

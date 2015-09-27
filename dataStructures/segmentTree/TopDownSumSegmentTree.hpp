@@ -5,7 +5,7 @@
 
 template <typename T>
 struct SumUpdateApplier {
-	T operator() (const T& value, const T& update, std::size_t l, std::size_t r) const {
+	T operator()(const T& value, const T& update, std::size_t l, std::size_t r) const {
 		return value + update * (r - l);
 	}
 };

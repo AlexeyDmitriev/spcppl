@@ -15,7 +15,7 @@ public:
 	/**
 	* Not to be used
 	*/
-	Zn(): value(0) {
+	Zn() : value(0) {
 	}
 
 	/**
@@ -26,33 +26,33 @@ public:
 		return Zn(value);
 	}
 
-	Zn& operator += (const Zn& rhs) {
+	Zn& operator+=(const Zn& rhs) {
 		value += rhs.value;
 		impl__Normalizator<autoNormalize>::softDown(value, mod);
 		return *this;
 	}
 
-	Zn& operator += (long long rhs) {
+	Zn& operator+=(long long rhs) {
 		return *this += Zn::valueOf(rhs);
 	}
 
-	Zn& operator -= (const Zn& rhs) {
+	Zn& operator-=(const Zn& rhs) {
 		value -= rhs.value;
 		impl__Normalizator<autoNormalize>::softUp(value, mod);
 		return *this;
 	}
 
-	Zn& operator -= (long long rhs) {
+	Zn& operator-=(long long rhs) {
 		return *this -= Zn::valueOf(rhs);
 	}
 
-	Zn& operator *= (const Zn& rhs) {
+	Zn& operator*=(const Zn& rhs) {
 		value *= rhs.value;
 		impl__Normalizator<autoNormalize>::hardDown(value, mod);
 		return *this;
 	}
 
-	Zn& operator *= (long long rhs) {
+	Zn& operator*=(long long rhs) {
 		return *this *= Zn::valueOf(rhs);
 	}
 
@@ -64,21 +64,21 @@ public:
 		impl__Normalizator<!autoNormalize>::hard(value, mod);
 	}
 
-	Zn operator - () const {
+	Zn operator-() const {
 		Zn result(mod - value);
 		impl__Normalizator<autoNormalize>::softDown(result.value, mod);
 		return result;
 	}
 
-	Zn& operator /= (const Zn& rhs) {
+	Zn& operator/=(const Zn& rhs) {
 		return *this *= rhs.inversed();
 	}
 
-	Zn& operator /= (long long rhs) {
+	Zn& operator/=(long long rhs) {
 		return *this /= Zn::valueOf(rhs);
 	}
 
-	bool operator == (const Zn& rhs) const {
+	bool operator==(const Zn& rhs) const {
 		normalize();
 		rhs.normalize();
 		return value == rhs.value;
@@ -90,132 +90,135 @@ public:
 
 		long long x, y;
 		long long gcd = extendedGcd(value, mod, x, y);
-		(void)gcd;
+		(void) gcd;
 		SPCPPL_ASSERT(gcd == 1);
 
 		impl__Normalizator<autoNormalize>::softUp(x, mod);
 		return Zn(x);
 	}
+
 	template <long long m, bool aF>
-	friend std::ostream& operator << (std::ostream&, const Zn<m, aF>& zn);
+	friend std::ostream& operator<<(std::ostream&, const Zn<m, aF>& zn);
+
 	template <long long m, bool aF>
-	friend std::istream& operator >> (std::istream&, Zn<m, aF>& zn);
+	friend std::istream& operator>>(std::istream&, Zn<m, aF>& zn);
 
 	long long longValue() const {
 		return value;
 	}
+
 private:
 
 	/**
 	* No normalization performed
 	*/
-	explicit Zn(long long value): value(value) {
+	explicit Zn(long long value) : value(value) {
 	}
 
 	long long value;
 };
 
 template <long long m, bool a>
-bool operator == (const Zn<m, a>& lhs, long long rhs) {
+bool operator==(const Zn<m, a>& lhs, long long rhs) {
 	return lhs == Zn<m, a>::valueOf(rhs);
 }
 
 template <long long m, bool a>
-bool operator == (long long lhs, const Zn<m, a>& rhs) {
+bool operator==(long long lhs, const Zn<m, a>& rhs) {
 	return rhs == lhs;
 }
 
 template <long long m, bool a>
-bool operator != (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+bool operator!=(const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	return !(lhs == rhs);
 }
 
 template <long long m, bool a>
-bool operator != (const Zn<m, a>& lhs, long long rhs) {
+bool operator!=(const Zn<m, a>& lhs, long long rhs) {
 	return !(lhs == rhs);
 }
 
 template <long long m, bool a>
-bool operator != (long long lhs, const Zn<m, a>& rhs) {
+bool operator!=(long long lhs, const Zn<m, a>& rhs) {
 	return !(lhs == rhs);
 }
 
 template <long long m, bool a>
-Zn<m, a> operator + (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator+(const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy += rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator + (const Zn<m, a>& lhs, long long rhs) {
+Zn<m, a> operator+(const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy += rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator + (long long lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator+(long long lhs, const Zn<m, a>& rhs) {
 	return rhs + lhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator - (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator-(const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy -= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator - (const Zn<m, a>& lhs, long long rhs) {
+Zn<m, a> operator-(const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy -= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator - (long long lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator-(long long lhs, const Zn<m, a>& rhs) {
 	return Zn<m, a>::valueOf(lhs) - rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator * (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator*(const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy *= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator * (const Zn<m, a>& lhs, long long rhs) {
+Zn<m, a> operator*(const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy *= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator * (long long lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator*(long long lhs, const Zn<m, a>& rhs) {
 	return rhs * lhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator / (const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator/(const Zn<m, a>& lhs, const Zn<m, a>& rhs) {
 	Zn<m, a> copy = lhs;
 	return copy /= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator / (const Zn<m, a>& lhs, long long rhs) {
+Zn<m, a> operator/(const Zn<m, a>& lhs, long long rhs) {
 	Zn<m, a> copy = lhs;
 	return copy /= rhs;
 }
 
 template <long long m, bool a>
-Zn<m, a> operator / (long long lhs, const Zn<m, a>& rhs) {
+Zn<m, a> operator/(long long lhs, const Zn<m, a>& rhs) {
 	return Zn<m, a>::valueOf(lhs) / rhs;
 }
 
 template <long long m, bool a>
-std::ostream& operator <<(std::ostream& stream, const Zn<m, a>& zn) {
+std::ostream& operator<<(std::ostream& stream, const Zn<m, a>& zn) {
 	zn.normalize();
 	return stream << zn.value;
 }
 
 template <long long m, bool a>
-std::istream& operator >>(std::istream& stream, Zn<m, a>& zn) {
+std::istream& operator>>(std::istream& stream, Zn<m, a>& zn) {
 	stream >> zn.value;
 	impl__Normalizator<a>::hard(zn.value, m);
 	return stream;

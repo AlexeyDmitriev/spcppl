@@ -12,7 +12,7 @@ class BitSet {
 
 	}
 
-	BitSet operator|= (const BitSet& rhs) {
+	BitSet operator|=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] |= rhs.v[i];
@@ -20,7 +20,7 @@ class BitSet {
 		return *this;
 	}
 
-	BitSet operator&= (const BitSet& rhs) {
+	BitSet operator&=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] &= rhs.v[i];
@@ -28,7 +28,7 @@ class BitSet {
 		return *this;
 	}
 
-	BitSet operator^= (const BitSet& rhs) {
+	BitSet operator^=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] ^= rhs.v[i];
@@ -36,13 +36,13 @@ class BitSet {
 		return *this;
 	}
 
-	BitSet operator~ () const& {
+	BitSet operator~() const& {
 		auto copy = *this;
 		copy.invert();
 		return copy;
 	}
 
-	BitSet operator~ () && {
+	BitSet operator~()&& {
 		invert();
 		return *this;
 	}
@@ -84,29 +84,29 @@ private:
 	std::vector<uint32_t> v;
 	std::size_t size;
 
-	friend bool operator== (const BitSet& a, const BitSet& b);
+	friend bool operator==(const BitSet& a, const BitSet& b);
 };
 
-BitSet operator| (const BitSet& a, const BitSet& b) {
+BitSet operator|(const BitSet& a, const BitSet& b) {
 	BitSet copy = a;
 	return copy |= b;
 }
 
-BitSet operator& (const BitSet& a, const BitSet& b) {
+BitSet operator&(const BitSet& a, const BitSet& b) {
 	BitSet copy = a;
 	return copy &= b;
 }
 
-BitSet operator^ (const BitSet& a, const BitSet& b) {
+BitSet operator^(const BitSet& a, const BitSet& b) {
 	BitSet copy = a;
 	return copy ^= b;
 }
 
-bool operator== (const BitSet& a, const BitSet& b) {
+bool operator==(const BitSet& a, const BitSet& b) {
 	SPCPPL_ASSERT(a.size == b.size);
 	return a.v == b.v;
 }
 
-bool operator!= (const BitSet& a, const BitSet& b) {
+bool operator!=(const BitSet& a, const BitSet& b) {
 	return !(a == b);
 }

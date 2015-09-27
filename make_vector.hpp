@@ -2,22 +2,19 @@
 #include <type_traits>
 
 template <typename T, size_t N>
-struct MakeVector
-{
+struct MakeVector {
 	template <
 			typename... Args,
-			typename R = std::vector<decltype(MakeVector<T, N-1>::make_vector(std::declval<Args>()...))>
+			typename R = std::vector<decltype(MakeVector<T, N - 1>::make_vector(std::declval<Args>()...))>
 	>
-	static R make_vector(std::size_t first, Args... sizes)
-	{
-		auto inner = MakeVector<T, N-1>::make_vector(sizes...);
+	static R make_vector(std::size_t first, Args... sizes) {
+		auto inner = MakeVector<T, N - 1>::make_vector(sizes...);
 		return R(first, inner);
 	}
 };
 
 template <typename T>
-struct MakeVector<T, 1>
-{
+struct MakeVector<T, 1> {
 	/*
 	 * This template is to fool CLion.
 	 * Without it CLion thinks that make_vector always returns std::vector<T> and marks code like
@@ -34,8 +31,6 @@ struct MakeVector<T, 1>
 };
 
 template <typename T, typename... Args>
-auto make_vector(Args... args)
--> decltype(MakeVector<T, sizeof...(Args) - 1>::make_vector(args...))
-{
+auto make_vector(Args... args) -> decltype(MakeVector<T, sizeof...(Args) - 1>::make_vector(args...)) {
 	return MakeVector<T, sizeof...(Args) - 1>::make_vector(args...);
 }

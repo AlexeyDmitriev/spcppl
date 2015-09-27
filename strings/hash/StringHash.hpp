@@ -6,7 +6,7 @@
 template <typename Hasher>
 class StringHash {
 public:
-	StringHash(const std::string& s): hasher(s) {
+	StringHash(const std::string& s) : hasher(s) {
 
 	}
 
@@ -25,6 +25,7 @@ public:
 	unsigned long long hash() {
 		return hasher.hash(0, hasher.size());
 	}
+
 private:
 	Hasher hasher;
 };

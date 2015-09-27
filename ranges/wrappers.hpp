@@ -1,40 +1,41 @@
 #pragma once
 
 #include <algorithm>
+#include <vector>
 #include "fors.hpp"
 
-template<typename R>
-void sort(R &range) {
+template <typename R>
+void sort(R& range) {
 	std::sort(range.begin(), range.end());
 }
 
-template<typename R, typename Comp>
-void sort(R &range, Comp comp) {
+template <typename R, typename Comp>
+void sort(R& range, Comp comp) {
 	std::sort(range.begin(), range.end(), comp);
 }
 
-template<typename R>
-void reverse(R &range) {
+template <typename R>
+void reverse(R& range) {
 	std::reverse(range.begin(), range.end());
 }
 
-template<typename R, typename T>
-auto lower_bound(const R &range, const T &value) -> decltype(range.begin()) {
+template <typename R, typename T>
+auto lower_bound(const R& range, const T& value) -> decltype(range.begin()) {
 	return std::lower_bound(range.begin(), range.end(), value);
 }
 
-template<typename R, typename T, typename Comp>
-auto lower_bound(const R &range, const T &value, Comp comp) -> decltype(range.begin()) {
+template <typename R, typename T, typename Comp>
+auto lower_bound(const R& range, const T& value, Comp comp) -> decltype(range.begin()) {
 	return std::lower_bound(range.begin(), range.end(), value, comp);
 }
 
-template<typename R, typename T>
-auto upper_bound(const R &range, const T &value) -> decltype(range.begin()) {
+template <typename R, typename T>
+auto upper_bound(const R& range, const T& value) -> decltype(range.begin()) {
 	return std::upper_bound(range.begin(), range.end(), value);
 }
 
-template<typename R, typename T, typename Comp>
-auto upper_bound(const R &range, const T &value, Comp comp) -> decltype(range.begin()) {
+template <typename R, typename T, typename Comp>
+auto upper_bound(const R& range, const T& value, Comp comp) -> decltype(range.begin()) {
 	return std::upper_bound(range.begin(), range.end(), value, comp);
 }
 

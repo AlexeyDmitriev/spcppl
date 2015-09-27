@@ -32,16 +32,16 @@ template <typename T>
 T divideAwayFrowZero(T a, T b) {
 	SPCPPL_ASSERT(b != 0);
 	bool changeSign = false;
-	if(a < 0) {
+	if (a < 0) {
 		changeSign = !changeSign;
 		a = -a;
 	}
-	if(b < 0) {
+	if (b < 0) {
 		changeSign = !changeSign;
 		b = -b;
 	}
 	int res = (a + b - 1) / b;
-	if(changeSign) {
+	if (changeSign) {
 		res *= -1;
 	}
 	return res;

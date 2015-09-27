@@ -9,7 +9,7 @@ std::vector<T> unsortedDivisors(const T& n) {
 	for (int i = 1; i * i <= n; ++i) {
 		if (n % i == 0) {
 			result.push_back(i);
-			if(i * i != n) {
+			if (i * i != n) {
 				result.push_back(n / i);
 			}
 		}

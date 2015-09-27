@@ -35,7 +35,7 @@ public:
 
 	void set(std::size_t index, const T& value) {
 		return update(index, [&value](T& element) {
-				element = value;
+			element = value;
 		});
 	}
 

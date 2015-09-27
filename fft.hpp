@@ -5,25 +5,25 @@
 #include <type_traits>
 
 struct Double {
-	Double() : value(0.0) { }
+	Double() : value(0.0) {}
 
-	Double(double x) : value(x) { }
+	Double(double x) : value(x) {}
 
 	operator double() {
 		return value;
 	}
 
-	Double& operator +=(const Double& x) {
+	Double& operator+=(const Double& x) {
 		value += x.value;
 		return *this;
 	}
 
-	Double& operator -=(const Double& x) {
+	Double& operator-=(const Double& x) {
 		value -= x.value;
 		return *this;
 	}
 
-	Double& operator /=(const Double& x) {
+	Double& operator/=(const Double& x) {
 		value /= x.value;
 		return *this;
 	}

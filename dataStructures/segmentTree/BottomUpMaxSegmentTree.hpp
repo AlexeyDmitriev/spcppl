@@ -7,7 +7,7 @@
 
 template <typename T>
 struct Max {
-	T operator ()(const T& l, const T& r) const {
+	T operator()(const T& l, const T& r) const {
 		return std::max(l, r);
 	}
 };
@@ -15,19 +15,19 @@ struct Max {
 //FIXME: remove {} when CPP-1825 fixed.
 template <typename T, typename Enable = std::true_type>
 struct NegativeInfinity {
-	T operator ()() const;
+	T operator()() const;
 };
 
 template <typename T>
 struct NegativeInfinity<T, typename std::is_integral<T>::type> {
-	T operator ()() const {
+	T operator()() const {
 		return std::numeric_limits<T>::max();
 	}
 };
 
 template <typename T>
 struct NegativeInfinity<T, typename std::is_floating_point<T>::type> {
-	T operator ()() const {
+	T operator()() const {
 		return std::numeric_limits<T>::infinity();
 	}
 };
@@ -45,7 +45,7 @@ public:
 
 	void updateMaximum(std::size_t index, const T& value) {
 		return this->update(index, [&value, this](T& element) {
-		    element = this->merge(element, value);
+			element = this->merge(element, value);
 		});
 	}
 

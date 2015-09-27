@@ -21,7 +21,7 @@ public:
 			defaultUpdate(defaultUpdate),
 			updates(shift << 1, defaultUpdate),
 			applyUpdate(applyUpdate),
-			mergeUpdates(mergeUpdates)  {
+			mergeUpdates(mergeUpdates) {
 
 	}
 
@@ -84,6 +84,7 @@ private:
 
 		updates[v] = defaultUpdate;
 	}
+
 	Update defaultUpdate;
 	std::vector<Update> updates;
 	ApplyUpdate applyUpdate;

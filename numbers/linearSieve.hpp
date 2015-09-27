@@ -12,8 +12,9 @@ std::vector<int> linearSieve(int maxN) {
 			primes.push_back(i);
 		}
 		for (int prime: primes) {
-			if(i * prime > maxN)
+			if (i * prime > maxN) {
 				break;
+			}
 			leastPrimes[i * prime] = prime;
 		}
 	}

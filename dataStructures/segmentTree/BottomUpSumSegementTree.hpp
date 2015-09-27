@@ -4,8 +4,7 @@
 #include "BottomUpSegmentTree.hpp"
 
 template <typename T>
-class BottomUpSumSegmentTree :
-		public BottomUpSegmentTree<T, std::plus<T>> {
+class BottomUpSumSegmentTree : public BottomUpSegmentTree<T, std::plus<T>> {
 public:
 	template <typename R>
 	BottomUpSumSegmentTree(

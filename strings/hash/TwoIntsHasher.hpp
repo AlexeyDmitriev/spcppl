@@ -31,8 +31,9 @@ private:
 
 	unsigned long long oneHash(std::size_t from, std::size_t to, std::size_t index) {
 		auto result = hashes[index][to] - hashes[index][from] * powers[index][to - from] % modules[index];
-		if (result >= modules[index])
+		if (result >= modules[index]) {
 			result += modules[index];
+		}
 		return result;
 	}
 
@@ -45,6 +46,7 @@ private:
 			}
 		}
 	}
+
 	static std::array<std::vector<unsigned long long>, 2> powers;
 	std::array<std::vector<unsigned long long>, 2> hashes;
 

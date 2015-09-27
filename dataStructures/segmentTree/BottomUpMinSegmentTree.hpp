@@ -7,7 +7,7 @@
 
 template <typename T>
 struct Min {
-	T operator ()(const T& l, const T& r) const {
+	T operator()(const T& l, const T& r) const {
 		return std::min(l, r);
 	}
 };
@@ -15,19 +15,19 @@ struct Min {
 //FIXME: remove {} when CPP-1825 fixed.
 template <typename T, typename Enable = std::true_type>
 struct PositiveInfinity {
-	T operator ()() const;
+	T operator()() const;
 };
 
 template <typename T>
 struct PositiveInfinity<T, typename std::is_integral<T>::type> {
-	T operator ()() const {
+	T operator()() const {
 		return std::numeric_limits<T>::max();
 	}
 };
 
 template <typename T>
 struct PositiveInfinity<T, typename std::is_floating_point<T>::type> {
-	T operator ()() const {
+	T operator()() const {
 		return std::numeric_limits<T>::infinity();
 	}
 };

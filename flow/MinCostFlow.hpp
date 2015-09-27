@@ -23,7 +23,7 @@ class MinCostFlow {
 		CostSize cost;
 	};
 public:
-	MinCostFlow(std::size_t n): g(n) {
+	MinCostFlow(std::size_t n) : g(n) {
 
 	}
 
@@ -63,13 +63,14 @@ public:
 			d[s] = 0;
 			p[s] = s;
 			bool changed = true;
-			while(changed) {
+			while (changed) {
 				changed = false;
-				for(size_t i = 0; i < edges.size(); ++i) {
+				for (size_t i = 0; i < edges.size(); ++i) {
 					Edge& e = edges[i];
-					if(e.cap == e.flow || p[e.from] == -1)
+					if (e.cap == e.flow || p[e.from] == -1) {
 						continue;
-					if(p[e.to] == -1 || d[e.to] > d[e.from] + e.cost) {
+					}
+					if (p[e.to] == -1 || d[e.to] > d[e.from] + e.cost) {
 						d[e.to] = d[e.from] + e.cost;
 						p[e.to] = i;
 						changed = true;
@@ -78,7 +79,7 @@ public:
 			}
 			potential = std::move(d);
 		}
-		while(true) {
+		while (true) {
 			std::vector<CostSize> d(n);
 			std::vector<size_t> p(n, NO_PARENT);
 
@@ -87,20 +88,22 @@ public:
 
 			q.push(std::make_pair(0, s));
 
-			while(!q.empty()) {
+			while (!q.empty()) {
 				size_t v = q.top().second;
 				CostSize oldD = q.top().first;
 				q.pop();
-				if(oldD != d[v])
+				if (oldD != d[v]) {
 					continue;
-				for(std::size_t id: g[v]) {
+				}
+				for (std::size_t id: g[v]) {
 					Edge& e = edges[id];
-					if (e.to == s)
+					if (e.to == s) {
 						continue;
-					if(e.cap > e.flow) {
+					}
+					if (e.cap > e.flow) {
 						SPCPPL_ASSERT(e.cost + potential[e.from] - potential[e.to] >= 0);
 						CostSize newd = d[v] + e.cost + potential[e.from] - potential[e.to];
-						if(p[e.to] == NO_PARENT || d[e.to] > newd) {
+						if (p[e.to] == NO_PARENT || d[e.to] > newd) {
 							d[e.to] = newd;
 							p[e.to] = id;
 							q.push(std::make_pair(d[e.to], e.to));
@@ -109,18 +112,18 @@ public:
 				}
 			}
 
-			if(p[t] == NO_PARENT) {
+			if (p[t] == NO_PARENT) {
 				break;
 			}
 
 			std::size_t cur = t;
 			FlowSize maxAdd = strategy.maximalAdditionFlow(flow, cost, potential[t] + d[t]);
 
-			if(maxAdd == 0) {
+			if (maxAdd == 0) {
 				break;
 			}
 
-			while(cur != s) {
+			while (cur != s) {
 				Edge& e = edges[p[cur]];
 				cur = e.from;
 				maxAdd = std::min(maxAdd, e.cap - e.flow);
@@ -129,7 +132,7 @@ public:
 			flow += maxAdd;
 			cost += (potential[t] + d[t]) * maxAdd;
 			cur = t;
-			while(cur != s) {
+			while (cur != s) {
 				std::size_t id = p[cur];
 				edges[id].flow += maxAdd;
 				edges[id ^ 1].flow -= maxAdd;
@@ -146,6 +149,7 @@ public:
 		return {flow, cost};
 
 	}
+
 private:
 	std::vector<std::vector<std::size_t>> g;
 	std::vector<Edge> edges;

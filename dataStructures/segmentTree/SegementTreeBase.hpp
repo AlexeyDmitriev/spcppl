@@ -40,6 +40,6 @@ protected:
 	std::size_t n;
 	T defaultValue;
 	std::size_t shift;
-	std::vector <T> values;
+	std::vector<T> values;
 	Merge merge;
 };

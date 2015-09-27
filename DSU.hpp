@@ -6,7 +6,7 @@
 
 class DSU {
 public:
-	DSU(std::size_t n): dsu(n) {
+	DSU(std::size_t n) : dsu(n) {
 		for (std::size_t i = 0; i < n; ++i) {
 			dsu[i] = i;
 		}
@@ -27,6 +27,7 @@ public:
 		v = getSet(v);
 		dsu[v] = u;
 	}
+
 private:
 	std::vector<std::size_t> dsu;
 };
