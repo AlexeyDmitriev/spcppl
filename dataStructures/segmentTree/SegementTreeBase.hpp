@@ -7,7 +7,7 @@
 template <typename T, typename Merge>
 class SegmentTreeBase {
 protected:
-	SegmentTreeBase(std::size_t n, const T& defaultValue = T(), const Merge& merge = Merge()) :
+	SegmentTreeBase(std::size_t n, const T& defaultValue = T(), const Merge& merge = Merge()):
 			n(n),
 			defaultValue(defaultValue),
 			shift(calculateShift(n)),

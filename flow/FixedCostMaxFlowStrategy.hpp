@@ -5,7 +5,7 @@
 
 template <typename CostSize>
 struct FixedCostMaxFlowStrategy {
-	FixedCostMaxFlowStrategy(CostSize maxCost) : maxCost(maxCost) {
+	FixedCostMaxFlowStrategy(CostSize maxCost): maxCost(maxCost) {
 
 	}
 

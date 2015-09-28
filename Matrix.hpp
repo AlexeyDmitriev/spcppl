@@ -8,7 +8,7 @@
 template <typename T>
 class Matrix {
 public:
-	Matrix(std::size_t n, std::size_t m, const T& value = T()) : value(n, std::vector<T>(m, value)) {
+	Matrix(std::size_t n, std::size_t m, const T& value = T()): value(n, std::vector<T>(m, value)) {
 
 	}
 
@@ -77,7 +77,7 @@ public:
 	}
 
 private:
-	Matrix(const std::vector<T>& row) : value(1, row) {
+	Matrix(const std::vector<T>& row): value(1, row) {
 
 	}
 

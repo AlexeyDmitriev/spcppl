@@ -14,7 +14,7 @@ bool isPrime(int n) {
 }
 
 struct Bool {
-	/* implicit */ Bool(bool value) : value(value) {
+	/* implicit */ Bool(bool value): value(value) {
 
 	}
 
@@ -49,8 +49,9 @@ std::vector<int> allPrimes(int maxN) {
 	result.reserve(maxN);
 	std::vector<Bool> map = primeMap(maxN);
 	for (int i: range(maxN + 1)) {
-		if(map[i])
+		if (map[i]) {
 			result.push_back(i);
+		}
 	}
 	return result;
 }

@@ -5,7 +5,7 @@
 template <typename T>
 class Range {
 public:
-	Range(T begin, T end) : begin_(std::move(begin)), end_(std::move(end)) {
+	Range(T begin, T end): begin_(std::move(begin)), end_(std::move(end)) {
 
 	}
 

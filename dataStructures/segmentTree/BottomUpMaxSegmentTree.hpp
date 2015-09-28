@@ -33,14 +33,13 @@ struct NegativeInfinity<T, typename std::is_floating_point<T>::type> {
 };
 
 template <typename T>
-class BottomUpMaxSegmentTree :
-		public BottomUpSegmentTree<T, Max<T>> {
+class BottomUpMaxSegmentTree: public BottomUpSegmentTree<T, Max<T>> {
 public:
 	template <typename R>
 	BottomUpMaxSegmentTree(
 			const R& range,
 			const T& infinity = NegativeInfinity<T>()()
-	) : BottomUpSegmentTree<T, Max<T>>(range, infinity) {
+	): BottomUpSegmentTree<T, Max<T>>(range, infinity) {
 	}
 
 	void updateMaximum(std::size_t index, const T& value) {

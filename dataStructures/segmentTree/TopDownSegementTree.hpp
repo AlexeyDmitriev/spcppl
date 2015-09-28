@@ -5,7 +5,7 @@
 #include "SegementTreeBase.hpp"
 
 template <typename T, typename Merge, typename Update, typename ApplyUpdate, typename MergeUpdates>
-class TopDownSegmentTree : protected SegmentTreeBase<T, Merge> {
+class TopDownSegmentTree: protected SegmentTreeBase<T, Merge> {
 	typedef std::size_t size_t;
 public:
 	template <typename R>
@@ -16,7 +16,7 @@ public:
 			const Update& defaultUpdate = Update(),
 			const ApplyUpdate& applyUpdate = ApplyUpdate(),
 			const MergeUpdates& mergeUpdates = MergeUpdates()
-	) :
+	):
 			SegmentTreeBase<T, Merge>(range, defaultValue, merge),
 			defaultUpdate(defaultUpdate),
 			updates(shift << 1, defaultUpdate),

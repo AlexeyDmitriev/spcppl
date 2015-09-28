@@ -14,7 +14,7 @@ public:
 	}
 
 	template <typename R>
-	explicit CoordinateMinimizer(const R& range) : values(range.begin(), range.end()) {
+	explicit CoordinateMinimizer(const R& range): values(range.begin(), range.end()) {
 		finalize();
 	}
 

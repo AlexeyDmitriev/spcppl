@@ -14,10 +14,10 @@ public:
 	/**
 	* Not to be used
 	*/
-	ZnFloat() : mod(0), value(0) {
+	ZnFloat(): mod(0), value(0) {
 	}
 
-	explicit ZnFloat(long long mod) : mod(mod), value(0) {
+	explicit ZnFloat(long long mod): mod(mod), value(0) {
 
 	}
 
@@ -120,7 +120,7 @@ private:
 	/**
 	* No normalization performed
 	*/
-	ZnFloat(long long mod, long long value) : mod(mod), value(value) {
+	ZnFloat(long long mod, long long value): mod(mod), value(value) {
 		SPCPPL_ASSERT(mod > 0);
 	}
 

@@ -8,7 +8,7 @@
 #include "../numbers/bits.hpp"
 
 class BitSet {
-	BitSet(std::size_t size) : size(size), v(getUnderlyingSize(size)) {
+	BitSet(std::size_t size): size(size), v(getUnderlyingSize(size)) {
 
 	}
 

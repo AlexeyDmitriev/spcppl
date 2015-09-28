@@ -15,7 +15,7 @@ public:
 	/**
 	* Not to be used
 	*/
-	Zn() : value(0) {
+	Zn(): value(0) {
 	}
 
 	/**
@@ -112,7 +112,7 @@ private:
 	/**
 	* No normalization performed
 	*/
-	explicit Zn(long long value) : value(value) {
+	explicit Zn(long long value): value(value) {
 	}
 
 	long long value;

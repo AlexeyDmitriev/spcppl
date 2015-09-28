@@ -11,14 +11,14 @@ struct SumUpdateApplier {
 };
 
 template <typename T>
-class TopDownSumSegmentTree :
+class TopDownSumSegmentTree:
 		public TopDownSegmentTree<T, std::plus<T>, T, SumUpdateApplier<T>, std::plus<T>> {
 public:
 	template <typename R>
 	TopDownSumSegmentTree(
 			const R& range,
 			const T& zero = T()
-	) : TopDownSegmentTree<T, std::plus<T>, T, SumUpdateApplier<T>, std::plus<T>>(range, zero) {
+	): TopDownSegmentTree<T, std::plus<T>, T, SumUpdateApplier<T>, std::plus<T>>(range, zero) {
 	}
 
 };

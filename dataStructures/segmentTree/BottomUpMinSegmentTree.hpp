@@ -33,14 +33,13 @@ struct PositiveInfinity<T, typename std::is_floating_point<T>::type> {
 };
 
 template <typename T>
-class BottomUpMinSegmentTree :
-		public BottomUpSegmentTree<T, Min<T>> {
+class BottomUpMinSegmentTree: public BottomUpSegmentTree<T, Min<T>> {
 public:
 	template <typename R>
 	BottomUpMinSegmentTree(
 			const R& range,
 			const T& infinity = PositiveInfinity<T>()()
-	) : BottomUpSegmentTree<T, Min<T>>(range, infinity) {
+	): BottomUpSegmentTree<T, Min<T>>(range, infinity) {
 	}
 
 	void updateMinimum(std::size_t index, const T& value) {

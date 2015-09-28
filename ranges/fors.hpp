@@ -19,9 +19,9 @@
 * It's not really useful anywhere except iterating anyway.
 */
 template <typename T>
-class IntegerIterator : public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, T*, T> {
+class IntegerIterator: public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, T*, T> {
 public:
-	explicit IntegerIterator(int value) : value(value) {
+	explicit IntegerIterator(int value): value(value) {
 
 	}
 
@@ -66,7 +66,7 @@ private:
 template <typename T>
 class IntegerRange {
 public:
-	IntegerRange(T begin, T end) : begin_(begin), end_(end) {
+	IntegerRange(T begin, T end): begin_(begin), end_(end) {
 
 	}
 
@@ -87,7 +87,7 @@ template <typename T>
 class ReversedIntegerRange {
 	typedef std::reverse_iterator<IntegerIterator<T>> IteratorType;
 public:
-	ReversedIntegerRange(T begin, T end) : begin_(begin), end_(end) {
+	ReversedIntegerRange(T begin, T end): begin_(begin), end_(end) {
 
 	}
 

@@ -8,13 +8,13 @@
 template <typename T>
 class Rational {
 public:
-	Rational() : numerator(0), denominator(1) {
+	Rational(): numerator(0), denominator(1) {
 	}
 
-	Rational(T numerator) : numerator(numerator), denominator(1) {
+	Rational(T numerator): numerator(numerator), denominator(1) {
 	}
 
-	Rational(T numerator, T denominator) : numerator(numerator), denominator(denominator) {
+	Rational(T numerator, T denominator): numerator(numerator), denominator(denominator) {
 		SPCPPL_ASSERT(denominator != 0);
 		normalize();
 	}

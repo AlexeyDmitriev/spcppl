@@ -2,7 +2,7 @@
 
 template <typename FlowSize>
 struct FixedFlowMinCostStrategy {
-	FixedFlowMinCostStrategy(FlowSize maxFlow) : maxFlow(maxFlow) {
+	FixedFlowMinCostStrategy(FlowSize maxFlow): maxFlow(maxFlow) {
 
 	}
 

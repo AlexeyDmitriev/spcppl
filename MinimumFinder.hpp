@@ -5,7 +5,7 @@
 template <typename K, typename V, typename Compare = std::less<V>>
 class MinimumFinder {
 public:
-	MinimumFinder(K startKey, V startValue, Compare compare = Compare()) :
+	MinimumFinder(K startKey, V startValue, Compare compare = Compare()):
 			bestKey(startKey), bestValue(startValue), compare(compare) {
 
 	}

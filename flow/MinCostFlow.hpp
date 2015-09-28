@@ -23,7 +23,7 @@ class MinCostFlow {
 		CostSize cost;
 	};
 public:
-	MinCostFlow(std::size_t n) : g(n) {
+	MinCostFlow(std::size_t n): g(n) {
 
 	}
 
