@@ -65,6 +65,38 @@ class BitSet {
 		return size;
 	}
 
+	BitSet& operator<<=(std::size_t rhs) {
+		SPCPPL_ASSERT(rhs <= size);
+		std::size_t bigShifts = rhs >> 5;
+		std::memmove(&v[bigShifts], &v[0], bigShifts);
+		std::memcpy(&v[0], 0, bigShifts);
+		rhs &= 31;
+		uint32_t add = 0;
+		for (uint32_t& element: v) {
+			uint32_t next = (element >> (32 - rhs));
+			element <<= rhs;
+			element ^= add;
+			add = next;
+		}
+		return *this;
+	}
+
+	BitSet& operator>>=(std::size_t rhs) {
+		SPCPPL_ASSERT(rhs <= size);
+		std::size_t bigShifts = rhs >> 5;
+		std::memmove(&v[0], &v[bigShifts], bigShifts);
+		std::memcpy(&v[0] + size - bigShifts, 0, bigShifts);
+		rhs &= 31;
+		int32_t add = 0;
+		for (std::size_t i: downrange(v.size())) {
+			uint32_t next = (v[i] << rhs);
+			v[i] >>= rhs;
+			v[i] ^= add;
+			add = next;
+		}
+		return *this;
+	}
+
 private:
 	BitSet& invert() {
 		for (size_t i: range(v.size())) {
@@ -100,6 +132,16 @@ BitSet operator&(const BitSet& a, const BitSet& b) {
 BitSet operator^(const BitSet& a, const BitSet& b) {
 	BitSet copy = a;
 	return copy ^= b;
+}
+
+BitSet operator<<=(const BitSet& a, std::size_t b) {
+	BitSet copy = a;
+	return copy <<= b;
+}
+
+BitSet operator>>=(const BitSet& a, std::size_t b) {
+	BitSet copy = a;
+	return copy >>= b;
 }
 
 bool operator==(const BitSet& a, const BitSet& b) {
