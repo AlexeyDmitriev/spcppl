@@ -12,8 +12,8 @@ struct impl__Normalizator {
 			value += mod;
 		}
 	}
-
-	static void softDown(int& value, int mod) {
+	template <typename T>
+	static void softDown(T& value, int mod) {
 		if (value >= mod) {
 			value -= mod;
 		}
@@ -49,11 +49,6 @@ public:
 		impl__Normalizator::hard(value, mod);
 		return Zn(value);
 	}
-	static Zn valueOf(long long value) {
-		impl__Normalizator::hard(value, mod);
-		return Zn(static_cast<int>(value));
-	}
-
 	Zn& operator+=(const Zn& rhs) {
 		value += rhs.value;
 		impl__Normalizator::softDown(value, mod);
@@ -238,7 +233,7 @@ template <int m>
 std::istream& operator>>(std::istream& stream, Zn<m>& zn) {
 	long long value;
 	stream >> value;
-	impl__Normalizator::hard(zn.value, m);
+	impl__Normalizator::hard(value, m);
 	zn.value = static_cast<int>(value);
 	return stream;
 }
@@ -249,5 +244,3 @@ struct impl__IdentityHelper<Zn<m>> {
 		return Zn<m>::valueOf(1);
 	}
 };
-
-
