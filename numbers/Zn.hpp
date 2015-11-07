@@ -7,7 +7,8 @@
 #include "extendedGcd.hpp"
 
 struct impl__Normalizator {
-	static void softUp(int& value, int mod) {
+	template <typename T>
+	static void softUp(T& value, int mod) {
 		if (value < 0) {
 			value += mod;
 		}
