@@ -6,32 +6,6 @@
 #include "../identity.hpp"
 #include "extendedGcd.hpp"
 
-struct impl__Normalizator {
-	template <typename T>
-	static void softUp(T& value, int mod) {
-		if (value < 0) {
-			value += mod;
-		}
-	}
-	template <typename T>
-	static void softDown(T& value, int mod) {
-		if (value >= mod) {
-			value -= mod;
-		}
-	}
-
-	template <typename T>
-	static void hardDown(T& value, int mod) {
-		value %= mod;
-	}
-
-	template <typename T>
-	static void hard(T& value, int mod) {
-		value %= mod;
-		softUp(value, mod);
-	}
-};
-
 template <int mod>
 class Zn {
 	static_assert(mod > 0, "Mod has to be positive integer");
@@ -44,15 +18,34 @@ public:
 	}
 
 	/**
-	* Instead of ctor, to allow not to notmalize in ctor
+	* Instead of ctor, to allow not to normalize in ctor
 	*/
 	static Zn valueOf(int value) {
-		impl__Normalizator::hard(value, mod);
+		return Zn(value % mod);
+	}
+
+	static Zn valueOf(long long value) {
+		return Zn(static_cast<int>(value) % mod);
+	}
+
+	static Zn rawValueOf(int value) {
+		SPCPPL_ASSERT(value >= 0 && value < mod);
 		return Zn(value);
 	}
+
+	Zn& operator=(int rhs) {
+		return *this = Zn::valueOf(rhs);
+	}
+
+	Zn& operator=(long long rhs) {
+		return *this = Zn::valueOf(rhs);
+	}
+
 	Zn& operator+=(const Zn& rhs) {
 		value += rhs.value;
-		impl__Normalizator::softDown(value, mod);
+		if (value >= mod) {
+			value -= mod;
+		}
 		return *this;
 	}
 
@@ -60,9 +53,15 @@ public:
 		return *this += Zn::valueOf(rhs);
 	}
 
+	Zn& operator+=(long long rhs) {
+		return *this += Zn::valueOf(rhs);
+	}
+
 	Zn& operator-=(const Zn& rhs) {
 		value -= rhs.value;
-		impl__Normalizator::softUp(value, mod);
+		if (value < 0) {
+			value += mod;
+		}
 		return *this;
 	}
 
@@ -70,11 +69,13 @@ public:
 		return *this -= Zn::valueOf(rhs);
 	}
 
+	Zn& operator-=(long long rhs) {
+		return *this -= Zn::valueOf(rhs);
+	}
+
 	Zn& operator*=(const Zn& rhs) {
-		long long result = value;
-		result *= rhs.value;
-		impl__Normalizator::hardDown(result, mod);
-		value = static_cast<int>(result);
+		long long result = static_cast<long long>(value) * static_cast<long long>(rhs.value);
+		value = static_cast<int>(result % mod);
 		return *this;
 	}
 
@@ -82,10 +83,17 @@ public:
 		return *this *= Zn::valueOf(rhs);
 	}
 
+	Zn& operator*=(long long rhs) {
+		return *this *= Zn::valueOf(rhs);
+	}
+
 	Zn operator-() const {
-		Zn result(mod - value);
-		impl__Normalizator::softDown(result.value, mod);
-		return result;
+		if (value == 0) {
+			return *this;
+		}
+		else {
+			return Zn(mod - value);
+		}
 	}
 
 	Zn& operator/=(const Zn& rhs) {
@@ -93,6 +101,10 @@ public:
 	}
 
 	Zn& operator/=(int rhs) {
+		return *this /= Zn::valueOf(rhs);
+	}
+
+	Zn& operator/=(long long rhs) {
 		return *this /= Zn::valueOf(rhs);
 	}
 
@@ -108,7 +120,9 @@ public:
 		(void) gcd;
 		SPCPPL_ASSERT(gcd == 1);
 
-		impl__Normalizator::softUp(x, mod);
+		if (x < 0) {
+			x += mod;
+		}
 		return Zn(x);
 	}
 
@@ -141,6 +155,15 @@ template <int m>
 bool operator==(int lhs, const Zn<m>& rhs) {
 	return rhs == lhs;
 }
+template <int m>
+bool operator==(const Zn<m>& lhs, long long rhs) {
+	return lhs == Zn::valueOf(rhs);
+}
+
+template <int m>
+bool operator==(long long lhs, Zn<m>& rhs) {
+	return rhs == lhs;
+}
 
 template <int m>
 bool operator!=(const Zn<m>& lhs, const Zn<m>& rhs) {
@@ -154,6 +177,16 @@ bool operator!=(const Zn<m>& lhs, int rhs) {
 
 template <int m>
 bool operator!=(int lhs, const Zn<m>& rhs) {
+	return !(lhs == rhs);
+}
+
+template <int m>
+bool operator!=(const Zn<m>& lhs, long long rhs) {
+	return !(lhs == rhs);
+}
+
+template <int m>
+bool operator!=(const Zn<m>& lhs, long long rhs) {
 	return !(lhs == rhs);
 }
 
@@ -175,6 +208,17 @@ Zn<m> operator+(int lhs, const Zn<m>& rhs) {
 }
 
 template <int m>
+Zn<m> operator+(const Zn<m>& lhs, long long rhs) {
+	Zn<m> copy = lhs;
+	return copy += rhs;
+}
+
+template <int m>
+Zn<m> operator+(long long lhs, const Zn<m>& rhs) {
+	return rhs + lhs;
+}
+
+template <int m>
 Zn<m> operator-(const Zn<m>& lhs, const Zn<m>& rhs) {
 	Zn<m> copy = lhs;
 	return copy -= rhs;
@@ -188,6 +232,17 @@ Zn<m> operator-(const Zn<m>& lhs, int rhs) {
 
 template <int m>
 Zn<m> operator-(int lhs, const Zn<m>& rhs) {
+	return Zn<m>::valueOf(lhs) - rhs;
+}
+
+template <int m>
+Zn<m> operator-(const Zn<m>& lhs, long long rhs) {
+	Zn<m> copy = lhs;
+	return copy -= rhs;
+}
+
+template <int m>
+Zn<m> operator-(long lhs, const Zn<m>& rhs) {
 	return Zn<m>::valueOf(lhs) - rhs;
 }
 
@@ -209,6 +264,17 @@ Zn<m> operator*(int lhs, const Zn<m>& rhs) {
 }
 
 template <int m>
+Zn<m> operator*(const Zn<m>& lhs, long long rhs) {
+	Zn<m> copy = lhs;
+	return copy *= rhs;
+}
+
+template <int m>
+Zn<m> operator*(long long lhs, const Zn<m>& rhs) {
+	return rhs * lhs;
+}
+
+template <int m>
 Zn<m> operator/(const Zn<m>& lhs, const Zn<m>& rhs) {
 	Zn<m> copy = lhs;
 	return copy /= rhs;
@@ -226,6 +292,17 @@ Zn<m> operator/(int lhs, const Zn<m>& rhs) {
 }
 
 template <int m>
+Zn<m> operator/(const Zn<m>& lhs, long long rhs) {
+	Zn<m> copy = lhs;
+	return copy /= rhs;
+}
+
+template <int m>
+Zn<m> operator/(long long lhs, const Zn<m>& rhs) {
+	return Zn<m>::valueOf(lhs) / rhs;
+}
+
+template <int m>
 std::ostream& operator<<(std::ostream& stream, const Zn<m>& zn) {
 	return stream << zn.value;
 }
@@ -234,8 +311,7 @@ template <int m>
 std::istream& operator>>(std::istream& stream, Zn<m>& zn) {
 	long long value;
 	stream >> value;
-	impl__Normalizator::hard(value, m);
-	zn.value = static_cast<int>(value);
+	zn.value = static_cast<int>(value % m);
 	return stream;
 }
 
