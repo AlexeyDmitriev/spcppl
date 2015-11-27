@@ -157,7 +157,7 @@ bool operator==(int lhs, const Zn<m>& rhs) {
 }
 template <int m>
 bool operator==(const Zn<m>& lhs, long long rhs) {
-	return lhs == Zn::valueOf(rhs);
+	return lhs == Zn<m>::valueOf(rhs);
 }
 
 template <int m>
@@ -186,7 +186,7 @@ bool operator!=(const Zn<m>& lhs, long long rhs) {
 }
 
 template <int m>
-bool operator!=(const Zn<m>& lhs, long long rhs) {
+bool operator!=(long long rhs, const Zn<m>& lhs) {
 	return !(lhs == rhs);
 }
 

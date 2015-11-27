@@ -8,11 +8,36 @@
 #include "../numbers/bits.hpp"
 
 class BitSet {
-	BitSet(std::size_t size): size(size), v(getUnderlyingSize(size)) {
+public:
+	BitSet(std::size_t size): v(getUnderlyingSize(size)), size(size) {
 
 	}
 
-	BitSet operator|=(const BitSet& rhs) {
+	bool get(std::size_t index) const {
+		return static_cast<bool>((v[index >> 5] >> (index & 31)) & 1);
+	}
+
+	void set(std::size_t index) {
+		v[index >> 5] |= 1U << index;
+	}
+
+	void clear(std::size_t index) {
+		v[index >> 5] &= ~(1U << index);
+	}
+
+	void flip(std::size_t index) {
+		v[index >> 5] ^= 1U << index;
+	}
+
+	std::size_t count() const {
+		std::size_t result = 0;
+		for (auto block: v) {
+			result += __builtin_popcount(block);
+		}
+		return result;
+	}
+
+	BitSet& operator|=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] |= rhs.v[i];
@@ -20,7 +45,7 @@ class BitSet {
 		return *this;
 	}
 
-	BitSet operator&=(const BitSet& rhs) {
+	BitSet& operator&=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] &= rhs.v[i];
@@ -28,7 +53,7 @@ class BitSet {
 		return *this;
 	}
 
-	BitSet operator^=(const BitSet& rhs) {
+	BitSet& operator^=(const BitSet& rhs) {
 		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] ^= rhs.v[i];

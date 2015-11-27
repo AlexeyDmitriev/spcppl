@@ -1,12 +1,12 @@
 #include <cmath>
 #include <tuple>
+#include "../assert.hpp"
 
 template <typename T, typename SquareT = T>
 struct Point2D {
 	T x, y;
 
 	Point2D(): x(0), y(0) {
-
 	}
 
 	Point2D(T x, T y): x(x), y(y) {
@@ -47,6 +47,26 @@ struct Point2D {
 		y /= rhs;
 		return *this;
 	}
+
+	T& operator[](size_t i) {
+		if (i == 0) {
+			return x;
+		}
+		if (i == 1) {
+			return y;
+		}
+		SPCPPL_ASSERT(false);
+	}
+
+	const T& operator[](size_t i) const {
+		if (i == 0) {
+			return x;
+		}
+		if (i == 1) {
+			return y;
+		}
+		SPCPPL_ASSERT(false);
+	}
 };
 
 template <typename T, typename S>
@@ -70,7 +90,7 @@ Point2D<T, S> operator*(T lhs, const Point2D<T, S>& rhs) {
 }
 
 template <typename T, typename S>
-Point2D<T, S> operator*(const Point2D<T, S>& lhs, T rhs) {
+Point2D<T, S> operator/(const Point2D<T, S>& lhs, T rhs) {
 	return Point2D<T, S>(lhs.x / rhs, lhs.y / rhs);
 }
 
