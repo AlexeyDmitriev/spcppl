@@ -114,15 +114,19 @@ bool operator!=(const Point2D<T, S>& lhs, const Point2D<T, S>& rhs) {
 	return !(lhs == rhs);
 }
 
-auto lexicographicallyLess = [](const Point2D& lhs, const Point2D& rhs){
-	return std::tie(lhs.x, lhs.y) < std::tie(rhs.y, rhs.y);
+template <typename T>
+struct LexicograficallyLess {
+	bool operator()(const Point2D<T>& lhs, const Point2D<T>& rhs) const {
+		return std::tie(lhs.x, lhs.y) < std::tie(rhs.y, rhs.y);
+	};
 };
 
+template <typename T>
 struct LessByAngle {
-	explicit LessByAngle(const Point2D& center): center(center) {
+	explicit LessByAngle(const Point2D<T>& center): center(center) {
 	}
 
-	bool operator() (const Point2D& lhs, const Point2D& rhs) {
+	bool operator() (const Point2D<T>& lhs, const Point2D<T>& rhs) {
 		lhs -= center;
 		rhs -= center;
 		if (upper(lhs) != upper(rhs)) {
@@ -131,8 +135,8 @@ struct LessByAngle {
 		return lhs * rhs > 0;
 	}
 private:
-	bool upper(const Point2D& point) {
-		return point.y > 0 || point.y == 0 && point.x > 0;
+	bool upper(const Point2D<T>& point) {
+		return point.y > 0 || (point.y == 0 && point.x > 0);
 	}
-	Point2D center;
+	Point2D<T> center;
 };
