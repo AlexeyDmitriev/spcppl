@@ -15,7 +15,7 @@ public:
 		}
 	}
 
-	unsigned long long hash(std::size_t from, std::size_t to) {
+	unsigned long long hash(std::size_t from, std::size_t to) const {
 		SPCPPL_ASSERT(from <= to);
 		return hashes[to] - hashes[from] * powers[to - from];
 	}
