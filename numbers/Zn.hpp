@@ -21,11 +21,19 @@ public:
 	* Instead of ctor, to allow not to normalize in ctor
 	*/
 	static Zn valueOf(int value) {
-		return Zn(value % mod);
+		int x = value % mod;
+		if (x < 0) {
+			x += mod;
+		}
+		return Zn(x);
 	}
 
 	static Zn valueOf(long long value) {
-		return Zn(static_cast<int>(value) % mod);
+		int x = static_cast<int>(value % mod);
+		if (x < 0) {
+			x += mod;
+		}
+		return Zn(x);
 	}
 
 	static Zn rawValueOf(int value) {
