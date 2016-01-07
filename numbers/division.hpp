@@ -40,7 +40,7 @@ T divideAwayFrowZero(T a, T b) {
 		changeSign = !changeSign;
 		b = -b;
 	}
-	int res = (a + b - 1) / b;
+	T res = (a + b - 1) / b;
 	if (changeSign) {
 		res *= -1;
 	}
