@@ -32,12 +32,10 @@ private:
 	double value;
 };
 
-typedef std::complex<Double> Base;
-
 using Base = std::complex<Double>;
 
 double impl__cos(std::size_t n) {
-	static const double PI = acos(-1.0);
+	static constexpr double PI = acos(-1.0);
 	static std::vector<double> results = {-1};
 	while (n >= results.size()) {
 		results.push_back(std::cos(2 * PI / results.size()));
@@ -46,7 +44,7 @@ double impl__cos(std::size_t n) {
 }
 
 double impl__sin(std::size_t n) {
-	static const double PI = acos(-1.0);
+	static constexpr double PI = acos(-1.0);
 	static std::vector<double> results = {-1};
 	while (n >= results.size()) {
 		results.push_back(std::sin(2 * PI / results.size()));
