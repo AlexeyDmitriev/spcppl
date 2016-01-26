@@ -71,12 +71,12 @@ struct Point2D {
 
 template <typename T, typename S>
 Point2D<T, S> operator+(const Point2D<T, S>& lhs, const Point2D<T, S>& rhs) {
-	return Point2D<T, S>(lhs.x + rhs.x, rhs.x + rhs.y);
+	return Point2D<T, S>(lhs.x + rhs.x, lhs.y + rhs.y);
 }
 
 template <typename T, typename S>
 Point2D<T, S> operator-(const Point2D<T, S>& lhs, const Point2D<T, S>& rhs) {
-	return Point2D<T, S>(lhs.x - rhs.x, rhs.x - rhs.y);
+	return Point2D<T, S>(lhs.x - rhs.x, lhs.y - rhs.y);
 }
 
 template <typename T, typename S>
