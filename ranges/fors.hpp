@@ -67,7 +67,7 @@ template <typename T>
 class IntegerRange {
 public:
 	IntegerRange(T begin, T end): begin_(begin), end_(end) {
-
+		SPCPPL_ASSERT(begin <= end);
 	}
 
 	IntegerIterator<T> begin() const {
@@ -88,7 +88,7 @@ class ReversedIntegerRange {
 	typedef std::reverse_iterator<IntegerIterator<T>> IteratorType;
 public:
 	ReversedIntegerRange(T begin, T end): begin_(begin), end_(end) {
-
+		SPCPPL_ASSERT(begin >= end);
 	}
 
 	IteratorType begin() const {
@@ -106,48 +106,40 @@ private:
 
 template <typename T>
 IntegerRange<T> range(T to) {
-	SPCPPL_ASSERT(to >= 0);
 	return IntegerRange<T>(0, to);
 }
 
 template <typename T>
 IntegerRange<T> range(T from, T to) {
-	SPCPPL_ASSERT(from <= to);
 	return IntegerRange<T>(from, to);
 }
 
 template <typename T>
 IntegerRange<T> inclusiveRange(T to) {
-	SPCPPL_ASSERT(to >= 0);
 	return IntegerRange<T>(0, to + 1);
 }
 
 template <typename T>
 IntegerRange<T> inclusiveRange(T from, T to) {
-	SPCPPL_ASSERT(from <= to);
 	return IntegerRange<T>(from, to + 1);
 }
 
 template <typename T>
 ReversedIntegerRange<T> downrange(T from) {
-	SPCPPL_ASSERT(from >= 0);
 	return ReversedIntegerRange<T>(from, 0);
 }
 
 template <typename T>
 ReversedIntegerRange<T> downrange(T from, T to) {
-	SPCPPL_ASSERT(from >= to);
 	return ReversedIntegerRange<T>(from, to);
 }
 
 template <typename T>
 ReversedIntegerRange<T> inclusiveDownrange(T from) {
-	SPCPPL_ASSERT(from >= 0);
 	return ReversedIntegerRange<T>(from + 1, 0);
 }
 
 template <typename T>
 ReversedIntegerRange<T> inclusiveDownrange(T from, T to) {
-	SPCPPL_ASSERT(from >= to);
 	return ReversedIntegerRange<T>(from + 1, to);
 }

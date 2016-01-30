@@ -3,6 +3,8 @@
 #include <vector>
 #include <cstddef>
 #include "../identity.hpp"
+#include "../typeTraits/enable_if_t.hpp"
+#include "../ranges/fors.hpp"
 
 template <typename T>
 std::vector<T> impl__factorials(std::size_t maxN, const T& one) {
@@ -48,3 +50,28 @@ template <typename T>
 std::vector<std::vector<T>> binomials(std::size_t maxN, const T& sample) {
 	return impl__binomials(maxN, identity<T>(sample));
 }
+
+template <typename T, typename U, typename = enable_if_t<std::is_integral<U>::value>>
+T binomial(U n, U k) {
+	if (k > n || k < 0) {
+		return T();
+	}
+	T res = identity<T>();
+	for (U i: inclusiveRange(1, k)) {
+		res /= i;
+		res *= n - i + 1;
+	}
+	return res;
+};
+
+template <typename T, typename U, typename = enable_if_t<std::is_integral<U>::value>>
+T starsAndBars(U stars, U groups) {
+	if (groups == 0) {
+		if (stars == 0) {
+			return identity<T>();
+		} else {
+			return T();
+		}
+	}
+	return binomial<T>(stars + groups - 1, groups - 1);
+};
