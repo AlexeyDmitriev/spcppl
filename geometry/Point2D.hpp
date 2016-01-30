@@ -1,6 +1,7 @@
 #include <cmath>
 #include <tuple>
 #include "../assert.hpp"
+#include <cmath>
 
 template <typename T, typename SquareT = T>
 struct Point2D {
@@ -67,6 +68,11 @@ struct Point2D {
 		}
 		SPCPPL_ASSERT(false);
 	}
+
+	template <typename U, typename V = U>
+	Point2D<U, V> as() {
+		return {U(x), U(y)};
+	}
 };
 
 template <typename T, typename S>
@@ -114,19 +120,19 @@ bool operator!=(const Point2D<T, S>& lhs, const Point2D<T, S>& rhs) {
 	return !(lhs == rhs);
 }
 
-template <typename T>
 struct LexicograficallyLess {
-	bool operator()(const Point2D<T>& lhs, const Point2D<T>& rhs) const {
-		return std::tie(lhs.x, lhs.y) < std::tie(rhs.y, rhs.y);
+	template <typename T, typename S>
+	bool operator()(const Point2D<T, S>& lhs, const Point2D<T, S>& rhs) const {
+		return std::tie(lhs.x, lhs.y) < std::tie(rhs.x, rhs.y);
 	};
 };
 
-template <typename T>
+template <typename T, typename S>
 struct LessByAngle {
 	explicit LessByAngle(const Point2D<T>& center): center(center) {
 	}
 
-	bool operator() (const Point2D<T>& lhs, const Point2D<T>& rhs) {
+	bool operator() (Point2D<T, S> lhs, Point2D<T, S> rhs) {
 		lhs -= center;
 		rhs -= center;
 		if (upper(lhs) != upper(rhs)) {
@@ -138,5 +144,24 @@ private:
 	bool upper(const Point2D<T>& point) {
 		return point.y > 0 || (point.y == 0 && point.x > 0);
 	}
-	Point2D<T> center;
+	Point2D<T, S> center;
+};
+
+template <typename T, typename S>
+double distance_to_segment(const Point2D<T, S>& point, const Point2D<T, S>& b, const Point2D<T, S>& c) {
+	static_assert(std::is_floating_point<T>::value, "only floating point implemented");
+	auto ba = b - point;
+	auto ca = c - point;
+	if ((ba - ca) % ba >= 0 && (ca - ba) % ca >= 0) {
+		return fabs(ba * ca) / (ca - ba).dist();
+	}
+	return std::min(ba.dist(), ca.dist());
+};
+
+template <typename T, typename S>
+double distance_to_line(const Point2D<T, S>& point, const Point2D<T, S>& b, const Point2D<T, S>& c) {
+	static_assert(std::is_floating_point<T>::value, "only floating point implemented");
+	auto ba = b - point;
+	auto ca = c - point;
+	return fabs(ba * ca) / (ca - ba).dist();
 };
