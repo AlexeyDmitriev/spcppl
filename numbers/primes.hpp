@@ -13,6 +13,15 @@ bool isPrime(int n) {
 	return n >= 2;
 }
 
+bool isPrime(int64_t n) {
+	for (int i = 2; i * i <= n; ++i) {
+		if (n % i == 0) {
+			return false;
+		}
+	}
+	return n >= 2;
+}
+
 struct Bool {
 	/* implicit */ Bool(bool value): value(value) {
 
