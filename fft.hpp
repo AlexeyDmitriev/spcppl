@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <cmath>
 #include <complex>
 #include <type_traits>
 
@@ -32,10 +33,18 @@ private:
 	double value;
 };
 
+bool isnan(Double d) {
+	return std::isnan(static_cast<double>(d));
+}
+
+bool isinf(Double d) {
+	return std::isnan(static_cast<double>(d));
+}
+
 using Base = std::complex<Double>;
 
 double impl__cos(std::size_t n) {
-	static constexpr double PI = acos(-1.0);
+	static const double PI = acos(-1.0);
 	static std::vector<double> results = {-1};
 	while (n >= results.size()) {
 		results.push_back(std::cos(2 * PI / results.size()));
@@ -44,7 +53,7 @@ double impl__cos(std::size_t n) {
 }
 
 double impl__sin(std::size_t n) {
-	static constexpr double PI = acos(-1.0);
+	static const double PI = acos(-1.0);
 	static std::vector<double> results = {-1};
 	while (n >= results.size()) {
 		results.push_back(std::sin(2 * PI / results.size()));
