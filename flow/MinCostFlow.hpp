@@ -5,7 +5,6 @@
 #include <functional>
 #include <utility>
 #include <queue>
-#include <assert.h>
 #include "../ranges/fors.hpp"
 
 template <typename FlowSize, typename CostSize>

@@ -32,8 +32,8 @@ public:
 			return neutralValue;
 		}
 		auto log = logarithms[r - l];
-		assert((1 << log) <= r - l);
-		assert((1 << (log + 1)) >= r - l);
+		SPCPPL_ASSERT((1 << log) <= r - l);
+		SPCPPL_ASSERT((1 << (log + 1)) >= r - l);
 		return operation(table[log][l], table[log][r - (1 << log)]);
 	}
 private:
