@@ -6,6 +6,7 @@
 #include "../assert.hpp"
 #include "../ranges/fors.hpp"
 #include "../functors/Min.hpp"
+#include "../dataStructures/SparseTable.hpp"
 
 class SuffixArray {
 public:
