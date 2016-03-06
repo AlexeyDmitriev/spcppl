@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstdint>
 #include <vector>
+#include <cstring>
 #include "../assert.hpp"
 #include "../ranges/fors.hpp"
 #include "../numbers/bits.hpp"
