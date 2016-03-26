@@ -9,7 +9,7 @@ public:
 			operation(operation), neutralValue(neutralValue) {
 		std::size_t n = elements.size();
 		logarithms.resize(n + 1);
-		for (auto i: range(static_cast<std::size_t>(2), logarithms.size())) {
+		for (std::size_t i = 2; i < logarithms.size(); ++i) {
 			logarithms[i] = logarithms[i - 1];
 			if (isPowerOf2(i)) {
 				++logarithms[i];

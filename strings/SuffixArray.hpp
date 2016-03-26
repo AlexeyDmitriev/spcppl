@@ -10,7 +10,7 @@
 
 class SuffixArray {
 public:
-	SuffixArray(std::string s) {
+	explicit SuffixArray(std::string s) {
 		s += '\0';
 		suffArray.resize(s.size());
 		std::vector<std::size_t> head(std::max(s.size(), static_cast<std::size_t>(128)), 0);
@@ -108,7 +108,7 @@ private:
 
 class SuffixArrayWithLcp : public SuffixArray {
 public:
-	SuffixArrayWithLcp(const std::string& s):
+	explicit SuffixArrayWithLcp(const std::string& s):
 			SuffixArray(s),
 			sparse(generateLCP(*this, s)) {
 
@@ -129,7 +129,6 @@ public:
 	}
 
 private:
-
 	static std::vector<std::size_t> generateLCP(const SuffixArray& base, const std::string& s) {
 		std::size_t curLcp = 0;
 
