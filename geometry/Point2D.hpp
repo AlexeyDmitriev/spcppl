@@ -19,7 +19,7 @@ struct Point2D {
 		return static_cast<SquareT>(x) * x + static_cast<SquareT>(y) * y;
 	}
 
-	auto dist() -> decltype(sqrt(squaredDist())) {
+	auto dist() -> decltype(sqrt(this->squaredDist())) {
 		return sqrt(squaredDist());
 	}
 
