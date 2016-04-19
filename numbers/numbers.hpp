@@ -58,8 +58,8 @@ T binomial(U n, U k) {
 	}
 	T res = identity<T>();
 	for (U i: inclusiveRange(1, k)) {
-		res /= i;
 		res *= n - i + 1;
+		res /= i;
 	}
 	return res;
 };
