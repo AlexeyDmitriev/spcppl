@@ -10,10 +10,6 @@ template <int mod>
 class Zn {
 	static_assert(mod > 0, "Mod has to be positive integer");
 public:
-
-	/**
-	* Not to be used
-	*/
 	Zn(): value(0) {
 	}
 
