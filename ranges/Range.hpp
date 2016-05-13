@@ -9,11 +9,11 @@ public:
 
 	}
 
-	T begin() {
+	T begin() const {
 		return begin_;
 	}
 
-	T end() {
+	T end() const {
 		return end_;
 	}
 
