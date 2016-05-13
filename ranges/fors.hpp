@@ -21,7 +21,7 @@
 template <typename T>
 class IntegerIterator: public std::iterator<std::input_iterator_tag, T, std::ptrdiff_t, T*, T> {
 public:
-	explicit IntegerIterator(int value): value(value) {
+	explicit IntegerIterator(T value): value(value) {
 
 	}
 
