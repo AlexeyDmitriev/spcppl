@@ -82,8 +82,15 @@ private:
 	}
 
 	std::vector<std::vector<T>> value;
+
+	template <typename U>
+	friend bool operator==(const Matrix<U>& lhs, const Matrix<U>& rhs);
 };
 
+template <typename T>
+bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs) {
+	return lhs.value == rhs.value;
+}
 
 template <typename T>
 Matrix<T> operator*(const Matrix<T>& lhs, const Matrix<T>& rhs) {
