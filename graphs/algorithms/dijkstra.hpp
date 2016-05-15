@@ -27,6 +27,7 @@ auto dijkstraDistances(
 		if (used[v]) {
 			continue;
 		}
+		used[v] = true;
 		for (const auto& e: graph.outgoingEdges(v)) {
 			const auto& to = graph.endOfEdge(v, e);
 			Length newLength = distance[v] + graph.edgeLength(v, e);
