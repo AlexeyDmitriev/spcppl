@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <string>
 #include <algorithm>
+#include "../../assert.hpp"
 
 template <typename Hasher>
 class StringHash {
