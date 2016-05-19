@@ -2,13 +2,13 @@
 
 #include <iostream>
 #include <assert.h>
+#include <type_traits>
 #include "../assert.hpp"
 #include "../identity.hpp"
 #include "extendedGcd.hpp"
 
-template <int mod>
+template <typename T>
 class Zn {
-	static_assert(mod > 0, "Mod has to be positive integer");
 public:
 	Zn(): value(0) {
 	}
@@ -17,23 +17,23 @@ public:
 	* Instead of ctor, to allow not to normalize in ctor
 	*/
 	static Zn valueOf(int value) {
-		int x = value % mod;
+		int x = value % mod();
 		if (x < 0) {
-			x += mod;
+			x += mod();
 		}
 		return Zn(x);
 	}
 
 	static Zn valueOf(long long value) {
-		int x = static_cast<int>(value % mod);
+		int x = static_cast<int>(value % mod());
 		if (x < 0) {
-			x += mod;
+			x += mod();
 		}
 		return Zn(x);
 	}
 
 	static Zn rawValueOf(int value) {
-		SPCPPL_ASSERT(value >= 0 && value < mod);
+		SPCPPL_ASSERT(value >= 0 && value < mod());
 		return Zn(value);
 	}
 
@@ -47,8 +47,8 @@ public:
 
 	Zn& operator+=(const Zn& rhs) {
 		value += rhs.value;
-		if (value >= mod) {
-			value -= mod;
+		if (value >= mod()) {
+			value -= mod();
 		}
 		return *this;
 	}
@@ -64,7 +64,7 @@ public:
 	Zn& operator-=(const Zn& rhs) {
 		value -= rhs.value;
 		if (value < 0) {
-			value += mod;
+			value += mod();
 		}
 		return *this;
 	}
@@ -79,7 +79,7 @@ public:
 
 	Zn& operator*=(const Zn& rhs) {
 		long long result = static_cast<long long>(value) * static_cast<long long>(rhs.value);
-		value = static_cast<int>(result % mod);
+		value = static_cast<int>(result % mod());
 		return *this;
 	}
 
@@ -96,7 +96,7 @@ public:
 			return *this;
 		}
 		else {
-			return Zn(mod - value);
+			return Zn(mod() - value);
 		}
 	}
 
@@ -120,21 +120,21 @@ public:
 		SPCPPL_ASSERT(value != 0);
 
 		int x, y;
-		int gcd = extendedGcd(value, mod, x, y);
+		int gcd = extendedGcd(value, mod(), x, y);
 		(void) gcd;
 		SPCPPL_ASSERT(gcd == 1);
 
 		if (x < 0) {
-			x += mod;
+			x += mod();
 		}
 		return Zn(x);
 	}
 
-	template <int m>
-	friend std::ostream& operator<<(std::ostream&, const Zn<m>& zn);
+	template <typename U>
+	friend std::ostream& operator<<(std::ostream&, const Zn<U>& zn);
 
-	template <int m>
-	friend std::istream& operator>>(std::istream&, Zn<m>& zn);
+	template <typename U>
+	friend std::istream& operator>>(std::istream&, Zn<U>& zn);
 
 	int intValue() const {
 		return value;
@@ -148,180 +148,206 @@ private:
 	}
 
 	int value;
+
+	constexpr static int mod() {
+		return T::value;
+	}
+
+	template <int N = T::value>
+	static constexpr bool positive_or_runtime(int) {
+		return N > 0;
+	}
+	static constexpr bool positive_or_runtime(...) {
+		return true;
+	}
+	static_assert(
+			std::is_same<typename std::decay<decltype(T::value)>::type, int>::value,
+			"T::value must be int"
+	);
+	static_assert(positive_or_runtime(0), "Mod has to be positive integer");
 };
 
-template <int m>
-bool operator==(const Zn<m>& lhs, int rhs) {
-	return lhs == Zn<m>::valueOf(rhs);
+template <typename T>
+bool operator==(const Zn<T>& lhs, int rhs) {
+	return lhs == Zn<T>::valueOf(rhs);
 }
 
-template <int m>
-bool operator==(int lhs, const Zn<m>& rhs) {
+template <typename T>
+bool operator==(int lhs, const Zn<T>& rhs) {
 	return rhs == lhs;
 }
-template <int m>
-bool operator==(const Zn<m>& lhs, long long rhs) {
-	return lhs == Zn<m>::valueOf(rhs);
+template <typename T>
+bool operator==(const Zn<T>& lhs, long long rhs) {
+	return lhs == Zn<T>::valueOf(rhs);
 }
 
-template <int m>
-bool operator==(long long lhs, Zn<m>& rhs) {
+template <typename T>
+bool operator==(long long lhs, Zn<T>& rhs) {
 	return rhs == lhs;
 }
 
-template <int m>
-bool operator!=(const Zn<m>& lhs, const Zn<m>& rhs) {
+template <typename T>
+bool operator!=(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
 
-template <int m>
-bool operator!=(const Zn<m>& lhs, int rhs) {
+template <typename T>
+bool operator!=(const Zn<T>& lhs, int rhs) {
 	return !(lhs == rhs);
 }
 
-template <int m>
-bool operator!=(int lhs, const Zn<m>& rhs) {
+template <typename T>
+bool operator!=(int lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
 
-template <int m>
-bool operator!=(const Zn<m>& lhs, long long rhs) {
+template <typename T>
+bool operator!=(const Zn<T>& lhs, long long rhs) {
 	return !(lhs == rhs);
 }
 
-template <int m>
-bool operator!=(long long rhs, const Zn<m>& lhs) {
+template <typename T>
+bool operator!=(long long rhs, const Zn<T>& lhs) {
 	return !(lhs == rhs);
 }
 
-template <int m>
-Zn<m> operator+(const Zn<m>& lhs, const Zn<m>& rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator+(const Zn<T>& lhs, const Zn<T>& rhs) {
+	Zn<T> copy = lhs;
 	return copy += rhs;
 }
 
-template <int m>
-Zn<m> operator+(const Zn<m>& lhs, int rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator+(const Zn<T>& lhs, int rhs) {
+	Zn<T> copy = lhs;
 	return copy += rhs;
 }
 
-template <int m>
-Zn<m> operator+(int lhs, const Zn<m>& rhs) {
+template <typename T>
+Zn<T> operator+(int lhs, const Zn<T>& rhs) {
 	return rhs + lhs;
 }
 
-template <int m>
-Zn<m> operator+(const Zn<m>& lhs, long long rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator+(const Zn<T>& lhs, long long rhs) {
+	Zn<T> copy = lhs;
 	return copy += rhs;
 }
 
-template <int m>
-Zn<m> operator+(long long lhs, const Zn<m>& rhs) {
+template <typename T>
+Zn<T> operator+(long long lhs, const Zn<T>& rhs) {
 	return rhs + lhs;
 }
 
-template <int m>
-Zn<m> operator-(const Zn<m>& lhs, const Zn<m>& rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator-(const Zn<T>& lhs, const Zn<T>& rhs) {
+	Zn<T> copy = lhs;
 	return copy -= rhs;
 }
 
-template <int m>
-Zn<m> operator-(const Zn<m>& lhs, int rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator-(const Zn<T>& lhs, int rhs) {
+	Zn<T> copy = lhs;
 	return copy -= rhs;
 }
 
-template <int m>
-Zn<m> operator-(int lhs, const Zn<m>& rhs) {
-	return Zn<m>::valueOf(lhs) - rhs;
+template <typename T>
+Zn<T> operator-(int lhs, const Zn<T>& rhs) {
+	return Zn<T>::valueOf(lhs) - rhs;
 }
 
-template <int m>
-Zn<m> operator-(const Zn<m>& lhs, long long rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator-(const Zn<T>& lhs, long long rhs) {
+	Zn<T> copy = lhs;
 	return copy -= rhs;
 }
 
-template <int m>
-Zn<m> operator-(long lhs, const Zn<m>& rhs) {
-	return Zn<m>::valueOf(lhs) - rhs;
+template <typename T>
+Zn<T> operator-(long lhs, const Zn<T>& rhs) {
+	return Zn<T>::valueOf(lhs) - rhs;
 }
 
-template <int m>
-Zn<m> operator*(const Zn<m>& lhs, const Zn<m>& rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator*(const Zn<T>& lhs, const Zn<T>& rhs) {
+	Zn<T> copy = lhs;
 	return copy *= rhs;
 }
 
-template <int m>
-Zn<m> operator*(const Zn<m>& lhs, int rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator*(const Zn<T>& lhs, int rhs) {
+	Zn<T> copy = lhs;
 	return copy *= rhs;
 }
 
-template <int m>
-Zn<m> operator*(int lhs, const Zn<m>& rhs) {
+template <typename T>
+Zn<T> operator*(int lhs, const Zn<T>& rhs) {
 	return rhs * lhs;
 }
 
-template <int m>
-Zn<m> operator*(const Zn<m>& lhs, long long rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator*(const Zn<T>& lhs, long long rhs) {
+	Zn<T> copy = lhs;
 	return copy *= rhs;
 }
 
-template <int m>
-Zn<m> operator*(long long lhs, const Zn<m>& rhs) {
+template <typename T>
+Zn<T> operator*(long long lhs, const Zn<T>& rhs) {
 	return rhs * lhs;
 }
 
-template <int m>
-Zn<m> operator/(const Zn<m>& lhs, const Zn<m>& rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator/(const Zn<T>& lhs, const Zn<T>& rhs) {
+	Zn<T> copy = lhs;
 	return copy /= rhs;
 }
 
-template <int m>
-Zn<m> operator/(const Zn<m>& lhs, int rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator/(const Zn<T>& lhs, int rhs) {
+	Zn<T> copy = lhs;
 	return copy /= rhs;
 }
 
-template <int m>
-Zn<m> operator/(int lhs, const Zn<m>& rhs) {
-	return Zn<m>::valueOf(lhs) / rhs;
+template <typename T>
+Zn<T> operator/(int lhs, const Zn<T>& rhs) {
+	return Zn<T>::valueOf(lhs) / rhs;
 }
 
-template <int m>
-Zn<m> operator/(const Zn<m>& lhs, long long rhs) {
-	Zn<m> copy = lhs;
+template <typename T>
+Zn<T> operator/(const Zn<T>& lhs, long long rhs) {
+	Zn<T> copy = lhs;
 	return copy /= rhs;
 }
 
-template <int m>
-Zn<m> operator/(long long lhs, const Zn<m>& rhs) {
-	return Zn<m>::valueOf(lhs) / rhs;
+template <typename T>
+Zn<T> operator/(long long lhs, const Zn<T>& rhs) {
+	return Zn<T>::valueOf(lhs) / rhs;
 }
 
-template <int m>
-std::ostream& operator<<(std::ostream& stream, const Zn<m>& zn) {
+template <typename T>
+std::ostream& operator<<(std::ostream& stream, const Zn<T>& zn) {
 	return stream << zn.value;
 }
 
-template <int m>
-std::istream& operator>>(std::istream& stream, Zn<m>& zn) {
+template <typename T>
+std::istream& operator>>(std::istream& stream, Zn<T>& zn) {
 	long long value;
 	stream >> value;
-	zn.value = static_cast<int>(value % m);
+	zn.value = static_cast<int>(value % T::value);
 	return stream;
 }
 
-template <int m>
-struct impl__IdentityHelper<Zn<m>> {
-	static Zn<m> identity() {
-		return Zn<m>::valueOf(1);
+template <typename T>
+struct impl__IdentityHelper<Zn<T>> {
+	static Zn<T> identity() {
+		return Zn<T>::valueOf(1);
 	}
 };
+
+template <int m>
+using ZnConst = Zn<std::integral_constant<int, m>>;
+
+#define MAKE_CONSTANT(name, type) \
+		struct name { \
+			static type value; \
+		}; \
+		type name::value;
