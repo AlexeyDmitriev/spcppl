@@ -2,8 +2,10 @@
 
 #include <cstddef>
 
+namespace impl {
+
 template <typename T, typename U, typename V>
-void impl__matrixMultiplication(const T& lhs, const U& rhs, V& res) {
+void matrixMultiplication(const T& lhs, const U& rhs, V& res) {
 	const auto& a = lhs;
 	auto b = rhs.transposed();
 	for (std::size_t i = 0; i < lhs.rows(); ++i) {
@@ -14,3 +16,5 @@ void impl__matrixMultiplication(const T& lhs, const U& rhs, V& res) {
 		}
 	}
 }
+
+} // namespace impl

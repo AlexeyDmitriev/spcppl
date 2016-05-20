@@ -4,42 +4,39 @@
 #include "assert.hpp"
 #include "matrixMultiplication.hpp"
 #include "identity.hpp"
+#include "make_vector.hpp"
 
-template <typename T>
+template <typename T, typename N, typename M>
 class Matrix {
 public:
-	Matrix(std::size_t n, std::size_t m, const T& value = T()): value(n, std::vector<T>(m, value)) {
+	explicit Matrix(const T& value = T()): value(make_vector<T>(rows(), columns(), value)) {
 
 	}
 
 	std::size_t rows() const {
-		return value.size();
+		return N::value;
 	}
 
 	std::size_t columns() const {
-		if (rows() == 0) {
-			return 0;
-		}
-		return value[0].size();
+		return M::value;
 	}
 
 	std::vector<T>& operator[](std::size_t index) {
-		SPCPPL_ASSERT(index < value.size());
+		SPCPPL_ASSERT(index < rows());
 		return value[index];
 	}
 
 	const std::vector<T>& operator[](std::size_t index) const {
-		SPCPPL_ASSERT(index < value.size());
+		SPCPPL_ASSERT(index < rows());
 		return value[index];
 	}
 
 	Matrix& operator*=(const Matrix& rhs) {
-		SPCPPL_ASSERT(rows() == columns() && rhs.rows() == rhs.columns());
+		static_assert(std::is_same<N, M>::value, "May only *= quadratic matrices");
 		return *this = *this * rhs;
 	}
 
 	Matrix& operator+=(const Matrix& rhs) {
-		SPCPPL_ASSERT(rows() == rhs.rows() && columns() == rhs.columns());
 		for (std::size_t i = 0; i < rows(); ++i) {
 			for (std::size_t j = 0; j < columns(); ++j) {
 				value[i][j] += rhs.value[i][j];
@@ -62,8 +59,8 @@ public:
 		return *this += -rhs;
 	}
 
-	Matrix transposed() const {
-		Matrix res(columns(), rows());
+	Matrix<T, M, N> transposed() const {
+		Matrix<T, M, N> res;
 		for (std::size_t i = 0; i < rows(); ++i) {
 			for (std::size_t j = 0; j < columns(); ++j) {
 				res[j][i] = value[i][j];
@@ -72,54 +69,47 @@ public:
 		return res;
 	}
 
-	static Matrix row(const std::vector<T>& row) {
-		return Matrix(row);
-	}
-
 private:
-	Matrix(const std::vector<T>& row): value(1, row) {
-
-	}
-
 	std::vector<std::vector<T>> value;
 
-	template <typename U>
-	friend bool operator==(const Matrix<U>& lhs, const Matrix<U>& rhs);
+	template <typename U, typename V, typename W>
+	friend bool operator==(const Matrix<U, V, W>& lhs, const Matrix<U, V, W>& rhs);
 };
 
-template <typename T>
-bool operator==(const Matrix<T>& lhs, const Matrix<T>& rhs) {
+template <typename T, typename N, typename M>
+bool operator==(const Matrix<T, N, M>& lhs, const Matrix<T, N, M>& rhs) {
 	return lhs.value == rhs.value;
 }
 
-template <typename T>
-Matrix<T> operator*(const Matrix<T>& lhs, const Matrix<T>& rhs) {
-	SPCPPL_ASSERT(lhs.columns() == rhs.rows());
-	Matrix<T> res{lhs.rows(), rhs.columns()};
-	impl__matrixMultiplication(lhs, rhs, res);
+template <typename T, typename N, typename M, typename K>
+Matrix<T, N, K> operator*(const Matrix<T, N, M>& lhs, const Matrix<T, M, K>& rhs) {
+	Matrix<T, N, K> res;
+	impl::matrixMultiplication(lhs, rhs, res);
 	return res;
 }
 
-template <typename T, typename C1, typename C2>
-Matrix<T> operator+(Matrix<T> lhs, const Matrix<T>& rhs) {
-	Matrix<T> copy = std::move(lhs);
+template <typename T, typename N, typename M>
+Matrix<T, N, M> operator+(Matrix<T, N, M> lhs, const Matrix<T, N, M>& rhs) {
+	Matrix<T, N, M> copy = std::move(lhs);
 	return copy += rhs;
 }
 
-template <typename T, typename C1, typename C2>
-Matrix<T> operator-(Matrix<T> lhs, const Matrix<T>& rhs) {
-	Matrix<T> copy = std::move(lhs);
+template <typename T, typename N, typename M>
+Matrix<T, N, M> operator-(Matrix<T, N, M> lhs, const Matrix<T, N, M>& rhs) {
+	Matrix<T, N, M> copy = std::move(lhs);
 	return copy -= rhs;
 }
 
-template <typename T>
-struct impl__SampleIdentityHelper<Matrix<T>> {
-	static Matrix<T> identity(const Matrix<T>& sample) {
-		SPCPPL_ASSERT(sample.rows() == sample.columns());
-		Matrix<T> res(sample.rows(), sample.rows());
+template <typename T, typename N>
+struct impl__SampleIdentityHelper<Matrix<T, N, N>> {
+	static Matrix<T, N, N> identity(const Matrix<T, N, N>& sample) {
+		Matrix<T, N, N> res;
 		for (std::size_t i = 0; i < sample.rows(); ++i) {
 			res[i][i] = ::identity(sample[0][0]);
 		}
 		return res;
 	}
 };
+
+template <typename T, std::size_t n, std::size_t m>
+using FixedSizeMatrix = Matrix<T, std::integral_constant<std::size_t, n>, std::integral_constant<std::size_t, m>>;
