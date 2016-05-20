@@ -8,25 +8,30 @@
 #include "../ranges/fors.hpp"
 #include "../numbers/bits.hpp"
 
+template <typename N>
 class BitSet {
 public:
-	BitSet(std::size_t size): v(getUnderlyingSize(size)), size(size) {
+	BitSet(): v(getUnderlyingSize(size())) {
 
 	}
 
 	bool get(std::size_t index) const {
+		SPCPPL_ASSERT(index < size());
 		return static_cast<bool>((v[index >> 5] >> (index & 31)) & 1);
 	}
 
 	void set(std::size_t index) {
+		SPCPPL_ASSERT(index < size());
 		v[index >> 5] |= 1U << index;
 	}
 
 	void clear(std::size_t index) {
+		SPCPPL_ASSERT(index < size());
 		v[index >> 5] &= ~(1U << index);
 	}
 
 	void flip(std::size_t index) {
+		SPCPPL_ASSERT(index < size());
 		v[index >> 5] ^= 1U << index;
 	}
 
@@ -39,7 +44,6 @@ public:
 	}
 
 	BitSet& operator|=(const BitSet& rhs) {
-		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] |= rhs.v[i];
 		}
@@ -47,7 +51,6 @@ public:
 	}
 
 	BitSet& operator&=(const BitSet& rhs) {
-		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] &= rhs.v[i];
 		}
@@ -55,7 +58,6 @@ public:
 	}
 
 	BitSet& operator^=(const BitSet& rhs) {
-		SPCPPL_ASSERT(size == rhs.size);
 		for (size_t i: range(v.size())) {
 			v[i] ^= rhs.v[i];
 		}
@@ -68,12 +70,12 @@ public:
 		return copy;
 	}
 
-	BitSet operator~()&& {
+	BitSet operator~() && {
 		invert();
 		return *this;
 	}
 
-	bool empty() {
+	bool empty() const {
 		for (uint32_t number: v) {
 			if (number != 0) {
 				return false;
@@ -88,14 +90,14 @@ public:
 				return i * 32 + leastSignificantBit(v[i]);
 			}
 		}
-		return size;
+		return size();
 	}
 
 	BitSet& operator<<=(std::size_t rhs) {
-		SPCPPL_ASSERT(rhs <= size);
+		SPCPPL_ASSERT(rhs <= size());
 		std::size_t bigShifts = rhs >> 5;
 		std::memmove(&v[bigShifts], &v[0], bigShifts);
-		std::memcpy(&v[0], 0, bigShifts);
+		std::memset(&v[0], 0, bigShifts);
 		rhs &= 31;
 		uint32_t add = 0;
 		for (uint32_t& element: v) {
@@ -108,10 +110,10 @@ public:
 	}
 
 	BitSet& operator>>=(std::size_t rhs) {
-		SPCPPL_ASSERT(rhs <= size);
+		SPCPPL_ASSERT(rhs <= size());
 		std::size_t bigShifts = rhs >> 5;
 		std::memmove(&v[0], &v[bigShifts], bigShifts);
-		std::memcpy(&v[0] + size - bigShifts, 0, bigShifts);
+		std::memset(&v[0] + size() - bigShifts, 0, bigShifts);
 		rhs &= 31;
 		int32_t add = 0;
 		for (std::size_t i: downrange(v.size())) {
@@ -125,11 +127,11 @@ public:
 
 private:
 	BitSet& invert() {
-		for (size_t i: range(v.size())) {
-			v[i] = ~v[i];
+		for (auto block: v) {
+			block = ~block;
 		}
-		std::size_t lastBits = size & 31;
-		if (size != 0) {
+		std::size_t lastBits = size() & 31;
+		if (size() != 0) {
 			v.back() &= (1 << lastBits) - 1;
 		}
 		return *this;
@@ -140,33 +142,42 @@ private:
 	}
 
 	std::vector<uint32_t> v;
-	std::size_t size;
 
-	friend bool operator==(const BitSet& a, const BitSet& b);
+	std::size_t size() const {
+		return N::value;
+	}
+
+	template <typename M>
+	friend bool operator==(const BitSet<M>& a, const BitSet<M>& b);
 };
 
-BitSet operator|(const BitSet& a, const BitSet& b) {
-	BitSet copy = a;
+template <typename N>
+BitSet<N> operator|(const BitSet<N>& a, const BitSet<N>& b) {
+	BitSet<N> copy = a;
 	return copy |= b;
 }
 
-BitSet operator&(const BitSet& a, const BitSet& b) {
-	BitSet copy = a;
+template <typename N>
+BitSet<N> operator&(const BitSet<N>& a, const BitSet<N>& b) {
+	BitSet<N> copy = a;
 	return copy &= b;
 }
 
-BitSet operator^(const BitSet& a, const BitSet& b) {
-	BitSet copy = a;
+template <typename N>
+BitSet<N> operator^(const BitSet<N>& a, const BitSet<N>& b) {
+	BitSet<N> copy = a;
 	return copy ^= b;
 }
 
-BitSet operator<<=(const BitSet& a, std::size_t b) {
-	BitSet copy = a;
+template <typename N>
+BitSet<N> operator<<=(const BitSet<N>& a, std::size_t b) {
+	BitSet<N> copy = a;
 	return copy <<= b;
 }
 
-BitSet operator>>=(const BitSet& a, std::size_t b) {
-	BitSet copy = a;
+template <typename N>
+BitSet<N> operator>>=(const BitSet<N>& a, std::size_t b) {
+	BitSet<N> copy = a;
 	return copy >>= b;
 }
 
