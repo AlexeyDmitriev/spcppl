@@ -2,7 +2,6 @@
 
 #include <limits>
 
-
 struct AbsoluteMinCostFlowStrategy {
 	template <typename FlowSize, typename CostSize>
 	FlowSize maximalAdditionFlow(const FlowSize&, const CostSize&, const CostSize& currentCost) {

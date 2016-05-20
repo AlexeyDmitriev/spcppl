@@ -1,3 +1,5 @@
+#pragma once
+
 #include "VectorVectorBaseGraph.hpp"
 
 template <typename T>

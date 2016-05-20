@@ -1,3 +1,5 @@
+#pragma once
+
 #include "VectorVectorBaseGraph.hpp"
 
 class SimpleGraph: public VectorVectorBaseGraph<std::size_t> {

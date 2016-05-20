@@ -1,3 +1,5 @@
+#pragma once
+
 #include <vector>
 #include "../ranges/fors.hpp"
 #include "../numbers/bits.hpp"

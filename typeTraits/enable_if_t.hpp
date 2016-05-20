@@ -1,3 +1,5 @@
+#pragma once
+
 #include <type_traits>
 
 template <bool b, typename T = void>
