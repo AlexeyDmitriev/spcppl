@@ -5,7 +5,7 @@
 template <typename T, typename Operation>
 class SparseTable {
 public:
-	SparseTable(std::vector<T> elements, const Operation& operation = Operation(), const T& neutralValue = T()):
+	explicit SparseTable(std::vector<T> elements, const Operation& operation = Operation(), const T& neutralValue = T()):
 			operation(operation), neutralValue(neutralValue) {
 		std::size_t n = elements.size();
 		logarithms.resize(n + 1);
