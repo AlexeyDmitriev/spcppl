@@ -5,15 +5,15 @@
 template <typename T>
 class TreapMultiset {
 private:
-	struct _node {
+	struct NodeStruct {
 		T value;
 		std::size_t count;
-		_node* l;
-		_node* r;
+		NodeStruct* l;
+		NodeStruct* r;
 		int32_t priority;
 
 		template <typename... Args>
-		_node(Args&&... args):
+		explicit NodeStruct(Args&&... args):
 				value(std::forward<Args>(args)...),
 				count(1),
 				l(nullptr),
@@ -30,7 +30,7 @@ private:
 			count = 1 + cnt(l) + cnt(r);
 		}
 	};
-	using Node = _node*;
+	using Node = NodeStruct*;
 
 	static std::size_t cnt(Node v) {
 		if (!v)
@@ -39,8 +39,6 @@ private:
 	}
 
 	Node root;
-
-	std::size_t size_;
 
 	Node merge(Node l, Node r) {
 		if (!l) {
@@ -106,30 +104,28 @@ private:
 		Node r = nullptr;
 		splitByValue(root, newNode->value, l, r);
 		root = merge(merge(l, newNode), r);
-		++size_;
 	}
 
 public:
 	TreapMultiset() {
 		root = nullptr;
-		size_ = 0;
 	}
 
 	std::size_t size() const {
-		return size_;
+		return cnt(root);
 	}
 
 	template <typename... Args>
 	void emplace(Args&&... args) {
-		insertNode(new _node(std::forward<Args>(args)...));
+		insertNode(new NodeStruct(std::forward<Args>(args)...));
 	}
 
 	void insert(const T& value) {
-		insertNode(new _node(value));
+		insertNode(new NodeStruct(value));
 	}
 
 	void insert(T&& value) {
-		insertNode(new _node(std::move(value)));
+		insertNode(new NodeStruct(std::move(value)));
 	}
 
 	void erase_one(const T& value) {
@@ -141,8 +137,8 @@ public:
 		SPCPPL_ASSERT(m->value == value);
 		delete m;
 		root = merge(l, r);
-		--size_;
 	}
+
 	const T& operator [] (std::size_t index) {
 		Node l = nullptr;
 		Node m = nullptr;
