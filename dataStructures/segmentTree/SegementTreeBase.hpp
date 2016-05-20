@@ -3,6 +3,7 @@
 #include <vector>
 #include "../../typeTraits/IsContainer.hpp"
 #include "../../ranges/fors.hpp"
+#include "../../typeTraits/enable_if_t.hpp"
 
 template <typename T, typename Merge>
 class SegmentTreeBase {
@@ -16,9 +17,13 @@ protected:
 
 	}
 
-	template <typename R, typename Enable = typename std::enable_if<IsContainer<R>::value>::type>
+	template <typename R, typename = enable_if_t<IsContainer<R>::value>>
 	SegmentTreeBase(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()) :
-			SegmentTreeBase(std::distance(std::begin(range), std::end(range)), defaultValue, merge) {
+			SegmentTreeBase(
+					static_cast<std::size_t>(std::distance(std::begin(range), std::end(range))),
+					defaultValue,
+					merge
+			) {
 		std::copy(std::begin(range), std::end(range), values.begin() + shift);
 		for (std::size_t index: downrange(shift, static_cast<std::size_t>(1))) {
 			recalculate(index);
