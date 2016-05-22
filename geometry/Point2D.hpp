@@ -19,7 +19,7 @@ struct Point2D {
 		return static_cast<SquareT>(x) * x + static_cast<SquareT>(y) * y;
 	}
 
-	auto dist() -> decltype(sqrt(this->squaredDist())) {
+	auto dist() const -> decltype(sqrt(this->squaredDist())) {
 		return sqrt(squaredDist());
 	}
 
@@ -74,6 +74,18 @@ struct Point2D {
 	template <typename U, typename V = U>
 	Point2D<U, V> as() {
 		return {U(x), U(y)};
+	}
+
+	Point2D normalized() const {
+		static_assert(std::is_floating_point<T>::value, "only implemented for floating point types");
+		return *this / dist();
+	}
+
+	Point2D rotated(double angle) const {
+		static_assert(std::is_floating_point<T>::value, "only implemented for floating point types");
+		double co = cos(angle);
+		double si = sin(angle);
+		return Point2D(x * co - y * si, x * si + y * co);
 	}
 };
 
@@ -151,7 +163,7 @@ private:
 
 template <typename T, typename S>
 double distance_to_segment(const Point2D<T, S>& point, const Point2D<T, S>& b, const Point2D<T, S>& c) {
-	static_assert(std::is_floating_point<T>::value, "only floating point implemented");
+	static_assert(std::is_floating_point<T>::value, "only implemented for floating point types");
 	auto ba = b - point;
 	auto ca = c - point;
 	if ((ba - ca) % ba >= 0 && (ca - ba) % ca >= 0) {
@@ -162,7 +174,7 @@ double distance_to_segment(const Point2D<T, S>& point, const Point2D<T, S>& b, c
 
 template <typename T, typename S>
 double distance_to_line(const Point2D<T, S>& point, const Point2D<T, S>& b, const Point2D<T, S>& c) {
-	static_assert(std::is_floating_point<T>::value, "only floating point implemented");
+	static_assert(std::is_floating_point<T>::value, "only implemented for floating point types");
 	auto ba = b - point;
 	auto ca = c - point;
 	return fabs(ba * ca) / (ca - ba).dist();
