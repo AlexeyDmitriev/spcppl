@@ -181,11 +181,13 @@ BitSet<N> operator>>=(const BitSet<N>& a, std::size_t b) {
 	return copy >>= b;
 }
 
-bool operator==(const BitSet& a, const BitSet& b) {
+template <typename N>
+bool operator==(const BitSet<N>& a, const BitSet<N>& b) {
 	SPCPPL_ASSERT(a.size == b.size);
 	return a.v == b.v;
 }
 
-bool operator!=(const BitSet& a, const BitSet& b) {
+template <typename N>
+bool operator!=(const BitSet<N>& a, const BitSet<N>& b) {
 	return !(a == b);
 }
