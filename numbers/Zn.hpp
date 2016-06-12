@@ -337,7 +337,7 @@ std::istream& operator>>(std::istream& stream, Zn<T>& zn) {
 }
 
 template <typename T>
-struct impl__IdentityHelper<Zn<T>> {
+struct IdentityHelper<Zn<T>> {
 	static Zn<T> identity() {
 		return Zn<T>::valueOf(1);
 	}

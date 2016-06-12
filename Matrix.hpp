@@ -101,11 +101,11 @@ Matrix<T, N, M> operator-(Matrix<T, N, M> lhs, const Matrix<T, N, M>& rhs) {
 }
 
 template <typename T, typename N>
-struct impl__SampleIdentityHelper<Matrix<T, N, N>> {
+struct IdentityHelper<Matrix<T, N, N>> {
 	static Matrix<T, N, N> identity(const Matrix<T, N, N>& sample) {
 		Matrix<T, N, N> res;
 		for (std::size_t i = 0; i < sample.rows(); ++i) {
-			res[i][i] = ::identity(sample[0][0]);
+			res[i][i] = ::identity<T>();
 		}
 		return res;
 	}

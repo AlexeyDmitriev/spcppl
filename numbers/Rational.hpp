@@ -109,7 +109,7 @@ std::ostream& operator<<(std::ostream& stream, const Rational<T>& rational) {
 }
 
 template <typename T>
-struct impl__IdentityHelper<Rational<T>> {
+struct IdentityHelper<Rational<T>> {
 	static Rational<T> identity() {
 		return Rational<T>(1);
 	}
