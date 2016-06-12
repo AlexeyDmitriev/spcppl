@@ -3,9 +3,8 @@
 #include "../Matrix.hpp"
 #include "reduceToRowEchelonForm.hpp"
 
-template <typename T>
-T impl__determinant(Matrix<T> matrix, const T& one) {
-	SPCPPL_ASSERT(matrix.rows() == matrix.columns());
+template <typename T, typename N>
+T impl__determinant(Matrix<T, N, N> matrix, const T& one) {
 	reduceToRowEchelonForm(matrix);
 
 	T result = one;
@@ -15,12 +14,12 @@ T impl__determinant(Matrix<T> matrix, const T& one) {
 	return result;
 }
 
-template <typename T>
-T determinant(Matrix<T> matrix) {
+template <typename T, typename N>
+T determinant(Matrix<T, N, N> matrix) {
 	return impl__determinant(std::move(matrix), identity<T>());
 }
 
-template <typename T>
-T determinant(Matrix<T>& matrix, const T& sample) {
+template <typename T, typename N>
+T determinant(Matrix<T, N, N>& matrix, const T& sample) {
 	return impl__determinant(std::move(matrix), identity<T>(sample));
 }

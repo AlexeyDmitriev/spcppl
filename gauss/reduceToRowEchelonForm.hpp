@@ -4,8 +4,8 @@
 #include "../Matrix.hpp"
 #include "../ranges/fors.hpp"
 
-template <typename T>
-std::size_t reduceToRowEchelonForm(Matrix<T>& matrix) {
+template <typename T, typename N, typename M>
+std::size_t reduceToRowEchelonForm(Matrix<T, N, M>& matrix) {
 	std::size_t rank = 0;
 
 	for (std::size_t column: range(matrix.columns())) {
