@@ -16,7 +16,7 @@ struct NegativeInfinity<T, typename std::is_integral<T>::type> {
 template <typename T>
 struct NegativeInfinity<T, typename std::is_floating_point<T>::type> {
 	T operator()() const {
-		static_assert(std::numeric_limits<T>::has_infinity);
+		static_assert(std::numeric_limits<T>::has_infinity, "");
 		return -std::numeric_limits<T>::infinity();
 	}
 };
