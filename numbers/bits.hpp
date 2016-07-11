@@ -15,5 +15,5 @@ std::size_t leastSignificantBit(T number) {
 
 template <typename T>
 bool isPowerOf2(T number) {
-	return number != 0 && (number & (number -1)) == 0;
+	return number != 0 && (number & (number - 1)) == 0;
 }
