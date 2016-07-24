@@ -27,7 +27,7 @@ public:
 	}
 
 private:
-	class Modulo {
+	struct Modulo {
 		static int value;
 	};
 	using Z = Zn<Modulo>;
@@ -57,6 +57,6 @@ private:
 };
 
 int TwoIntsHasher::Modulo::value = randomBigPrime();
-std::array<std::vector<uint64_t>, 2> TwoIntsHasher::powers = {{Z::rawValueOf(1), Z::rawValueOf(1)}};
+std::array<std::vector<TwoIntsHasher::Z>, 2> TwoIntsHasher::powers = {{{TwoIntsHasher::Z::rawValueOf(1)}, {TwoIntsHasher::Z::rawValueOf(1)}}};
 
-const std::array<uint64_t, 2> TwoIntsHasher::multipliers = {{Z::rawValueOf(137), Z::rawValueOf(97)}};
+const std::array<TwoIntsHasher::Z, 2> TwoIntsHasher::multipliers = {{TwoIntsHasher::Z::rawValueOf(137), TwoIntsHasher::Z::rawValueOf(97)}};
