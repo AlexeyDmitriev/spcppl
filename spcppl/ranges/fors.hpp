@@ -51,11 +51,11 @@ public:
 		return value;
 	}
 
-	bool operator==(IntegerIterator rhs) {
+	bool operator==(IntegerIterator rhs) const {
 		return value == rhs.value;
 	}
 
-	bool operator!=(IntegerIterator rhs) {
+	bool operator!=(IntegerIterator rhs) const {
 		return !(*this == rhs);
 	}
 

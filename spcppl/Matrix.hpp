@@ -31,8 +31,7 @@ public:
 		return value[index];
 	}
 
-	Matrix& operator*=(const Matrix& rhs) {
-		static_assert(std::is_same<N, M>::value, "May only *= quadratic matrices");
+	Matrix& operator*=(const Matrix<T, M, M>& rhs) {
 		return *this = *this * rhs;
 	}
 

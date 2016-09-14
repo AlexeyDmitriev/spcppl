@@ -345,9 +345,3 @@ struct IdentityHelper<Zn<T>> {
 
 template <int m>
 using ZnConst = Zn<std::integral_constant<int, m>>;
-
-#define MAKE_CONSTANT(name, type) \
-		struct name { \
-			static type value; \
-		}; \
-		type name::value;
