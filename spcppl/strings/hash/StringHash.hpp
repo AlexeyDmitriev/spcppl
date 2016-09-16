@@ -21,11 +21,11 @@ public:
 	}
 
 	uint64_t suffixHash(std::size_t from) const {
-		return hasher.hash(from, hasher.size());
+		return hasher.hash(from, s.size());
 	}
 
 	uint64_t hash() const {
-		return hasher.hash(0, hasher.size());
+		return hasher.hash(0, s.size());
 	}
 
 	bool less(std::size_t l1, std::size_t r1, std::size_t l2, std::size_t r2) {

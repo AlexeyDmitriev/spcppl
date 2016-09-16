@@ -14,4 +14,4 @@ constexpr bool hasBegin(...) {
 }
 
 template <typename T>
-using IsContainer = std::integral_constant<bool, hasBegin<T>(0)>
+using IsContainer = std::integral_constant<bool, hasBegin<T>(0)>;
