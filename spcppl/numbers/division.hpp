@@ -29,7 +29,7 @@ T divideTowardsZero(T a, T b) {
 }
 
 template <typename T>
-T divideAwayFrowZero(T a, T b) {
+T divideAwayFromZero(T a, T b) {
 	SPCPPL_ASSERT(b != 0);
 	bool changeSign = false;
 	if (a < 0) {
@@ -45,6 +45,5 @@ T divideAwayFrowZero(T a, T b) {
 		res *= -1;
 	}
 	return res;
-
 }
 
