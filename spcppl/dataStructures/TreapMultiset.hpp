@@ -40,8 +40,6 @@ private:
 		return v->count;
 	}
 
-	Node root;
-
 	Node merge(Node l, Node r) {
 		if (!l) {
 			return r;
@@ -109,8 +107,7 @@ private:
 	}
 
 public:
-	TreapMultiset() {
-		root = nullptr;
+	TreapMultiset(): root(nullptr) {
 	}
 
 	std::size_t size() const {
@@ -151,4 +148,7 @@ public:
 		root = merge(merge(l, m), r);
 		return m->value;
 	}
+
+private:
+	Node root;
 };
