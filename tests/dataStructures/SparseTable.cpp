@@ -30,7 +30,7 @@ TEST(SparseTableTest, WorksWithNonStandardOperatoins) {
 TEST(SparseTable, WorksWithEmptyRanges) {
 	std::vector<int> elements = {};
 	SparseTable<int, Min> sparse(elements, Min(), PositiveInfinity<int>()());
-	EXPECT_EQ(sparse.getResult(0, 0), PositiveInfinity<int>());
+	EXPECT_EQ(sparse.getResult(0, 0), PositiveInfinity<int>()());
 }
 
 TEST(SparseTable, WorksWithSingleton) {
