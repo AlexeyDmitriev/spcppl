@@ -1,7 +1,7 @@
 #pragma once
 
 #include <random>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 typedef std::mt19937 impl__Random;
 

@@ -2,7 +2,7 @@
 
 #include <functional>
 #include <cstddef>
-#include "../segmentTree/LazyPointSegmentTree.hpp"
+#include "LazyPointSegmentTree.hpp"
 
 template <typename T>
 class LazySumSegmentTree: public LazyPointSegmentTree<T, std::plus<T>> {

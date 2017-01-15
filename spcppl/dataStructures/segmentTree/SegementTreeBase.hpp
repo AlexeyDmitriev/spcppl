@@ -1,9 +1,9 @@
 #pragma once
 
 #include <vector>
-#include "../../typeTraits/IsContainer.hpp"
-#include "../../ranges/fors.hpp"
-#include "../../typeTraits/enable_if_t.hpp"
+#include <spcppl/typeTraits/IsContainer.hpp>
+#include <spcppl/typeTraits/enable_if_t.hpp>
+#include <spcppl/ranges/fors.hpp>
 
 template <typename T, typename Merge>
 class SegmentTreeBase {

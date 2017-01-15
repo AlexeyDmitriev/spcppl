@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <vector>
-#include "../../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename T, typename Merge, typename Update, typename ApplyUpdate, typename MergeUpdates>
 class LazySegmentTree {

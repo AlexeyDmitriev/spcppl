@@ -1,9 +1,9 @@
 #pragma once
 
 #include <iostream>
-#include "../identity.hpp"
+#include <spcppl/identity.hpp>
+#include <spcppl/assert.hpp>
 #include "gcd.hpp"
-#include "../assert.hpp"
 
 template <typename T>
 class Rational {

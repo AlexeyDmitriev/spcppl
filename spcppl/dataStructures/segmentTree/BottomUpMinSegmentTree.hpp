@@ -4,8 +4,8 @@
 #include <limits>
 #include <type_traits>
 #include "BottomUpSegmentTree.hpp"
-#include "../../functors/Min.hpp"
-#include "../../functors/PositiveInfinity.hpp"
+#include <spcppl/functors/Min.hpp>
+#include <spcppl/functors/PositiveInfinity.hpp>
 
 template <typename T>
 class BottomUpMinSegmentTree: public BottomUpSegmentTree<T, Min> {

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename T>
 T divideCeil(T a, T b) {

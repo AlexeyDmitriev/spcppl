@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cmath>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename T, typename SquareT = T>
 struct Point3D {

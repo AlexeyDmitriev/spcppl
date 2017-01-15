@@ -2,8 +2,8 @@
 
 #include <cmath>
 #include <tuple>
-#include "../assert.hpp"
 #include <cmath>
+#include <spcppl/assert.hpp>
 
 template <typename T, typename SquareT = T>
 struct Point2D {

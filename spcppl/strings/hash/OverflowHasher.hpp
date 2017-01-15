@@ -2,7 +2,7 @@
 
 #include <string>
 #include <vector>
-#include "../../ranges/fors.hpp"
+#include <spcppl/ranges/fors.hpp>
 
 class OverflowHasher {
 public:

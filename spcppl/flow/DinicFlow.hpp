@@ -4,7 +4,7 @@
 #include <vector>
 #include <cstring>
 #include <limits>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename FlowSize>
 class DinicFlow {

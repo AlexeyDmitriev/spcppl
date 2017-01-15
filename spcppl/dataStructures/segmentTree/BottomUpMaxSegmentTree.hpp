@@ -1,8 +1,8 @@
 #pragma once
 
-#include "BottomUpSegmentTree.hpp"
-#include "../../functors/Max.hpp"
-#include "../../functors/NegativeInfinity.hpp"
+#include BottomUpSegmentTree.hpp"
+#include <spcppl/functors/Max.hpp>
+#include <spcppl/functors/NegativeInfinity.hpp>
 
 template <typename T>
 class BottomUpMaxSegmentTree: public BottomUpSegmentTree<T, Max> {

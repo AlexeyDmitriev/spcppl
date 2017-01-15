@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../ranges/fors.hpp"
+#include <spcppl/ranges/fors.hpp>
 
 template <typename T>
 class VectorVectorBaseGraph {

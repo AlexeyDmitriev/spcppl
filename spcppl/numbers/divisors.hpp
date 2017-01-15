@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../ranges/wrappers.hpp"
+#include <spcppl/ranges/wrappers.hpp>
 
 template <typename T>
 std::vector<T> unsortedDivisors(const T& n) {

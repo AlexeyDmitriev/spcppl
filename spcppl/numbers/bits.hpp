@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename T>
 std::size_t leastSignificantBit(T number) {

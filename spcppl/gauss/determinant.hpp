@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../Matrix.hpp"
+#include <spcppl/Matrix.hpp>
 #include "reduceToRowEchelonForm.hpp"
 
 template <typename T, typename N>

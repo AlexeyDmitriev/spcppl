@@ -2,7 +2,7 @@
 
 #include <cstddef>
 #include <cstdint>
-#include "../random/random.hpp"
+#include <spcppl/random/random.hpp>
 
 template <typename T>
 class TreapMultiset {

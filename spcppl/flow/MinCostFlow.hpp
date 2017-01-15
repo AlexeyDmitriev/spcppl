@@ -5,7 +5,7 @@
 #include <functional>
 #include <utility>
 #include <queue>
-#include "../ranges/fors.hpp"
+#include <spcppl/ranges/fors.hpp>
 
 template <typename FlowSize, typename CostSize>
 struct CostFlow {

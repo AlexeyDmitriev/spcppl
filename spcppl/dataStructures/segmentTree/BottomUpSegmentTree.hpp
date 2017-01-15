@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../assert.hpp"
+#include <spcppl/assert.hpp>
 #include "SegementTreeBase.hpp"
 
 template <typename T, typename Merge>

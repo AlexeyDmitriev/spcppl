@@ -3,8 +3,8 @@
 #include <vector>
 #include <functional>
 #include <queue>
-#include "../../functors/PositiveInfinity.hpp"
-#include "../../assert.hpp"
+#include <spcppl/functors/PositiveInfinity.hpp>
+#include <spcppl/assert.hpp>
 
 template <
 		typename Graph,

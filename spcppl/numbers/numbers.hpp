@@ -2,9 +2,9 @@
 
 #include <vector>
 #include <cstddef>
-#include "../identity.hpp"
-#include "../typeTraits/enable_if_t.hpp"
-#include "../ranges/fors.hpp"
+#include <spcppl/identity.hpp>
+#include <spcppl/typeTraits/enable_if_t.hpp>
+#include <spcppl/ranges/fors.hpp>
 
 template <typename T>
 T factorial(std::size_t maxN) {

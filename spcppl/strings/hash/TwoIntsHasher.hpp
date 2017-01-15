@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 #include <array>
-#include "../../ranges/fors.hpp"
-#include "../../numbers/primes.hpp"
-#include "../../random/random.hpp"
-#include "../../numbers/Zn.hpp"
+#include <spcppl/ranges/fors.hpp>
+#include <spcppl/numbers/primes.hpp>
+#include <spcppl/random/random.hpp>
+#include <spcppl/numbers/Zn.hpp>
 
 class TwoIntsHasher {
 public:

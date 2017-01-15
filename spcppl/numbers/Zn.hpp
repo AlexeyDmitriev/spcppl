@@ -3,8 +3,8 @@
 #include <iostream>
 #include <assert.h>
 #include <type_traits>
-#include "../assert.hpp"
-#include "../identity.hpp"
+#include <spcppl/assert.hpp>
+#include <spcppl/identity.hpp>
 #include "extendedGcd.hpp"
 
 template <typename T>

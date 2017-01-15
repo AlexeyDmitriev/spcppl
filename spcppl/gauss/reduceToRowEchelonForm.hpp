@@ -1,8 +1,8 @@
 #pragma once
 
 #include <algorithm>
-#include "../Matrix.hpp"
-#include "../ranges/fors.hpp"
+#include <spcppl/Matrix.hpp>
+#include <spcppl/ranges/fors.hpp>
 
 template <typename T, typename N, typename M>
 std::size_t reduceToRowEchelonForm(Matrix<T, N, M>& matrix) {

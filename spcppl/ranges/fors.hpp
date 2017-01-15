@@ -1,7 +1,7 @@
 #pragma once
 
 #include <iterator>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 /**
 * Support decrementing and multi-passing, but not declared bidirectional(or even forward) because

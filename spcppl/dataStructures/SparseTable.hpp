@@ -1,8 +1,8 @@
 #pragma once
 
 #include <vector>
-#include "../ranges/fors.hpp"
-#include "../numbers/bits.hpp"
+#include <spcppl/ranges/fors.hpp>
+#include <spcppl/numbers/bits.hpp>
 
 template <typename T, typename Operation>
 class SparseTable {

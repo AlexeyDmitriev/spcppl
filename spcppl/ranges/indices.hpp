@@ -2,6 +2,7 @@
 
 #include <cstddef>
 #include <vector>
+#include <spcppl/assert.hpp>
 #include <spcppl/ranges/fors.hpp>
 
 template <typename T>

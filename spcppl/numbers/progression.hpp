@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../binpow.hpp"
+#include <spcppl/binpow.hpp>
 
 template <typename T>
 T geometricProgrssionSum(T first, T q, long long n) {

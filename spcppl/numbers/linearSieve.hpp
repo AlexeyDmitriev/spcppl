@@ -1,7 +1,7 @@
 #pragma once
 
 #include <vector>
-#include "../assert.hpp"
+#include <spcppl/assert.hpp>
 
 std::vector<int> linearSieve(int maxN) {
 	SPCPPL_ASSERT(maxN > 0);

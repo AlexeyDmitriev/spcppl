@@ -4,9 +4,9 @@
 #include <cstdint>
 #include <vector>
 #include <cstring>
-#include "../assert.hpp"
-#include "../ranges/fors.hpp"
-#include "../numbers/bits.hpp"
+#include <spcppl/assert.hpp>
+#include <spcppl/ranges/fors.hpp>
+#include <spcppl/numbers/bits.hpp>
 
 template <typename N>
 class BitSet {

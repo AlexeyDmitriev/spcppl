@@ -3,7 +3,7 @@
 #include <cstddef>
 #include <string>
 #include <algorithm>
-#include "../../assert.hpp"
+#include <spcppl/assert.hpp>
 
 template <typename Hasher>
 class StringHash {

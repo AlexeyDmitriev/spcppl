@@ -3,10 +3,10 @@
 #include <string>
 #include <vector>
 #include <algorithm>
-#include "../assert.hpp"
-#include "../ranges/fors.hpp"
-#include "../functors/Min.hpp"
-#include "../dataStructures/SparseTable.hpp"
+#include <spcppl/assert.hpp>
+#include <spcppl/ranges/fors.hpp>
+#include <spcppl/functors/Min.hpp>
+#include <spcppl/dataStructures/SparseTable.hpp>
 
 class SuffixArray {
 public:

@@ -2,7 +2,7 @@
 
 #include <vector>
 #include <cstddef>
-#include "../ranges/fors.hpp"
+#include <spcppl/ranges/fors.hpp>
 
 bool isPrime(int n) {
 	for (int i = 2; i * i <= n; ++i) {
