@@ -6,6 +6,7 @@
 
 template <typename T, typename N, typename M>
 std::size_t reduceToRowEchelonForm(Matrix<T, N, M>& matrix) {
+	static_assert(!std::is_integral<T>::value, "reduceToRowEchelonForm is disabled for integers because you can't divide them");
 	std::size_t rank = 0;
 
 	for (std::size_t column: range(matrix.columns())) {
