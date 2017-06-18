@@ -28,6 +28,16 @@ public:
 		dsu[v] = u;
 	}
 
+	std::size_t components() const {
+		std::size_t count = 0;
+		for (std::size_t i = 0; i < dsu.size(); ++i) {
+			if (dsu[i] == i) {
+				++count;
+			}
+		}
+		return count;
+	}
+
 private:
 	std::vector<std::size_t> dsu;
 };
