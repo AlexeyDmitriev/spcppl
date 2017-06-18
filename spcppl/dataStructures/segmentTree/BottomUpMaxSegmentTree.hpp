@@ -1,6 +1,6 @@
 #pragma once
 
-#include BottomUpSegmentTree.hpp"
+#include <spcppl/dataStructures/segmentTree/BottomUpSegmentTree.hpp>
 #include <spcppl/functors/Max.hpp>
 #include <spcppl/functors/NegativeInfinity.hpp>
 
