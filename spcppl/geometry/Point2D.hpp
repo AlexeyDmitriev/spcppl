@@ -141,7 +141,7 @@ struct LexicograficallyLess {
 	};
 };
 
-template <typename T, typename S>
+template <typename T, typename S = T>
 struct LessByAngle {
 	explicit LessByAngle(const Point2D<T>& center): center(center) {
 	}
