@@ -20,7 +20,7 @@ std::vector<T> factorials(std::size_t maxN) {
 	std::vector<T> res(maxN + 1);
 	res[0] = identity<T>();
 	for (std::size_t i = 1; i <= maxN; ++i) {
-		res[i] = res[i - 1] * static_cast<int64_t>(i);
+		res[i] = res[i - 1] * static_cast<long long>(i);
 	}
 	return res;
 }
