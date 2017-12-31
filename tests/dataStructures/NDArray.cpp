@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include <spcppl/dataStructures/NDArray.h>
+#include <spcppl/dataStructures/NDArray.hpp>
 
 TEST(NDArrayTest, Creation) {
 	NDArray<int, 2> array({{3, 5}}, 0);
