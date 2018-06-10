@@ -38,12 +38,14 @@ struct Point3D {
 	Point3D& operator*=(T rhs) {
 		x *= rhs;
 		y *= rhs;
+		z *= rhs;
 		return *this;
 	}
 
 	Point3D& operator/=(T rhs) {
 		x /= rhs;
 		y /= rhs;
+		z /= rhs;
 		return *this;
 	}
 
