@@ -53,7 +53,7 @@ private:
 		}
 		if (l <= vl && vr <= r) {
 			nodes[v].value = applyUpdate(nodes[v].value, update, vl, vr);
-			nodes[v].update = mergeUpdates(nodes[v].value, update);
+			nodes[v].update = mergeUpdates(nodes[v].update, update);
 			return;
 		}
 		push(v, vl, vr);
