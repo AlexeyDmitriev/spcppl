@@ -55,16 +55,16 @@ public:
 		FlowSize flow = 0;
 		std::size_t n = g.size();
 		std::vector<CostSize> potential(n);
-		const std::size_t NO_PARENT = std::numeric_limits<size_t>::max();
+		const std::size_t NO_PARENT = std::numeric_limits<std::size_t>::max();
 		{
-			std::vector<size_t> p(n, NO_PARENT);
+			std::vector<std::size_t> p(n, NO_PARENT);
 			std::vector<CostSize> d(n);
 			d[s] = 0;
 			p[s] = s;
 			bool changed = true;
 			while (changed) {
 				changed = false;
-				for (size_t i = 0; i < edges.size(); ++i) {
+				for (auto i: range(edges.size())) {
 					Edge& e = edges[i];
 					if (e.cap == e.flow || p[e.from] == -1) {
 						continue;
@@ -80,7 +80,7 @@ public:
 		}
 		while (true) {
 			std::vector<CostSize> d(n);
-			std::vector<size_t> p(n, NO_PARENT);
+			std::vector<std::size_t> p(n, NO_PARENT);
 
 			typedef std::pair<CostSize, std::size_t> QueueType;
 			std::priority_queue<QueueType, std::vector<QueueType>, std::greater<QueueType>> q;
@@ -88,7 +88,7 @@ public:
 			q.push(std::make_pair(0, s));
 
 			while (!q.empty()) {
-				size_t v = q.top().second;
+				std::size_t v = q.top().second;
 				CostSize oldD = q.top().first;
 				q.pop();
 				if (oldD != d[v]) {
@@ -138,7 +138,7 @@ public:
 				cur = edges[id].from;
 			}
 
-			for (size_t i: range(n)) {
+			for (auto i: range(n)) {
 				if (p[i] != NO_PARENT) {
 					potential[i] = potential[i] + d[i];
 				}

@@ -44,21 +44,21 @@ public:
 	}
 
 	BitSet& operator|=(const BitSet& rhs) {
-		for (size_t i: range(v.size())) {
+		for (auto i: range(v.size())) {
 			v[i] |= rhs.v[i];
 		}
 		return *this;
 	}
 
 	BitSet& operator&=(const BitSet& rhs) {
-		for (size_t i: range(v.size())) {
+		for (auto i: range(v.size())) {
 			v[i] &= rhs.v[i];
 		}
 		return *this;
 	}
 
 	BitSet& operator^=(const BitSet& rhs) {
-		for (size_t i: range(v.size())) {
+		for (auto i: range(v.size())) {
 			v[i] ^= rhs.v[i];
 		}
 		return *this;

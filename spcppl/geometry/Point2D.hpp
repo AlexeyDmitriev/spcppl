@@ -51,7 +51,7 @@ struct Point2D {
 		return *this;
 	}
 
-	T& operator[](size_t i) {
+	T& operator[](std::size_t i) {
 		if (i == 0) {
 			return x;
 		}
@@ -61,7 +61,7 @@ struct Point2D {
 		SPCPPL_ASSERT(false);
 	}
 
-	const T& operator[](size_t i) const {
+	const T& operator[](std::size_t i) const {
 		if (i == 0) {
 			return x;
 		}

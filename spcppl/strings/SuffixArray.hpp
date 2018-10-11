@@ -134,7 +134,7 @@ private:
 
 		std::vector<std::size_t> lcp(s.size() - 1);
 		for (std::size_t i = 0; i < s.size(); ++i) {
-			size_t position = base.getPosition(i);
+			std::size_t position = base.getPosition(i);
 			if (position == s.size() - 1) {
 				curLcp = 0;
 				continue;

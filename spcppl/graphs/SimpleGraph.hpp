@@ -4,7 +4,7 @@
 
 class SimpleGraph: public VectorVectorBaseGraph<std::size_t> {
 public:
-	explicit SimpleGraph(size_t n): VectorVectorBaseGraph(n) {}
+	explicit SimpleGraph(std::size_t n): VectorVectorBaseGraph(n) {}
 
 	Vertex endOfEdge(Vertex, Edge edge) const {
 		return edge;

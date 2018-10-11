@@ -10,7 +10,7 @@ public:
 	using Vertex = typename Base::Vertex;
 	using Edge = typename Base::Edge;
 	using Base::g;
-	explicit WeightedGraph(size_t n): Base(n) {}
+	explicit WeightedGraph(std::size_t n): Base(n) {}
 
 	Vertex endOfEdge(Vertex, Edge edge) const {
 		return edge.first;
