@@ -4,6 +4,7 @@
 #include <array>
 #include <vector>
 #include <type_traits>
+#include <spcppl/typeTraits/enable_if_t.hpp>
 #include <spcppl/assert.hpp>
 #include <spcppl/ranges/fors.hpp>
 
@@ -35,22 +36,22 @@ public:
 	NDArrayView&& operator= (NDArrayView&&) = delete;
 
 private:
-	template <std::size_t d = depth, std::enable_if_t<d == 1>* = nullptr>
+	template <std::size_t d = depth, enable_if_t<d == 1>* = nullptr>
 	T& get_element_impl(std::size_t index) const {
 		return elements[index];
 	}
 
-	template <std::size_t d = depth, std::enable_if_t<d != 1>* = nullptr>
+	template <std::size_t d = depth, enable_if_t<d != 1>* = nullptr>
 	NDArrayView<T, depth - 1> get_element_impl(std::size_t index) const {
 		return NDArrayView<T, depth - 1>(elements + suffixSizes[1] * index, suffixSizes + 1);
 	}
 
-	template <std::size_t d = depth, std::enable_if_t<d == 1>* = nullptr>
+	template <std::size_t d = depth, enable_if_t<d == 1>* = nullptr>
 	T& get_at_index(std::size_t index) const {
 		return elements[index];
 	}
 
-	template <std::size_t d = depth, std::enable_if_t<d != 1>* = nullptr>
+	template <std::size_t d = depth, enable_if_t<d != 1>* = nullptr>
 	NDArrayView<T, depth - 1> get_at_index(std::size_t index) const {
 		return NDArrayView<T, depth - 1>(elements + index, suffixSizes + 1);
 	}

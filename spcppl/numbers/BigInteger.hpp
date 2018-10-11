@@ -8,6 +8,7 @@
 #include <spcppl/ranges/Range.hpp>
 #include <spcppl/ranges/wrappers.hpp>
 #include <spcppl/typeTraits/IsSaneInteger.hpp>
+#include <spcppl/typeTraits/enable_if_t.hpp>
 #include <iostream>
 #include <iomanip>
 
@@ -63,7 +64,7 @@ public:
 		removeLeadingZeroes();
 	}
 
-	template <typename T, typename E = std::enable_if_t<IsSaneInteger<T>>>
+	template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
 	explicit BigInteger(T t) {
 		if (t < 0) {
 			isNegative = true;
