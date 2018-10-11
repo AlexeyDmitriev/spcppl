@@ -82,7 +82,7 @@ public:
 			std::vector<CostSize> d(n);
 			std::vector<std::size_t> p(n, NO_PARENT);
 
-			typedef std::pair<CostSize, std::size_t> QueueType;
+			using QueueType = std::pair<CostSize, std::size_t>;
 			std::priority_queue<QueueType, std::vector<QueueType>, std::greater<QueueType>> q;
 
 			q.push(std::make_pair(0, s));

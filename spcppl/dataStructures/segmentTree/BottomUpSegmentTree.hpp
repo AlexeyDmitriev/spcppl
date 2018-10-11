@@ -40,7 +40,7 @@ public:
 	}
 
 protected:
-	typedef SegmentTreeBase<T, Merge> Base;
+	using Base = SegmentTreeBase<T, Merge>;
 	using Base::n;
 	using Base::defaultValue;
 	using Base::shift;

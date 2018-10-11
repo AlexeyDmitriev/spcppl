@@ -85,7 +85,7 @@ private:
 
 template <typename T>
 class ReversedIntegerRange {
-	typedef std::reverse_iterator<IntegerIterator<T>> IteratorType;
+	using IteratorType = std::reverse_iterator<IntegerIterator<T>>;
 public:
 	ReversedIntegerRange(T begin, T end): begin_(begin), end_(end) {
 		SPCPPL_ASSERT(begin >= end);

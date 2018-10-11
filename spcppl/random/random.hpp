@@ -3,11 +3,13 @@
 #include <random>
 #include <spcppl/assert.hpp>
 
-typedef std::mt19937 impl__Random;
+namespace impl {
+using Random = std::mt19937;
+}  // namespace impl
 
-inline impl__Random& randomEngine() {
+inline impl::Random& randomEngine() {
 	static std::random_device device;
-	static impl__Random engine(device());
+	static impl::Random engine(device());
 	return engine;
 }
 

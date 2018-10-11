@@ -6,7 +6,7 @@
 
 template <typename T, typename Merge, typename Update, typename ApplyUpdate, typename MergeUpdates>
 class TopDownSegmentTree: protected SegmentTreeBase<T, Merge> {
-	typedef std::size_t size_t;
+	using size_t = std::size_t;
 public:
 	template <typename R>
 	TopDownSegmentTree(
@@ -36,7 +36,7 @@ public:
 	}
 
 protected:
-	typedef SegmentTreeBase<T, Merge> Base;
+	using Base = SegmentTreeBase<T, Merge>;
 	using Base::n;
 	using Base::defaultValue;
 	using Base::shift;
