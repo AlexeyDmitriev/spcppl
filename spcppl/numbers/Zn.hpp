@@ -345,3 +345,5 @@ struct IdentityHelper<Zn<T>> {
 
 template <int m>
 using ZnConst = Zn<std::integral_constant<int, m>>;
+
+using Zn7 = ZnConst<1000000007>;
