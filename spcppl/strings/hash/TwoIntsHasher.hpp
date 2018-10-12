@@ -16,7 +16,7 @@ public:
 		for (std::size_t j = 0; j < 2; ++j) {
 			hashes[j].resize(s.length() + 1);
 			for (std::size_t i: range(s.size())) {
-				hashes[j][i + 1] = (hashes[j][i] * multipliers[j] + s[i]);
+				hashes[j][i + 1] = (hashes[j][i] * multipliers[j] + static_cast<int>(s[i]));
 			}
 		}
 	}

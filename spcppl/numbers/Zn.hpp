@@ -3,6 +3,8 @@
 #include <iostream>
 #include <assert.h>
 #include <type_traits>
+#include <spcppl/typeTraits/enable_if_t.hpp>
+#include <spcppl/typeTraits/IsSaneInteger.hpp>
 #include <spcppl/assert.hpp>
 #include <spcppl/identity.hpp>
 #include "extendedGcd.hpp"
@@ -16,15 +18,8 @@ public:
 	/**
 	* Instead of ctor, to allow not to normalize in ctor
 	*/
-	static Zn valueOf(int value) {
-		int x = value % mod();
-		if (x < 0) {
-			x += mod();
-		}
-		return Zn(x);
-	}
-
-	static Zn valueOf(long long value) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	static Zn valueOf(U value) {
 		int x = static_cast<int>(value % mod());
 		if (x < 0) {
 			x += mod();
@@ -69,25 +64,19 @@ public:
 		return *this;
 	}
 
-	Zn& operator-=(int rhs) {
-		return *this -= Zn::valueOf(rhs);
-	}
-
-	Zn& operator-=(long long rhs) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	Zn& operator-=(U rhs) {
 		return *this -= Zn::valueOf(rhs);
 	}
 
 	Zn& operator*=(const Zn& rhs) {
-		long long result = static_cast<long long>(value) * static_cast<long long>(rhs.value);
+		long long result = static_cast<int64_t>(value) * static_cast<int64_t>(rhs.value);
 		value = static_cast<int>(result % mod());
 		return *this;
 	}
 
-	Zn& operator*=(int rhs) {
-		return *this *= Zn::valueOf(rhs);
-	}
-
-	Zn& operator*=(long long rhs) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	Zn& operator*=(U rhs) {
 		return *this *= Zn::valueOf(rhs);
 	}
 
@@ -104,16 +93,9 @@ public:
 		return *this *= rhs.inversed();
 	}
 
-	Zn& operator/=(int rhs) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	Zn& operator/=(U rhs) {
 		return *this /= Zn::valueOf(rhs);
-	}
-
-	Zn& operator/=(long long rhs) {
-		return *this /= Zn::valueOf(rhs);
-	}
-
-	bool operator==(const Zn& rhs) const {
-		return value == rhs.value;
 	}
 
 	Zn inversed() const {
@@ -136,6 +118,9 @@ public:
 	template <typename U>
 	friend std::istream& operator>>(std::istream&, Zn<U>& zn);
 
+	template <typename U>
+	friend bool operator==(const Zn<U>& lhs, const Zn<U>& rhs);
+
 	int intValue() const {
 		return value;
 	}
@@ -154,35 +139,31 @@ private:
 	}
 
 	template <int N = T::value>
-	static constexpr bool positive_or_runtime(int) {
-		return N > 0;
+	static constexpr bool correct_or_runtime(int) {
+		return N > 0 && N <= (1 << 30);
 	}
-	static constexpr bool positive_or_runtime(...) {
+	static constexpr bool correct_or_runtime(...) {
 		return true;
 	}
 	static_assert(
 			std::is_same<typename std::decay<decltype(T::value)>::type, int>::value,
 			"T::value must be int"
 	);
-	static_assert(positive_or_runtime(0), "Mod has to be positive integer");
+	static_assert(correct_or_runtime(0), "Mod has to be positive integer up to 1 << 30");
 };
 
 template <typename T>
-bool operator==(const Zn<T>& lhs, int rhs) {
+bool operator==(const Zn<T>& lhs, const Zn<T>& rhs) {
+	return lhs.value == rhs.value;
+}
+
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+bool operator==(const Zn<T>& lhs, U rhs) {
 	return lhs == Zn<T>::valueOf(rhs);
 }
 
-template <typename T>
-bool operator==(int lhs, const Zn<T>& rhs) {
-	return rhs == lhs;
-}
-template <typename T>
-bool operator==(const Zn<T>& lhs, long long rhs) {
-	return lhs == Zn<T>::valueOf(rhs);
-}
-
-template <typename T>
-bool operator==(long long lhs, Zn<T>& rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+bool operator==(U lhs, const Zn<T>& rhs) {
 	return rhs == lhs;
 }
 
@@ -191,23 +172,13 @@ bool operator!=(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
 
-template <typename T>
-bool operator!=(const Zn<T>& lhs, int rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+bool operator!=(const Zn<T>& lhs, U rhs) {
 	return !(lhs == rhs);
 }
 
-template <typename T>
-bool operator!=(int lhs, const Zn<T>& rhs) {
-	return !(lhs == rhs);
-}
-
-template <typename T>
-bool operator!=(const Zn<T>& lhs, long long rhs) {
-	return !(lhs == rhs);
-}
-
-template <typename T>
-bool operator!=(long long rhs, const Zn<T>& lhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+bool operator!=(U lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
 
@@ -217,25 +188,14 @@ Zn<T> operator+(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy += rhs;
 }
 
-template <typename T>
-Zn<T> operator+(const Zn<T>& lhs, int rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator+(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy += rhs;
 }
 
-template <typename T>
-Zn<T> operator+(int lhs, const Zn<T>& rhs) {
-	return rhs + lhs;
-}
-
-template <typename T>
-Zn<T> operator+(const Zn<T>& lhs, long long rhs) {
-	Zn<T> copy = lhs;
-	return copy += rhs;
-}
-
-template <typename T>
-Zn<T> operator+(long long lhs, const Zn<T>& rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator+(U lhs, const Zn<T>& rhs) {
 	return rhs + lhs;
 }
 
@@ -245,25 +205,14 @@ Zn<T> operator-(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy -= rhs;
 }
 
-template <typename T>
-Zn<T> operator-(const Zn<T>& lhs, int rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator-(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy -= rhs;
 }
 
-template <typename T>
-Zn<T> operator-(int lhs, const Zn<T>& rhs) {
-	return Zn<T>::valueOf(lhs) - rhs;
-}
-
-template <typename T>
-Zn<T> operator-(const Zn<T>& lhs, long long rhs) {
-	Zn<T> copy = lhs;
-	return copy -= rhs;
-}
-
-template <typename T>
-Zn<T> operator-(long lhs, const Zn<T>& rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator-(U lhs, const Zn<T>& rhs) {
 	return Zn<T>::valueOf(lhs) - rhs;
 }
 
@@ -273,25 +222,14 @@ Zn<T> operator*(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy *= rhs;
 }
 
-template <typename T>
-Zn<T> operator*(const Zn<T>& lhs, int rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator*(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy *= rhs;
 }
 
-template <typename T>
-Zn<T> operator*(int lhs, const Zn<T>& rhs) {
-	return rhs * lhs;
-}
-
-template <typename T>
-Zn<T> operator*(const Zn<T>& lhs, long long rhs) {
-	Zn<T> copy = lhs;
-	return copy *= rhs;
-}
-
-template <typename T>
-Zn<T> operator*(long long lhs, const Zn<T>& rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator*(U lhs, const Zn<T>& rhs) {
 	return rhs * lhs;
 }
 
@@ -301,25 +239,14 @@ Zn<T> operator/(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy /= rhs;
 }
 
-template <typename T>
-Zn<T> operator/(const Zn<T>& lhs, int rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator/(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy /= rhs;
 }
 
-template <typename T>
-Zn<T> operator/(int lhs, const Zn<T>& rhs) {
-	return Zn<T>::valueOf(lhs) / rhs;
-}
-
-template <typename T>
-Zn<T> operator/(const Zn<T>& lhs, long long rhs) {
-	Zn<T> copy = lhs;
-	return copy /= rhs;
-}
-
-template <typename T>
-Zn<T> operator/(long long lhs, const Zn<T>& rhs) {
+template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+Zn<T> operator/(U lhs, const Zn<T>& rhs) {
 	return Zn<T>::valueOf(lhs) / rhs;
 }
 
@@ -330,7 +257,7 @@ std::ostream& operator<<(std::ostream& stream, const Zn<T>& zn) {
 
 template <typename T>
 std::istream& operator>>(std::istream& stream, Zn<T>& zn) {
-	long long value;
+	int64_t value;
 	stream >> value;
 	zn.value = static_cast<int>(value % T::value);
 	return stream;
