@@ -8,7 +8,7 @@ template <typename T>
 class BottomUpMaxSegmentTree: public BottomUpSegmentTree<T, Max> {
 public:
 	template <typename R>
-	BottomUpMaxSegmentTree(
+	explicit BottomUpMaxSegmentTree(
 			const R& range,
 			const T& infinity = NegativeInfinity<T>()()
 	): BottomUpSegmentTree<T, Max>(range, infinity) {

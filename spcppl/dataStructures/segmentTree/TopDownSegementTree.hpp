@@ -9,7 +9,7 @@ class TopDownSegmentTree: protected SegmentTreeBase<T, Merge> {
 	using size_t = std::size_t;
 public:
 	template <typename R>
-	TopDownSegmentTree(
+	explicit TopDownSegmentTree(
 			const R& range,
 			const T& defaultValue = T(),
 			const Merge& merge = Merge(),

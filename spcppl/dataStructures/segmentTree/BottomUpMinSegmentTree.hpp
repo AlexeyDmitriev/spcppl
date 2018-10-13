@@ -11,7 +11,7 @@ template <typename T>
 class BottomUpMinSegmentTree: public BottomUpSegmentTree<T, Min> {
 public:
 	template <typename R>
-	BottomUpMinSegmentTree(
+	explicit BottomUpMinSegmentTree(
 			const R& range,
 			const T& infinity = PositiveInfinity<T>()()
 	): BottomUpSegmentTree<T, Min>(range, infinity) {

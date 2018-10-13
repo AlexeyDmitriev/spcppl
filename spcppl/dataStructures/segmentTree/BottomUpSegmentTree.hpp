@@ -8,7 +8,7 @@ class BottomUpSegmentTree: protected SegmentTreeBase<T, Merge> {
 public:
 
 	template <typename R>
-	BottomUpSegmentTree(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()):
+	explicit BottomUpSegmentTree(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()):
 			SegmentTreeBase<T, Merge>(range, defaultValue, merge) {
 
 	}

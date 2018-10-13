@@ -8,7 +8,7 @@
 template <typename T, typename Merge>
 class SegmentTreeBase {
 protected:
-	SegmentTreeBase(std::size_t n, const T& defaultValue = T(), const Merge& merge = Merge()):
+	explicit SegmentTreeBase(std::size_t n, const T& defaultValue = T(), const Merge& merge = Merge()):
 			n(n),
 			defaultValue(defaultValue),
 			shift(calculateShift(n)),
@@ -18,7 +18,7 @@ protected:
 	}
 
 	template <typename R, typename = enable_if_t<IsContainer<R>::value>>
-	SegmentTreeBase(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()) :
+	explicit SegmentTreeBase(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()) :
 			SegmentTreeBase(
 					static_cast<std::size_t>(std::distance(std::begin(range), std::end(range))),
 					defaultValue,

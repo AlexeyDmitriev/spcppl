@@ -14,7 +14,7 @@ class LazyPointSegmentTree {
 	};
 
 public:
-	LazyPointSegmentTree(
+	explicit LazyPointSegmentTree(
 			size_t size,
 			const T& defaultValue = T(),
 			const Merge& merge = Merge()
