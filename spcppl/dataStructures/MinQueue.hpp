@@ -8,7 +8,7 @@
 template <typename T, typename Compare = std::less<T>>
 class MinQueue {
 public:
-	MinQueue(Compare compare = Compare()): size_(0), compare(compare) {
+	explicit MinQueue(Compare compare = Compare()): size_(0), compare(compare) {
 	}
 
 	void push(const T& value) {

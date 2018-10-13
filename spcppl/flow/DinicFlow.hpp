@@ -14,7 +14,7 @@ class DinicFlow {
 		FlowSize flow;
 	};
 public:
-	DinicFlow(std::size_t n): g(n), queue(n), pointer(n), used(n), d(n) {
+	explicit DinicFlow(std::size_t n): g(n), queue(n), pointer(n), used(n), d(n) {
 	}
 
 	void addEdge(std::size_t from, std::size_t to, FlowSize capacity) {

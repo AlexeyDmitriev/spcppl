@@ -93,7 +93,7 @@ class NDArray {
 public:
 	using Ref = typename NDArrayView<T, depth>::Ref;
 
-	explicit NDArray(const std::array<std::size_t, depth>& sizes):
+	NDArray(const std::array<std::size_t, depth>& sizes):
 			suffixSizes(suffixProducts(sizes)),
 			elements(suffixSizes[0]) {
 	}
