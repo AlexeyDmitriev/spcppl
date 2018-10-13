@@ -81,6 +81,59 @@ public:
 		}
 	}
 
+	void operator*=(const BigInteger& rhs) {
+		isNegative ^= rhs.isNegative;
+		std::vector<int32_t> v(number.size() + rhs.number.size());
+		for (size_t i: range(number.size())) {
+			uint64_t carry = 0;
+			for (size_t j: range(rhs.number.size())) {
+				uint64_t current = static_cast<uint64_t>(rhs.number[j]) * static_cast<uint64_t>(number[i]) + carry + v[i + j];
+				carry = current / multiplier;
+				v[i + j] = static_cast<int32_t>(current % multiplier);
+			}
+			size_t position = rhs.number.size() + i;
+			while (carry > 0) {
+				uint64_t current = v[position] + carry;
+				carry = current / multiplier;
+				v[position] = static_cast<int32_t>(current % multiplier);
+				++position;
+			}
+		}
+		number = std::move(v);
+		removeLeadingZeroes();
+	}
+
+	template <typename T, enable_if_t<IsSaneInteger<T> && (sizeof(T) > sizeof(int32_t))>* = nullptr>
+	void operator*=(T t) {
+		return *this *= BigInteger(t);
+	}
+
+	template <typename T, enable_if_t<IsSaneInteger<T> && sizeof(T) <= sizeof(int32_t)>* = nullptr>
+	void operator*=(T t) {
+		if (t == 0) {
+			number.clear();
+			isNegative = false;
+			return;
+		}
+		auto signed_multiplier = static_cast<int64_t>(t);
+		if (signed_multiplier < 0) {
+			isNegative = !isNegative;
+			signed_multiplier = -signed_multiplier;  // No overflow since sizeof(T) < sizeof(int64_t)
+		}
+		auto unsignedMultiplier = static_cast<uint64_t>(signed_multiplier);
+		uint64_t carry = 0;
+		for (auto& digit: number) {
+			uint64_t current = static_cast<uint64_t>(digit) * unsignedMultiplier + carry;
+			carry = current / multiplier;
+			digit = static_cast<int32_t>(current % multiplier);
+		}
+		while (carry > 0) {
+			number.push_back(static_cast<int32_t>(carry % multiplier));
+			carry /= multiplier;
+		}
+		SPCPPL_ASSERT(number.empty() || number.back() != 0);
+	}
+
 	void operator+=(const BigInteger& rhs) {
 		if (rhs.isZero()) {
 			return;
@@ -215,6 +268,8 @@ private:
 
 	static constexpr int digits = 9;
 	static constexpr std::int32_t multiplier = 1'000'000'000;
+
+	// todo: measure performance with uint32_t instead
 	std::vector<std::int32_t> number;
 	bool isNegative;
 
@@ -265,6 +320,23 @@ BigInteger operator+(BigInteger lhs, const BigInteger& rhs) {
 BigInteger operator-(BigInteger lhs, const BigInteger& rhs) {
 	lhs -= rhs;
 	return lhs;
+}
+
+BigInteger operator*(BigInteger lhs, const BigInteger& rhs) {
+	lhs *= rhs;
+	return lhs;
+}
+
+template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
+BigInteger operator*(BigInteger lhs, T rhs) {
+	lhs *= rhs;
+	return lhs;
+}
+
+template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
+BigInteger operator*(T lhs, BigInteger rhs) {
+	rhs *= lhs;
+	return rhs;
 }
 
 // todo: measure performance vs building string
