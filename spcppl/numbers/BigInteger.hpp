@@ -278,6 +278,7 @@ private:
 	friend std::ostream& operator<<(std::ostream& lhs, const BigInteger& rhs);
 };
 
+//todo: comparison with integers directly
 bool operator<(const BigInteger& lhs, const BigInteger& rhs) {
 	if (lhs.isNegative && !rhs.isNegative) {
 		return true;
@@ -322,6 +323,7 @@ BigInteger operator-(BigInteger lhs, const BigInteger& rhs) {
 	return lhs;
 }
 
+// todo: separate function for const& and && cases
 BigInteger operator*(BigInteger lhs, const BigInteger& rhs) {
 	lhs *= rhs;
 	return lhs;
