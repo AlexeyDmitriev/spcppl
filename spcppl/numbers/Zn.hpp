@@ -32,13 +32,11 @@ public:
 		return Zn(value);
 	}
 
-	Zn& operator=(int rhs) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	Zn& operator=(U rhs) {
 		return *this = Zn::valueOf(rhs);
 	}
 
-	Zn& operator=(long long rhs) {
-		return *this = Zn::valueOf(rhs);
-	}
 
 	Zn& operator+=(const Zn& rhs) {
 		value += rhs.value;
@@ -48,11 +46,8 @@ public:
 		return *this;
 	}
 
-	Zn& operator+=(int rhs) {
-		return *this += Zn::valueOf(rhs);
-	}
-
-	Zn& operator+=(long long rhs) {
+	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	Zn& operator+=(U rhs) {
 		return *this += Zn::valueOf(rhs);
 	}
 
