@@ -3,6 +3,7 @@
 #include <vector>
 #include <cstddef>
 #include <spcppl/ranges/fors.hpp>
+#include <spcppl/Bool.hpp>
 
 bool isPrime(int n) {
 	for (int i = 2; i * i <= n; ++i) {
@@ -21,19 +22,6 @@ bool isPrime(int64_t n) {
 	}
 	return n >= 2;
 }
-
-struct Bool {
-	/* implicit */ Bool(bool value): value(value) {
-
-	}
-
-	operator bool() const {
-		return value;
-	}
-
-private:
-	bool value;
-};
 
 std::vector<Bool> primeMap(std::size_t maxN) {
 	std::vector<Bool> prime(maxN + 1, true);
