@@ -61,6 +61,14 @@ private:
 		}
 	}
 
+	void clear(Node v) {
+		if (v) {
+			clear(v->l);
+			clear(v->r);
+		}
+		delete v;
+	}
+
 	void splitByIndex(Node v, std::size_t index, Node& l, Node& r) {
 		l = nullptr;
 		r = nullptr;
@@ -138,7 +146,33 @@ public:
 		root = merge(l, r);
 	}
 
-	const T& operator [] (std::size_t index) {
+	const T* find(const T& value) {
+		const T* result = lower_bound(value);
+		if (result == nullptr || value < *result) {
+			return result;
+		} else {
+			return false;
+		}
+	}
+
+	// todo(performance): rewrite without split/merge
+	const T* lower_bound(const T& value) {
+		Node l = nullptr;
+		Node m = nullptr;
+		Node r = nullptr;
+		splitByValue(root, value, l, r);
+		if (r == nullptr) {
+			root = l;
+			return nullptr;
+		}
+		splitByIndex(r, 1, m, r);
+		SPCPPL_ASSERT(m != nullptr);
+		root = merge(merge(l, m), r);
+		return &m->value;
+	}
+
+	// todo(performance): rewrite without split/merge
+	const T& operator [](std::size_t index) {
 		Node l = nullptr;
 		Node m = nullptr;
 		Node r = nullptr;
@@ -147,6 +181,10 @@ public:
 		SPCPPL_ASSERT(m != nullptr);
 		root = merge(merge(l, m), r);
 		return m->value;
+	}
+
+	void clear() {
+		clear(root);
 	}
 
 private:
