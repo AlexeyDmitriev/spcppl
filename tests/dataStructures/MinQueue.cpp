@@ -44,7 +44,7 @@ TEST(MinQueueTest, StressTest) {
 	
 	for (auto _: range(100000)) {
 		static_cast<void>(_);
-		bool push = std_queue.size() == 0 || randomInteger(2) == 0;
+		bool push = std_queue.empty() || randomInteger(2) == 0;
 		if (push) {
 			int value = randomInteger();
 			min_queue.push(value);
