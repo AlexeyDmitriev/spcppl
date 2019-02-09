@@ -41,7 +41,7 @@ public:
 				start = 1;
 			}
 		}
-		SPCPPL_ASSERT(!str.empty());
+		SPCPPL_ASSERT(start < str.size());
 
 		std::size_t firstBlockEnd = str.size() % digits;
 		if (firstBlockEnd < start) {
