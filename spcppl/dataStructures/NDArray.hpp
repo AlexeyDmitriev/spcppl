@@ -92,6 +92,7 @@ template <typename T, std::size_t depth>
 class NDArray {
 public:
 	using Ref = typename NDArrayView<T, depth>::Ref;
+	using ConstRef = typename NDArrayView<const T, depth>::Ref;
 
 	NDArray(const std::array<std::size_t, depth>& sizes):
 			suffixSizes(suffixProducts(sizes)),
@@ -107,7 +108,7 @@ public:
 		return static_cast<NDArrayView<T, depth>>(*this)[index];
 	}
 
-	Ref operator[] (std::size_t index) const {
+	ConstRef operator[] (std::size_t index) const {
 		return static_cast<NDArrayView<const T, depth>>(*this)[index];
 	}
 
@@ -123,7 +124,7 @@ public:
 		return static_cast<NDArrayView<T, depth>>(*this).front();
 	}
 
-	Ref front() const {
+	ConstRef front() const {
 		return static_cast<NDArrayConstView<T, depth - 1>>(*this).front();
 	}
 
@@ -131,7 +132,7 @@ public:
 		return static_cast<NDArrayView<T, depth>>(*this).back();
 	}
 
-	Ref back() const {
+	ConstRef back() const {
 		return static_cast<NDArrayConstView<T, depth - 1>>(*this).back();
 	}
 private:
@@ -146,6 +147,10 @@ private:
 	}
 	std::array<std::size_t, depth> suffixSizes;
 	std::vector<T> elements;
+
+
+	template <typename U, std::size_t e>
+	friend bool operator==(const NDArray<U, e>& lhs, const NDArray<U, e>& rhs);
 };
 
 template <typename T, typename... Args>
@@ -165,4 +170,15 @@ NDArray<T, sizeof...(Args)> makeFilledArray(const T& value, Args... sizes) {
 			}},
 			value
 	);
+}
+
+template <typename T, std::size_t d>
+bool operator==(const NDArray<T, d>& lhs, const NDArray<T, d>& rhs) {
+	SPCPPL_ASSERT(lhs.suffixSizes == rhs.suffixSizes);
+	return lhs.elements == rhs.elements;
+}
+
+template <typename T, std::size_t d>
+bool operator!=(const NDArray<T, d>& lhs, const NDArray<T, d>& rhs) {
+	return !(lhs == rhs);
 }

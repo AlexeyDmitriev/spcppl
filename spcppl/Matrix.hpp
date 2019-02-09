@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <spcppl/dataStructures/NDArray.hpp>
 #include "assert.hpp"
 #include "matrixMultiplication.hpp"
 #include "identity.hpp"
@@ -9,7 +10,7 @@
 template <typename T, typename N, typename M>
 class Matrix {
 public:
-	explicit Matrix(const T& value = T()): value(make_vector<T>(rows(), columns(), value)) {
+	explicit Matrix(const T& value = T()): value({rows(), columns()}, value) {
 
 	}
 
@@ -21,12 +22,12 @@ public:
 		return M::value;
 	}
 
-	std::vector<T>& operator[](std::size_t index) {
+	auto operator[](std::size_t index) {
 		SPCPPL_ASSERT(index < rows());
 		return value[index];
 	}
 
-	const std::vector<T>& operator[](std::size_t index) const {
+	auto operator[](std::size_t index) const {
 		SPCPPL_ASSERT(index < rows());
 		return value[index];
 	}
@@ -69,7 +70,8 @@ public:
 	}
 
 private:
-	std::vector<std::vector<T>> value;
+	//std::vector<std::vector<T>> value;
+	NDArray<T, 2> value;
 
 	template <typename U, typename V, typename W>
 	friend bool operator==(const Matrix<U, V, W>& lhs, const Matrix<U, V, W>& rhs);

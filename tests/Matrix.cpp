@@ -41,7 +41,6 @@ TEST(Matrix, CreationRuntime) {
 			RuntimeMatrix matrix;
 			ASSERT_EQ(matrix.rows(), static_cast<size_t>(i));
 			ASSERT_EQ(matrix.columns(), static_cast<size_t>(j));
-			ASSERT_EQ(matrix[0].size(), static_cast<size_t>(j));
 		}
 	}
 }
@@ -75,8 +74,10 @@ TEST(Matrix, Identity) {
 	ASSERT_EQ(id[1][1], 1);
 
 	SquareMatrix matrix;
-	matrix[0] = {1, 2};
-	matrix[1] = {5, 94};
+	matrix[0][0] = 1;
+	matrix[0][1] = 2;
+	matrix[1][0] = 5;
+	matrix[1][1] = 94;
 
 	ASSERT_EQ(matrix * id, matrix);
 	ASSERT_EQ(id * matrix, matrix);
@@ -84,8 +85,12 @@ TEST(Matrix, Identity) {
 
 TEST(Matrix, Transpose) {
 	FixedSizeMatrix<int, 2, 3> matrix;
-	matrix[0] = {1, 5, 6};
-	matrix[1] = {2, 0, -1};
+	matrix[0][0] = 1;
+	matrix[0][1] = 5;
+	matrix[0][2] = 6;
+	matrix[1][0] = 2;
+	matrix[1][1] = 0;
+	matrix[1][2] = -1;
 
 	auto transposed = matrix.transposed();
 	static_assert(std::is_same<decltype(transposed), FixedSizeMatrix<int, 3, 2>>::value);
@@ -101,11 +106,16 @@ TEST(Matrix, Transpose) {
 TEST(Matrix, Multiplication) {
 	SquareMatrix square1;
 	SquareMatrix square2;
-	square1[0] = {5, 1};
-	square1[1] = {8, 12};
 
-	square2[0] = {9, 3};
-	square2[1] = {5, 4};
+	square1[0][0] = 5;
+	square1[0][1] = 1;
+	square1[1][0] = 8;
+	square1[1][1] = 12;
+
+	square2[0][0] = 9;
+	square2[0][1] = 3;
+	square2[1][0] = 5;
+	square2[1][1] = 4;
 
 	SquareMatrix product = square1 * square2;
 	ASSERT_EQ(product[0][0], 50);
