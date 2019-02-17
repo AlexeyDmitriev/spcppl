@@ -45,7 +45,7 @@ private:
 			elementsWithFixedMin += queue.back().second;
 			queue.pop_back();
 		}
-		queue.emplace_back(std::move(value), elementsWithFixedMin);
+		queue.emplace_back(std::forward<U>(value), elementsWithFixedMin);
 		++size_;
 	}
 	std::size_t size_;
