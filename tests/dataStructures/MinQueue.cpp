@@ -3,7 +3,7 @@
 #include <spcppl/dataStructures/MinQueue.hpp>
 #include <spcppl/random/random.hpp>
 #include <spcppl/ranges/fors.hpp>
-#include "../operator_size.hpp"
+#include "tests/operator_size.hpp"
 
 TEST(MinQueueTest, ReturnsOnlyElement) {
 	MinQueue<int> queue;

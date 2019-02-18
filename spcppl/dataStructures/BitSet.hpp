@@ -4,6 +4,7 @@
 #include <cstdint>
 #include <vector>
 #include <cstring>
+#include <ostream>
 #include <spcppl/assert.hpp>
 #include <spcppl/ranges/fors.hpp>
 #include <spcppl/numbers/bits.hpp>
@@ -12,12 +13,32 @@ template <typename N>
 class BitSet {
 public:
 	BitSet(): v(getUnderlyingSize(size())) {
+	}
 
+	template <typename Collection>
+	static BitSet fromIndices(const Collection& collection) {
+		BitSet result;
+		for (std::size_t index: collection) {
+			result.set(index);
+		}
+		return result;
+	}
+
+	static BitSet fromIndices(std::initializer_list<std::size_t> collection) {
+		return fromIndices<std::initializer_list<std::size_t>>(collection);
 	}
 
 	bool get(std::size_t index) const {
 		SPCPPL_ASSERT(index < size());
 		return static_cast<bool>((v[index >> 5] >> (index & 31)) & 1);
+	}
+
+	void set(std::size_t index, bool value) {
+		if (value) {
+			set(index);
+		} else {
+			clear(index);
+		}
 	}
 
 	void set(std::size_t index) {
@@ -135,7 +156,7 @@ public:
 
 private:
 	BitSet& invert() {
-		for (auto block: v) {
+		for (auto& block: v) {
 			block = ~block;
 		}
 		std::size_t lastBits = size() & 31;
@@ -157,6 +178,9 @@ private:
 
 	template <typename M>
 	friend bool operator==(const BitSet<M>& a, const BitSet<M>& b);
+
+	template <typename M>
+	friend std::ostream& operator<<(std::ostream& stream, const BitSet<M>& b);
 };
 
 template <typename N>
@@ -191,11 +215,18 @@ BitSet<N> operator>>(const BitSet<N>& a, std::size_t b) {
 
 template <typename N>
 bool operator==(const BitSet<N>& a, const BitSet<N>& b) {
-	SPCPPL_ASSERT(a.size == b.size);
 	return a.v == b.v;
 }
 
 template <typename N>
 bool operator!=(const BitSet<N>& a, const BitSet<N>& b) {
 	return !(a == b);
+}
+
+template <typename N>
+std::ostream& operator<<(std::ostream& stream, const BitSet<N>& b) {
+	for (std::size_t index: range(b.size())) {
+		stream << (b.get(index) ? '1' : '0');
+	}
+	return stream;
 }

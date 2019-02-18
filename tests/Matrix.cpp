@@ -4,8 +4,10 @@
 #include <spcppl/make_constant.hpp>
 #include "detectionIdiom.hpp"
 
+namespace {
 MAKE_CONSTANT(N, std::size_t)
 MAKE_CONSTANT(M, std::size_t)
+}
 
 using RectangularMatrix = FixedSizeMatrix<int, 2, 3>;
 using SquareMatrix = FixedSizeMatrix<int, 2, 2>;
