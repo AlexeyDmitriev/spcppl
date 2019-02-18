@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include <functional>
+#include <memory>
 #include <spcppl/dataStructures/MinQueue.hpp>
 #include <spcppl/random/random.hpp>
 #include <spcppl/ranges/fors.hpp>
