@@ -27,7 +27,7 @@ TEST(NDArrayTest, FrontBackTest) {
 }
 
 TEST(NDArrayTest, AssignViewTest) {
-	NDArray<int, 2> array({{2, 3}}, 0);
+	NDArray<int, 2> array({{3, 2}}, 0);
 	array[0][0] = 1;
 	array[0][1] = 2;
 	array[1][0] = 3;

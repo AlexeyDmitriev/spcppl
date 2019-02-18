@@ -50,14 +50,15 @@ public:
 
 		auto expectedLength = divideCeil<std::size_t>(str.size() - start, digits);
 		number.reserve(expectedLength);
-		//@todo[c++17]: use std::string_view + substr
-		number.push_back(stringBlockToInt(make_range(str.begin() + start, str.begin() + firstBlockEnd)));
+		if (start != firstBlockEnd) {
+			//@todo[c++17]: use std::string_view + substr
+			number.push_back(stringBlockToInt(make_range(str.begin() + start, str.begin() + firstBlockEnd)));
+		}
 		for (auto blockStart = str.begin() + firstBlockEnd; blockStart != str.end();) {
 			auto blockEnd = blockStart + digits;
 			number.push_back(stringBlockToInt(make_range(blockStart, blockEnd)));
 			blockStart = blockEnd;
 		}
-
 		SPCPPL_ASSERT(number.size() == expectedLength);
 
 		reverse(number);

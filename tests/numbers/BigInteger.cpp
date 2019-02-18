@@ -43,6 +43,10 @@ std::string to_string(const BigInteger& rhs) {
 	return ss.str();
 }
 
+TEST(BigInteger, CreatingFromStringLength9Works) {
+	EXPECT_EQ(to_string(BigInteger("123456789")), "123456789");
+}
+
 TEST(BigInteger, PreservesString) {
 	std::mt19937 rnd;
 	for (auto _ [[maybe_unused]]: range(100)) {
