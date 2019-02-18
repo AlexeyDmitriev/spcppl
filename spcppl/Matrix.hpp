@@ -70,7 +70,6 @@ public:
 	}
 
 private:
-	//std::vector<std::vector<T>> value;
 	NDArray<T, 2> value;
 
 	template <typename U, typename V, typename W>
