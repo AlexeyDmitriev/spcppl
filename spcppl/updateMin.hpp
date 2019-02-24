@@ -1,15 +1,19 @@
 #include <algorithm>
 
 template <typename T>
-void updateMin(T& oldValue, const T& newValue) {
+bool updateMin(T& oldValue, const T& newValue) {
 	if (newValue < oldValue) {
 		oldValue = newValue;
+		return true;
 	}
+	return false;
 }
 
 template <typename T>
-void updateMax(T& oldValue, const T& newValue) {
+bool updateMax(T& oldValue, const T& newValue) {
 	if (oldValue < newValue) {
 		oldValue = newValue;
+		return true;
 	}
+	return false;
 }
