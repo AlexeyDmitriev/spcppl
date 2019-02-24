@@ -56,6 +56,29 @@ public:
 		v[index >> 5] ^= 1U << (index & 31);
 	}
 
+	std::size_t firstBitFrom(std::size_t index) const {
+		if (index == size()) {
+			return index;
+		}
+		uint32_t maskFromIndex = ~((static_cast<uint32_t>(1) << (index & 31)) - 1);
+		auto firstBlock = v[index >> 5];
+		uint32_t value = maskFromIndex & firstBlock;
+		if (value != 0) {
+			return (index & ~static_cast<uint32_t>(31)) + countTrailingZeros(value);
+		}
+		auto it = std::find_if(v.begin() + (index >> 5) + 1, v.end(), [](auto x) {
+			return x != 0;
+		});
+		if (it == v.end()) {
+			return size();
+		}
+		return (it - v.begin()) * 32 + countTrailingZeros(*it);
+	}
+
+	std::size_t firstBitAfter(std::size_t index) const {
+		return firstBitFrom(index + 1);
+	}
+
 	std::size_t count() const {
 		std::size_t result = 0;
 		for (auto block: v) {
@@ -154,6 +177,10 @@ public:
 		return *this;
 	}
 
+	std::size_t size() const {
+		return N::value;
+	}
+
 private:
 	BitSet& invert() {
 		for (auto& block: v) {
@@ -166,15 +193,15 @@ private:
 		return *this;
 	}
 
+	static std::size_t countTrailingZeros(uint32_t value) {
+		return __builtin_ctz(value);
+	}
+
 	static std::size_t getUnderlyingSize(std::size_t size) {
 		return (size + 31) >> 5;
 	}
 
 	std::vector<uint32_t> v;
-
-	std::size_t size() const {
-		return N::value;
-	}
 
 	template <typename M>
 	friend bool operator==(const BitSet<M>& a, const BitSet<M>& b);

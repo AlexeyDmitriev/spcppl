@@ -217,6 +217,43 @@ TEST(BitSetTest, ShiftingLongBitsetAlsoWork) {
 	EXPECT_EQ(LongBS::fromIndices({1}) >> 1, LongBS::fromIndices({0}));
 	EXPECT_EQ(LongBS::fromIndices({1}) >> 2, LongBS());
 }
+
+TEST(BitSetTest, FirstBitFrom) {
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitFrom(0), 0_size);
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitFrom(1), 3_size);
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitFrom(4), 5_size);
+	EXPECT_EQ(LongBS::fromIndices({32}).firstBitFrom(5), 32_size);
+	EXPECT_EQ(LongBS::fromIndices({5, 33}).firstBitFrom(7), 33_size);
+	EXPECT_EQ(LongBS::fromIndices({31, 32}).firstBitFrom(31), 31_size);
+	EXPECT_EQ(BS().firstBitFrom(0), 5_size);
+	EXPECT_EQ(BS().firstBitFrom(5), 5_size);
+}
+
+TEST(BitSetTest, FirstBitAfter) {
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitAfter(0), 3_size);
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitAfter(1), 3_size);
+	EXPECT_EQ(BS::fromIndices({0, 3}).firstBitAfter(4), 5_size);
+	EXPECT_EQ(LongBS::fromIndices({32}).firstBitAfter(5), 32_size);
+	EXPECT_EQ(LongBS::fromIndices({5, 33}).firstBitAfter(7), 33_size);
+	EXPECT_EQ(LongBS::fromIndices({31, 32}).firstBitAfter(31), 32_size);
+	EXPECT_EQ(BS().firstBitAfter(0), 5_size);
+}
+TEST(BitSetTest, IterateOverBits) {
+	auto get_all_bits = [](const auto& bs) {
+		std::vector<std::size_t> indices;
+		size_t index = 0;
+		while ((index = bs.firstBitFrom(index)) < bs.size()) {
+			indices.push_back(index);
+			++index;
+		}
+		return indices;
+	};
+
+	EXPECT_EQ(get_all_bits(BS::fromIndices({0, 1, 4})), (std::vector<std::size_t>{0, 1, 4}));
+	EXPECT_EQ(get_all_bits(LongBS::fromIndices({31, 32, 77})), (std::vector<std::size_t>{31, 32, 77}));
+	EXPECT_EQ(get_all_bits(BS()), std::vector<std::size_t>{});
+}
+
 namespace {
 MAKE_CONSTANT(N, size_t);
 }
