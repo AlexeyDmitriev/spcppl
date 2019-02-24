@@ -20,12 +20,17 @@ public:
 		return dsu[v] = getSet(dsu[v]);
 	}
 
-	void unite(std::size_t u, std::size_t v) {
+	bool unite(std::size_t u, std::size_t v) {
 		SPCPPL_ASSERT(u < dsu.size());
 		SPCPPL_ASSERT(v < dsu.size());
 		u = getSet(u);
 		v = getSet(v);
-		dsu[v] = u;
+		if (u == v) {
+			return false;
+		} else {
+			dsu[v] = u;
+			return true;
+		}
 	}
 
 	std::size_t components() const {

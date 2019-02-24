@@ -29,3 +29,10 @@ TEST(DSU, ComponentCount) {
 	dsu.unite(1, 3);
 	ASSERT_EQ(dsu.components(), static_cast<std::size_t>(3));
 }
+
+TEST(DSU, MergeResult) {
+	DSU dsu(5);
+	EXPECT_TRUE(dsu.unite(1, 3));
+	EXPECT_TRUE(dsu.unite(3, 4));
+	EXPECT_FALSE(dsu.unite(1, 4));
+}
