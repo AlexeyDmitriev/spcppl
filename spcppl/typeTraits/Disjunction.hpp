@@ -13,6 +13,7 @@ struct Disjunction<First, Others...> : std::integral_constant<bool, First || Dis
 
 };
 
+#if __cplusplus >= 201703L
 template <bool... Bools>
 constexpr bool DisjunctionV = Disjunction<Bools...>::value;
 
@@ -22,3 +23,4 @@ static_assert(DisjunctionV<true>, "");
 static_assert(DisjunctionV<false, true>, "");
 static_assert(DisjunctionV<true, false>, "");
 static_assert(DisjunctionV<false, false, true, true>, "");
+#endif

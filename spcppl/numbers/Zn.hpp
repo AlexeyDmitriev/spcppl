@@ -18,7 +18,7 @@ public:
 	/**
 	* Instead of ctor, to allow not to normalize in ctor
 	*/
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	static Zn valueOf(U value) {
 		int x = static_cast<int>(value % mod());
 		if (x < 0) {
@@ -32,7 +32,7 @@ public:
 		return Zn(value);
 	}
 
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	Zn& operator=(U rhs) {
 		return *this = Zn::valueOf(rhs);
 	}
@@ -46,7 +46,7 @@ public:
 		return *this;
 	}
 
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	Zn& operator+=(U rhs) {
 		return *this += Zn::valueOf(rhs);
 	}
@@ -59,7 +59,7 @@ public:
 		return *this;
 	}
 
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	Zn& operator-=(U rhs) {
 		return *this -= Zn::valueOf(rhs);
 	}
@@ -70,7 +70,7 @@ public:
 		return *this;
 	}
 
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	Zn& operator*=(U rhs) {
 		return *this *= Zn::valueOf(rhs);
 	}
@@ -88,7 +88,7 @@ public:
 		return *this *= rhs.inversed();
 	}
 
-	template <typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+	template <typename U>
 	Zn& operator/=(U rhs) {
 		return *this /= Zn::valueOf(rhs);
 	}
@@ -152,12 +152,12 @@ bool operator==(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return lhs.value == rhs.value;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 bool operator==(const Zn<T>& lhs, U rhs) {
 	return lhs == Zn<T>::valueOf(rhs);
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 bool operator==(U lhs, const Zn<T>& rhs) {
 	return rhs == lhs;
 }
@@ -167,12 +167,12 @@ bool operator!=(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 bool operator!=(const Zn<T>& lhs, U rhs) {
 	return !(lhs == rhs);
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 bool operator!=(U lhs, const Zn<T>& rhs) {
 	return !(lhs == rhs);
 }
@@ -183,13 +183,13 @@ Zn<T> operator+(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy += rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator+(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy += rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator+(U lhs, const Zn<T>& rhs) {
 	return rhs + lhs;
 }
@@ -200,13 +200,13 @@ Zn<T> operator-(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy -= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator-(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy -= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator-(U lhs, const Zn<T>& rhs) {
 	return Zn<T>::valueOf(lhs) - rhs;
 }
@@ -217,13 +217,13 @@ Zn<T> operator*(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy *= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator*(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy *= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator*(U lhs, const Zn<T>& rhs) {
 	return rhs * lhs;
 }
@@ -234,13 +234,13 @@ Zn<T> operator/(const Zn<T>& lhs, const Zn<T>& rhs) {
 	return copy /= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator/(const Zn<T>& lhs, U rhs) {
 	Zn<T> copy = lhs;
 	return copy /= rhs;
 }
 
-template <typename T, typename U, typename E = enable_if_t<IsSaneInteger<U>>>
+template <typename T, typename U>
 Zn<T> operator/(U lhs, const Zn<T>& rhs) {
 	return Zn<T>::valueOf(lhs) / rhs;
 }
