@@ -65,7 +65,7 @@ public:
 		removeLeadingZeroes();
 	}
 
-	template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
+	template <typename T, typename E = enable_if_t<IsSaneInteger<T>::value>>
 	explicit BigInteger(T t) {
 		if (t < 0) {
 			isNegative = true;
@@ -104,12 +104,12 @@ public:
 		removeLeadingZeroes();
 	}
 
-	template <typename T, enable_if_t<IsSaneInteger<T> && (sizeof(T) > sizeof(int32_t))>* = nullptr>
+	template <typename T, enable_if_t<IsSaneInteger<T>::value && (sizeof(T) > sizeof(int32_t))>* = nullptr>
 	void operator*=(T t) {
 		return *this *= BigInteger(t);
 	}
 
-	template <typename T, enable_if_t<IsSaneInteger<T> && sizeof(T) <= sizeof(int32_t)>* = nullptr>
+	template <typename T, enable_if_t<IsSaneInteger<T>::value && sizeof(T) <= sizeof(int32_t)>* = nullptr>
 	void operator*=(T t) {
 		if (t == 0) {
 			number.clear();
@@ -330,13 +330,13 @@ BigInteger operator*(BigInteger lhs, const BigInteger& rhs) {
 	return lhs;
 }
 
-template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
+template <typename T, typename E = enable_if_t<IsSaneInteger<T>::value>>
 BigInteger operator*(BigInteger lhs, T rhs) {
 	lhs *= rhs;
 	return lhs;
 }
 
-template <typename T, typename E = enable_if_t<IsSaneInteger<T>>>
+template <typename T, typename E = enable_if_t<IsSaneInteger<T>::value>>
 BigInteger operator*(T lhs, BigInteger rhs) {
 	rhs *= lhs;
 	return rhs;
