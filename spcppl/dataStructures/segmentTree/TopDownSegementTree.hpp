@@ -7,6 +7,7 @@
 template <typename T, typename Merge, typename Update, typename ApplyUpdate, typename MergeUpdates>
 class TopDownSegmentTree: protected SegmentTreeBase<T, Merge> {
 	using size_t = std::size_t;
+	using Base = SegmentTreeBase<T, Merge>;
 public:
 	template <typename R>
 	explicit TopDownSegmentTree(
@@ -17,7 +18,7 @@ public:
 			const ApplyUpdate& applyUpdate = ApplyUpdate(),
 			const MergeUpdates& mergeUpdates = MergeUpdates()
 	):
-			SegmentTreeBase<T, Merge>(range, defaultValue, merge),
+			Base(range, defaultValue, merge),
 			defaultUpdate(defaultUpdate),
 			updates(shift << 1, defaultUpdate),
 			applyUpdate(applyUpdate),
@@ -35,8 +36,46 @@ public:
 		return internalGet(1, 0, shift, l, r);
 	}
 
+	template <typename Visitor>
+	std::size_t descend(Visitor visit) {
+		size_t v = 1;
+		std::size_t vl = 0;
+		std::size_t vr = shift;
+		while (v < shift) {
+			push(v, vl, vr);
+			std::size_t vm = vl + (vr - vl) / 2;
+			if (visit(values[v], values[2 * v], values[2 * v + 1])) {
+				v = 2 * v;
+				vr = vm;
+			} else {
+				v = 2 * v + 1;
+				vl = vm;
+			}
+		}
+		return v - shift;
+	}
+
+	template <typename Predicate>
+	std::size_t getFirstPrefix(Predicate predicate) {
+		if (predicate(defaultValue)) {
+			return 0;
+		}
+		if (!predicate(values[1])) {
+			return n + 1;
+		}
+		T current_left = defaultValue;
+		return descend([&](const T&, const T& l, const T&) {
+			auto new_left = merge(current_left, l);
+			if (predicate(new_left)) {
+				return true;
+			} else {
+				current_left = std::move(new_left);
+				return false;
+			}
+		}) + 1;
+	}
+
 protected:
-	using Base = SegmentTreeBase<T, Merge>;
 	using Base::n;
 	using Base::defaultValue;
 	using Base::shift;

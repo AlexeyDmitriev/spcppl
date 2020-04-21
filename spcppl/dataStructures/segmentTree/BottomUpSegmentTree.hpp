@@ -5,8 +5,9 @@
 
 template <typename T, typename Merge>
 class BottomUpSegmentTree: protected SegmentTreeBase<T, Merge> {
-public:
+	using Base = SegmentTreeBase<T, Merge>;
 
+public:
 	template <typename R>
 	explicit BottomUpSegmentTree(const R& range, const T& defaultValue = T(), const Merge& merge = Merge()):
 			SegmentTreeBase<T, Merge>(range, defaultValue, merge) {
@@ -39,8 +40,20 @@ public:
 		});
 	}
 
+	template <typename Visitor>
+	std::size_t descend(Visitor visit) const {
+		size_t v = 1;
+		while (v < shift) {
+			if (visit(values[v], values[2 * v], values[2 * v + 1])) {
+				v = 2 * v;
+			} else {
+				v = 2 * v + 1;
+			}
+		}
+		return v - shift;
+	}
+
 protected:
-	using Base = SegmentTreeBase<T, Merge>;
 	using Base::n;
 	using Base::defaultValue;
 	using Base::shift;

@@ -21,4 +21,9 @@ public:
 	): TopDownSegmentTree<T, std::plus<T>, T, SumUpdateApplier<T>, std::plus<T>>(range, zero) {
 	}
 
+	std::size_t getFirstPrefixAtLeast(const T& expectedSum) {
+		return this->getFirstPrefix([&](const T& prefixSum) {
+			return prefixSum >= expectedSum;
+		});
+	}
 };

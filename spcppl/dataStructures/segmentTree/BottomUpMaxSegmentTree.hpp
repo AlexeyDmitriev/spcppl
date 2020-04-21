@@ -20,4 +20,9 @@ public:
 		});
 	}
 
+	std::size_t getFirstMaximum() const {
+		return this->descend([](const T& v, const T& l, const T&) {
+			return v == l;
+		});
+	}
 };
