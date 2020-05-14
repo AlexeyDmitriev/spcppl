@@ -170,7 +170,7 @@ double distance_to_segment(const Point2D<T, S>& point, const Point2D<T, S>& b, c
 		return fabs(ba * ca) / (ca - ba).dist();
 	}
 	return std::min(ba.dist(), ca.dist());
-};
+}
 
 template <typename T, typename S>
 double distance_to_line(const Point2D<T, S>& point, const Point2D<T, S>& b, const Point2D<T, S>& c) {
@@ -178,4 +178,4 @@ double distance_to_line(const Point2D<T, S>& point, const Point2D<T, S>& b, cons
 	auto ba = b - point;
 	auto ca = c - point;
 	return fabs(ba * ca) / (ca - ba).dist();
-};
+}
