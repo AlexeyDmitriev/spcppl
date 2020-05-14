@@ -87,6 +87,10 @@ struct Point2D {
 		double si = sin(angle);
 		return Point2D(x * co - y * si, x * si + y * co);
 	}
+
+	friend std::ostream& operator<< (std::ostream& stream, Point2D point) {
+		return stream << "(" << point.x << ", " << point.y << ")";
+	}
 };
 
 template <typename T, typename S>
