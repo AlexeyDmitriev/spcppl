@@ -183,3 +183,9 @@ double distance_to_line(const Point2D<T, S>& point, const Point2D<T, S>& b, cons
 	auto ca = c - point;
 	return fabs(ba * ca) / (ca - ba).dist();
 }
+
+
+template <typename T, typename S>
+S doubledArea(const Point2D<T, S>& a, const Point2D<T, S>& b, const Point2D<T, S>& c) {
+	return std::abs((b - a) * (c - a));
+}
