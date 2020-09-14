@@ -38,7 +38,7 @@ bool isnan(Double d) {
 }
 
 bool isinf(Double d) {
-	return std::isnan(static_cast<double>(d));
+	return std::isinf(static_cast<double>(d));
 }
 
 using Base = std::complex<Double>;
