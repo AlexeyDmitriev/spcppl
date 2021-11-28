@@ -12,4 +12,4 @@ target_link_libraries(tests spcppl)
 
 add_subdirectory(gtest)
 target_link_libraries(tests gtest_main)
-target_compile_options(tests PRIVATE -Werror -std=c++1z)
+target_compile_options(tests PRIVATE -Werror -std=c++2a)
